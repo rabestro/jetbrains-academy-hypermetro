@@ -1,10 +1,11 @@
 package metro.entity;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Line extends NamedEntity {
+public class Line extends NamedEntity implements Iterable<Station> {
     private static final List<String> DEPOT = Collections.emptyList();
     private final LinkedList<Station> stations = new LinkedList<>();
 
@@ -34,4 +35,10 @@ public class Line extends NamedEntity {
         }
         stations.addFirst(new Station(stationName, DEPOT, nextStations));
     }
+
+    @Override
+    public Iterator<Station> iterator() {
+        return stations.iterator();
+    }
+
 }

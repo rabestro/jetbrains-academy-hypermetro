@@ -2,6 +2,7 @@ package metro.services;
 
 import metro.command.Command;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.MatchResult;
@@ -30,7 +31,8 @@ public class RequestParser {
         }
 
         final var args = matcher.group("args");
-        final var parameters = PARAMS.matcher(args).results()
+        final var parameters = args == null ? List.<String>of() : PARAMS
+                .matcher(args).results()
                 .map(RequestParser::extractParameter)
                 .collect(Collectors.toUnmodifiableList());
 
