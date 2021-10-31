@@ -3,10 +3,11 @@ package metro;
 import metro.entity.Metro;
 import metro.entity.Request;
 import metro.services.RequestParser;
+import metro.ui.ConsoleInterface;
+import metro.ui.UserInterface;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -17,7 +18,7 @@ public class MetroCLI implements Runnable {
     private static final Request INVALID_REQUEST = new Request(ERROR, Collections.emptyList());
 
     private final Metro metro;
-    private final Scanner scanner;
+    private final UserInterface ui;
     private final Map<String, Consumer<String>> commands = Map.of(
             "append", this::append
     );
@@ -26,14 +27,14 @@ public class MetroCLI implements Runnable {
 
     }
 
-    public MetroCLI(final Metro metro) {
+    public MetroCLI(final Metro metro, final ConsoleInterface ui) {
         this.metro = metro;
-        this.scanner = new Scanner(System.in);
+        this.ui = ui;
     }
 
     @Override
     public void run() {
-        Stream.generate(scanner::nextLine)
+        Stream.generate(ui::readLine)
                 .map(RequestParser::parse)
                 .map(optional -> optional.orElse(INVALID_REQUEST))
                 .takeWhile(request -> request.command().equalsIgnoreCase(EXIT))
