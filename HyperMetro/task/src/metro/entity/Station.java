@@ -14,19 +14,19 @@ public class Station extends NamedEntity {
         this.nextStations = nextStations;
     }
 
-    public void setNextStations(final List<String> nextStations) {
-        this.nextStations = nextStations;
+    public List<String> getPreviousStations() {
+        return previousStations;
     }
 
     public void setPreviousStations(final List<String> previousStations) {
         this.previousStations = previousStations;
     }
 
-    public List<String> getPreviousStations() {
-        return previousStations;
-    }
-
     public List<String> getNextStations() {
         return nextStations;
+    }
+
+    public void setNextStations(final List<String> nextStations) {
+        this.nextStations = nextStations;
     }
 }

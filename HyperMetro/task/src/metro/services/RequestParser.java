@@ -18,6 +18,10 @@ public class RequestParser {
         this.commands = commands;
     }
 
+    private static String extractParameter(final MatchResult result) {
+        return result.group(2) == null ? result.group(1) : result.group(2);
+    }
+
     public Optional<Runnable> parse(final String userInput) {
         final var matcher = COMMAND.matcher(userInput);
 
@@ -37,9 +41,5 @@ public class RequestParser {
                 .collect(Collectors.toUnmodifiableList());
 
         return Optional.of(new Request(commands.get(command), parameters));
-    }
-
-    private static String extractParameter(final MatchResult result) {
-        return result.group(2) == null ? result.group(1) : result.group(2);
     }
 }

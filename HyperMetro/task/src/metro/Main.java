@@ -11,6 +11,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
         final var ui = new ConsoleInterface();
+
         final Metro metro;
         try {
             metro = new MetroLoader().load(args[0]);

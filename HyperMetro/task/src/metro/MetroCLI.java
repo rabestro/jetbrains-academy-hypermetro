@@ -36,8 +36,11 @@ public class MetroCLI implements Runnable {
         Stream.generate(ui::readLine)
                 .takeWhile(Predicate.not(EXIT::equalsIgnoreCase))
                 .map(requestParser::parse)
-                .map(optional -> optional.orElse(() -> ui.printLine("Invalid command.")))
+                .map(optional -> optional.orElse(this::printError))
                 .forEach(Runnable::run);
     }
 
+    private void printError() {
+        ui.printLine("Invalid command.");
+    }
 }
