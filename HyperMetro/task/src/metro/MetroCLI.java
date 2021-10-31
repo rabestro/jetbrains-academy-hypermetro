@@ -1,56 +1,43 @@
 package metro;
 
+import metro.command.Command;
 import metro.entity.Metro;
-import metro.entity.Request;
 import metro.services.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("squid:S106")
 public class MetroCLI implements Runnable {
-    private static final String EXIT = "exit";
-    private static final String ERROR = "error";
-    private static final Request INVALID_REQUEST = new Request(ERROR, Collections.emptyList());
+    private static final String EXIT = "/exit";
 
     private final Metro metro;
     private final UserInterface ui;
-    private final Map<String, Consumer<String>> commands = Map.of(
-            "append", this::append
-    );
+    private final Map<String, Command> commands;
+    private final RequestParser requestParser;
 
-    private void append(final String parameters) {
-
-    }
-
-    public MetroCLI(final Metro metro, final ConsoleInterface ui) {
-        this.metro = metro;
+    public MetroCLI(final Metro metro,
+                    final ConsoleInterface ui,
+                    final Set<Command> commands) {
         this.ui = ui;
+        this.metro = metro;
+        this.commands = commands.stream()
+                .collect(Collectors.toUnmodifiableMap(Command::name, Function.identity()));
+        this.requestParser = new RequestParser(this.commands);
     }
 
     @Override
     public void run() {
         Stream.generate(ui::readLine)
-                .map(RequestParser::parse)
-                .map(optional -> optional.orElse(INVALID_REQUEST))
-                .takeWhile(request -> request.command().equalsIgnoreCase(EXIT))
-                .forEach(this::processRequest);
+                .takeWhile(Predicate.not(EXIT::equalsIgnoreCase))
+                .map(requestParser::parse)
+                .map(optional -> optional.orElse(() -> ui.printLine("Invalid command.")))
+                .forEach(Runnable::run);
     }
 
-    private void invalidRequest() {
-
-    }
-
-    private void invalidParameters() {
-
-    }
-
-    private void processRequest(final Request request) {
-
-
-    }
 }

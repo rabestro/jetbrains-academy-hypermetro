@@ -1,12 +1,16 @@
 package metro.command;
 
 import metro.entity.Metro;
+import metro.ui.UserInterface;
 
 import java.util.List;
 
 public class Output extends MetroCommand {
-    Output(final Metro metro) {
+    protected final UserInterface ui;
+
+    public Output(final Metro metro, final UserInterface ui) {
         super(metro);
+        this.ui = ui;
     }
 
     @Override
