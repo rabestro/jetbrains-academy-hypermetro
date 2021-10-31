@@ -14,7 +14,7 @@ public class Main {
         final Metro metro;
         try {
             metro = new MetroLoader().load(args[0]);
-        } catch (IOException e) {
+        } catch (IllegalArgumentException | IOException e) {
             ui.printLine(e.getMessage());
             return;
         }

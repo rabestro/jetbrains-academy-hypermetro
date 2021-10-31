@@ -42,6 +42,6 @@ public class Line extends NamedEntity implements Iterable<Station> {
     }
 
     public void remove(final String stationName) {
-
+        throw new UnsupportedOperationException("operation is not implemented");
     }
 }
