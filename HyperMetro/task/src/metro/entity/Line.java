@@ -13,6 +13,11 @@ public class Line extends NamedEntity implements Iterable<Station> {
         super(lineName);
     }
 
+    @Override
+    public Iterator<Station> iterator() {
+        return stations.iterator();
+    }
+
     public void append(final String stationName) {
         final List<String> prevStations;
 
@@ -31,14 +36,12 @@ public class Line extends NamedEntity implements Iterable<Station> {
             nextStations = DEPOT;
         } else {
             stations.getFirst().setPreviousStations(List.of(stationName));
-            nextStations = List.of(stations.getLast().name());
+            nextStations = List.of(stations.getFirst().name());
         }
         stations.addFirst(new Station(stationName, DEPOT, nextStations));
     }
 
-    @Override
-    public Iterator<Station> iterator() {
-        return stations.iterator();
-    }
+    public void remove(final String stationName) {
 
+    }
 }

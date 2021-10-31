@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class RequestParser {
-    private static final Pattern COMMAND = Pattern.compile("/(?<command>\\w+)(\\s+(?<args>.*))?");
+    private static final Pattern COMMAND = Pattern.compile("/(?<command>[-\\w]+)(\\s+(?<args>.*))?");
     private static final Pattern PARAMS = Pattern.compile("(\\w+)|\"([^\"]+)\"");
     private final Map<String, Command> commands;
 

@@ -1,9 +1,6 @@
 package metro;
 
-import metro.command.AddHead;
-import metro.command.Append;
-import metro.command.Command;
-import metro.command.Output;
+import metro.command.*;
 import metro.entity.Metro;
 import metro.services.MetroLoader;
 import metro.ui.ConsoleInterface;
@@ -24,7 +21,8 @@ public class Main {
         final var commands = Set.<Command>of(
                 new Output(metro, ui),
                 new Append(metro, ui),
-                new AddHead(metro, ui)
+                new AddHead(metro, ui),
+                new Remove(metro, ui)
         );
 
         new MetroCLI(metro, ui, commands).run();

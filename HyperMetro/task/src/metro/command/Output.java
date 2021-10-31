@@ -18,8 +18,6 @@ public class Output extends MetroCommand {
 
     @Override
     public void accept(final List<String> parameters) {
-        ui.printLine("Command Output: " + parameters);
-
         if (parameters.size() != 1) {
             ui.printLine("Invalid number of parameters");
             return;
