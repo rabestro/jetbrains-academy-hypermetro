@@ -6,7 +6,7 @@ import metro.ui.UserInterface;
 
 public class Remove extends ManageStation {
     public Remove(final Metro metro, final UserInterface ui) {
-        super(metro, ui, Line::append);
+        super(metro, ui, Line::remove);
     }
 
 }
