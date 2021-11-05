@@ -5,13 +5,15 @@ import java.util.List;
 public class Station extends NamedEntity {
     private List<String> previousStations;
     private List<String> nextStations;
+    private List<LineStation> transfer;
 
-    public Station(final String stationName,
+    public Station(final JsonStation station,
                    final List<String> previousStations,
                    final List<String> nextStations) {
-        super(stationName);
+        super(station.getName());
         this.previousStations = previousStations;
         this.nextStations = nextStations;
+        this.transfer = station.getTransfer();
     }
 
     public List<String> getPreviousStations() {
