@@ -1,6 +1,7 @@
 package metro.command;
 
 import metro.entity.Line;
+import metro.entity.LineStation;
 import metro.entity.Metro;
 import metro.entity.Station;
 import metro.ui.UserInterface;
@@ -30,14 +31,20 @@ public class Output extends MetroCommand {
     }
 
     private void printLine(final Line line) {
+        ui.printLine(DEPOT);
         line.forEach(this::printStation);
+        ui.printLine(DEPOT);
     }
 
     private void printStation(final Station station) {
-        final var prev = station.getPreviousStations().isEmpty() ? DEPOT
-                : station.getPreviousStations().get(0);
-        final var next = station.getNextStations().isEmpty() ? DEPOT
-                : station.getNextStations().get(0);
-        ui.printLine(prev + " - " + station.name() + " - " + next);
+        ui.printLine(station.name() + printTransfer(station.getTransfer()));
+    }
+
+    private String printTransfer(List<LineStation> stations) {
+        if (stations.isEmpty()) {
+            return "";
+        }
+        final var first = stations.get(0);
+        return " - " + first.getStation() + " (" + first.getLine() + " line)";
     }
 }
