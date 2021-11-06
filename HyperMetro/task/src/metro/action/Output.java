@@ -1,0 +1,47 @@
+package metro.action;
+
+import lombok.AllArgsConstructor;
+import metro.domain.MetroLine;
+import metro.domain.MetroMap;
+import metro.domain.MetroStation;
+import metro.domain.StationID;
+import metro.ui.UserInterface;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Component
+@AllArgsConstructor
+public class Output implements Action {
+    private static final String DEPOT = "depot";
+
+    private final UserInterface ui;
+
+    @Override
+    public void accept(final MetroMap metroMap, final List<String> parameters) {
+        Action.checkParametersNumber(parameters, 1);
+        final var metroLineName = parameters.get(0);
+        final var metroLine = metroMap.getLine(metroLineName).orElseThrow();
+        printLine(metroLine);
+    }
+
+    private void printLine(final MetroLine metroLine) {
+        ui.printLine(DEPOT);
+        metroLine.forEach(this::printStation);
+        ui.printLine(DEPOT);
+    }
+
+    private void printStation(final MetroStation metroStation) {
+        final var name = metroStation.getStationID().getName();
+        final var transfer = transferToString(metroStation.getTransfer());
+        ui.printLine(name + transfer);
+    }
+
+    private String transferToString(final Set<StationID> transferStations) {
+        return transferStations.stream()
+                .map(station -> " - " + station.getName() + " (" + station.getLine() + " line)")
+                .collect(Collectors.joining());
+    }
+}
