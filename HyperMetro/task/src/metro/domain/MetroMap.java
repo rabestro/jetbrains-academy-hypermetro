@@ -4,17 +4,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
-@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MetroMap {
     private final Map<String, MetroLine> lines;
@@ -32,5 +31,7 @@ public class MetroMap {
         return new MetroMap(lines);
     }
 
-
+    public Optional<MetroLine> getLine(final String name) {
+        return Optional.ofNullable(lines.get(name));
+    }
 }
