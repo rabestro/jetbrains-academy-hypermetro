@@ -19,14 +19,15 @@ public class MetroLine {
     static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
         final var jsonStations = jsonLine.getValue().getAsJsonObject();
         final var stations = new LinkedHashMap<String, MetroStation>();
+        final var metroLineName = jsonLine.getKey();
 
         jsonStations.entrySet().forEach(station -> {
             final var jsonStation = station.getValue().getAsJsonObject();
-            final var metroStation = MetroStation.from(jsonStation);
-            stations.put(metroStation.getName(), metroStation);
+            final var metroStation = MetroStation.from(metroLineName, jsonStation);
+            stations.put(metroStation.getStationID().getName(), metroStation);
         });
 
-        return new MetroLine(jsonLine.getKey(), stations);
+        return new MetroLine(metroLineName, stations);
     }
 
 }

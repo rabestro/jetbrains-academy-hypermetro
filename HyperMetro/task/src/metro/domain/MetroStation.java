@@ -9,13 +9,16 @@ import java.util.Set;
 
 @Data
 public class MetroStation {
-    private final String name;
+    private final StationID stationID;
     private final Set<StationID> transfer;
+    private Set<StationID> next = new HashSet<>();
+    private Set<StationID> prev = new HashSet<>();
 
-    static MetroStation from(final JsonObject jsonStation) {
+    static MetroStation from(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
         final var transfer = parseTransfer(jsonStation.get("transfer"));
-        return new MetroStation(name, transfer);
+        final var stationId = new StationID(line, name);
+        return new MetroStation(stationId, transfer);
     }
 
     private static Set<StationID> parseTransfer(final JsonElement jsonElement) {
