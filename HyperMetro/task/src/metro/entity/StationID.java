@@ -1,9 +1,17 @@
 package metro.entity;
 
-import lombok.Data;
+import com.google.gson.JsonObject;
+import lombok.Value;
 
-@Data
+@Value
 public class StationID {
-    private final String line;
-    private final String name;
+    String line;
+    String name;
+
+    static StationID from(final JsonObject jsonObject) {
+        return new StationID(
+                jsonObject.get("line").getAsString(),
+                jsonObject.get("station").getAsString()
+        );
+    }
 }
