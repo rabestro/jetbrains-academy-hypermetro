@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Getter
@@ -14,10 +14,16 @@ import java.util.Map;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MetroLine {
     private final String name;
-    private final LinkedList<MetroStation> stations;
+    private final LinkedHashMap<String, MetroStation> stations;
 
     static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
-        final var stations = new LinkedList<MetroStation>();
+        final var jsonStations = jsonLine.getValue().getAsJsonObject();
+        final var stations = new LinkedHashMap<String, MetroStation>();
+        jsonStations.entrySet().forEach(station -> {
+            final var jsonStation = station.getValue().getAsJsonObject();
+            final var metroStation = MetroStation.from(jsonStation);
+            stations.put(metroStation.getName(), metroStation);
+        });
 
         return new MetroLine(jsonLine.getKey(), stations);
     }
