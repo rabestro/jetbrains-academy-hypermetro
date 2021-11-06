@@ -1,4 +1,4 @@
-package metro.entity;
+package metro.domain;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

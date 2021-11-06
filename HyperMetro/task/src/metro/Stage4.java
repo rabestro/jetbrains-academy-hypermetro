@@ -1,6 +1,6 @@
 package metro;
 
-import metro.entity.MetroMap;
+import metro.domain.MetroMap;
 
 import java.io.IOException;
 

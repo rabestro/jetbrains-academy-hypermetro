@@ -1,4 +1,4 @@
-package metro.entity;
+package metro.domain;
 
 import com.google.gson.JsonElement;
 import lombok.AccessLevel;
@@ -19,6 +19,7 @@ public class MetroLine {
     static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
         final var jsonStations = jsonLine.getValue().getAsJsonObject();
         final var stations = new LinkedHashMap<String, MetroStation>();
+
         jsonStations.entrySet().forEach(station -> {
             final var jsonStation = station.getValue().getAsJsonObject();
             final var metroStation = MetroStation.from(jsonStation);
@@ -27,4 +28,5 @@ public class MetroLine {
 
         return new MetroLine(jsonLine.getKey(), stations);
     }
+
 }
