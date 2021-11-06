@@ -1,10 +1,10 @@
 package metro.action;
 
 import lombok.AllArgsConstructor;
-import metro.domain.MetroLine;
-import metro.domain.MetroMap;
-import metro.domain.MetroStation;
-import metro.domain.StationID;
+import metro.model.MetroLine;
+import metro.model.MetroMap;
+import metro.model.MetroStation;
+import metro.model.StationID;
 import metro.ui.UserInterface;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 @AllArgsConstructor
 public class Output implements Action {
     private static final String DEPOT = "depot";

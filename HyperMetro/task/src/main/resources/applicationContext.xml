@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="consoleInterface" class="metro.ui.ConsoleInterface">
+    <bean id="userInterface" class="metro.ui.ConsoleInterface"/>
+    <bean id="metro" class="metro.model.MetroMap"/>
+
+    <!-- Commands -->
+    <bean id="commandExit" class="metro.action.ExitPredicate"/>
+    <bean id="commandInvalid" class="metro.action.InvalidCommand">
+        <constructor-arg ref="userInterface"/>
+    </bean>
+    <bean id="commandOutput" class="metro.action.Output">
+        <constructor-arg ref="userInterface"/>
+    </bean>
+
+    <util:map id="commandMap" map-class="java.util.HashMap" key-type="java.lang.String"
+              value-type="metro.action.Action">
+        <entry key="output" value-ref="commandOutput"/>
+    </util:map>
+
+    <bean id="requestParser" class="metro.action.ActionParser">
+        <constructor-arg ref="userInterface"/>
+        <constructor-arg ref="commandInvalid"/>
+        <constructor-arg ref="metro"/>
+        <constructor-arg ref="commandMap"/>
+    </bean>
+
+    <bean id="application" class="metro.Application">
+        <constructor-arg ref="userInterface"/>
+        <constructor-arg ref="commandExit"/>
+        <constructor-arg ref="requestParser"/>
     </bean>
 
 </beans>

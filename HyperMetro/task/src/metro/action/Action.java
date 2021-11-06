@@ -1,6 +1,6 @@
 package metro.action;
 
-import metro.domain.MetroMap;
+import metro.model.MetroMap;
 
 import java.util.List;
 import java.util.function.BiConsumer;

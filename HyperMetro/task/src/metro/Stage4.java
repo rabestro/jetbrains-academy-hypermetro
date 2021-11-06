@@ -1,16 +1,13 @@
 package metro;
 
-import metro.domain.MetroMap;
-import metro.ui.ConsoleInterface;
-
-import java.io.IOException;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Stage4 {
-    public static void main(String[] args) throws IOException {
-        final var ui = new ConsoleInterface();
+    public static void main(String[] args) {
+        final var appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+        final var application = appContext.getBean("application", Application.class);
 
-        var metro = MetroMap.from(args[0]);
-
-        ui.printLine(metro.getLines());
+        application.run();
     }
+
 }

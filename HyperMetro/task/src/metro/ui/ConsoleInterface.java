@@ -1,10 +1,7 @@
 package metro.ui;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Scanner;
 
-@Component
 public class ConsoleInterface implements UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
 

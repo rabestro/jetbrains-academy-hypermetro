@@ -1,4 +1,4 @@
-package metro.domain;
+package metro.model;
 
 import com.google.gson.JsonElement;
 import lombok.AccessLevel;
