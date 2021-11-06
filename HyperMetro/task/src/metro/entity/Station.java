@@ -35,4 +35,8 @@ public class Station extends NamedEntity {
     public List<LineStation> getTransfer() {
         return transfer;
     }
+
+    public void setTransfer(final List<LineStation> transfer) {
+        this.transfer = transfer;
+    }
 }

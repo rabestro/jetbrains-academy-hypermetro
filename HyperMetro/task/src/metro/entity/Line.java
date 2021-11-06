@@ -1,9 +1,6 @@
 package metro.entity;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Line extends NamedEntity implements Iterable<Station> {
     private static final List<String> DEPOT = Collections.emptyList();
@@ -16,6 +13,12 @@ public class Line extends NamedEntity implements Iterable<Station> {
     @Override
     public Iterator<Station> iterator() {
         return stations.iterator();
+    }
+
+    public Optional<Station> getByName(String stationName) {
+        return stations.stream()
+                .filter(station -> station.isNameEquals(stationName))
+                .findAny();
     }
 
     public void append(final String stationName) {

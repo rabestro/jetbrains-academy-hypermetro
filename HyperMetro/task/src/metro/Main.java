@@ -23,7 +23,8 @@ public class Main {
                 new Output(metro, ui),
                 new Append(metro, ui),
                 new AddHead(metro, ui),
-                new Remove(metro, ui)
+                new Remove(metro, ui),
+                new Connect(metro, ui)
         );
 
         new MetroCLI(metro, ui, commands).run();
