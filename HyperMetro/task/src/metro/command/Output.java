@@ -12,14 +12,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class Output implements Action {
+public class Output implements Command {
     private static final String DEPOT = "depot";
 
     private final UserInterface ui;
 
     @Override
     public void accept(final MetroMap metroMap, final List<String> parameters) {
-        Action.checkParametersNumber(parameters, 1);
+        Command.checkParametersNumber(parameters, 1);
         final var metroLineName = parameters.get(0);
         final var metroLine = metroMap.getLine(metroLineName).orElseThrow();
         printLine(metroLine);

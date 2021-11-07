@@ -14,7 +14,7 @@ public class ActionParser {
 
     private final UserInterface ui;
     private final MetroMap metroMap;
-    private final Map<String, Action> actions;
+    private final Map<String, Command> actions;
     private final Runnable defaultAction;
 
     public Runnable parse(final String userInput) {

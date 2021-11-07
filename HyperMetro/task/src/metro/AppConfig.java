@@ -1,6 +1,6 @@
 package metro;
 
-import metro.command.Action;
+import metro.command.Command;
 import metro.command.ActionParser;
 import metro.command.Output;
 import metro.model.MetroMap;
@@ -31,12 +31,12 @@ public class AppConfig {
     }
 
     @Bean(name = "output")
-    public Action getOutput() {
+    public Command getOutput() {
         return new Output(ui());
     }
 
     @Bean(name = "commands")
-    public Map<String, Action> getCommands() {
+    public Map<String, Command> getCommands() {
         return Map.of("output", getOutput());
     }
 

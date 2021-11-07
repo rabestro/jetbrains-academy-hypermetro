@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
-public interface Action extends BiConsumer<MetroMap, List<String>> {
+public interface Command extends BiConsumer<MetroMap, List<String>> {
     Pattern CAMEL_CASE = Pattern.compile("(\\p{Lower})(\\p{Upper})");
 
     default String name() {

@@ -9,14 +9,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Request implements Runnable {
     private final UserInterface ui;
-    private final Action action;
+    private final Command command;
     private final MetroMap metroMap;
     private final List<String> parameters;
 
     @Override
     public void run() {
         try {
-            action.accept(metroMap, parameters);
+            command.accept(metroMap, parameters);
         } catch (IllegalArgumentException exception) {
             ui.printLine(exception.getMessage());
         }

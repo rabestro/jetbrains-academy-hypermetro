@@ -17,7 +17,7 @@
     </bean>
 
     <util:map id="commandMap" map-class="java.util.HashMap" key-type="java.lang.String"
-              value-type="metro.command.Action">
+              value-type="metro.command.Command">
         <entry key="output" value-ref="commandOutput"/>
     </util:map>
 
