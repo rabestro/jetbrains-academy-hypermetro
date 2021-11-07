@@ -13,20 +13,20 @@ import java.util.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MetroLine implements Iterable<MetroStation> {
     private final String lineName;
-    private final LinkedList<MetroStation> stations;
+    private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
         final var jsonStations = jsonLine.getValue().getAsJsonObject();
-        final var stations = new LinkedList<MetroStation>();
-        final var metroLineName = jsonLine.getKey();
+        final var lineName = jsonLine.getKey();
+        final var metroLine = new MetroLine(lineName);
 
         jsonStations.entrySet().forEach(station -> {
             final var jsonStation = station.getValue().getAsJsonObject();
-            final var metroStation = MetroStation.from(metroLineName, jsonStation);
-            stations.add(metroStation);
+            final var metroStation = MetroStation.from(lineName, jsonStation);
+            metroLine.append(metroStation);
         });
 
-        return new MetroLine(metroLineName, stations);
+        return metroLine;
     }
 
     public Optional<MetroStation> getStation(final String name) {
@@ -50,13 +50,16 @@ public class MetroLine implements Iterable<MetroStation> {
 
     public void append(final String name) {
         final var sid = new StationID(lineName, name);
-        final var station = new MetroStation(sid);
+        append(new MetroStation(sid));
+    }
+
+    private void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
-            lastStation.setNext(Set.of(sid));
-            station.setPrev(Set.of(lastStation.getStationID()));
+            lastStation.setNext(Set.of(metroStation.getStationID()));
+            metroStation.setPrev(Set.of(lastStation.getStationID()));
         }
-        stations.add(station);
+        stations.add(metroStation);
     }
 
     @Override

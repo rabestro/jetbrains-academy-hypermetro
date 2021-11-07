@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 abstract class HyperMetroCommand implements Command {
     private static final Pattern CAMEL_CASE = Pattern.compile("(\\p{Lower})(\\p{Upper})");
+    static final String NOT_IMPLEMENTED = "This command is not yet implemented";
 
     final MetroService metroService;
 
