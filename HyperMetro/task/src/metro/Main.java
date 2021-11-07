@@ -1,21 +1,33 @@
 package metro;
 
+import metro.command.*;
+import metro.entity.Metro;
+import metro.services.MetroLoader;
+import metro.ui.ConsoleInterface;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Set;
 
-@SuppressWarnings("squid:S106")
 public class Main {
-    public static void main(String[] args) throws IOException {
-        final var path = Paths.get(args[0]);
+    public static void main(String[] args) {
+        final var ui = new ConsoleInterface();
 
-        if (Files.notExists(path)) {
-            System.out.println("Error! Such a file doesn't exist!");
+        final Metro metro;
+        try {
+            metro = new MetroLoader().load(args[0]);
+        } catch (IllegalArgumentException | IOException e) {
+            ui.printLine(e.getMessage());
             return;
         }
-        final var metroLine = new MetroMap(Files.readAllLines(path));
-        final var printer = new Printer();
-        printer.printMetroLine(metroLine.getLine());
+        final var commands = Set.<Command>of(
+                new Output(metro, ui),
+                new Append(metro, ui),
+                new AddHead(metro, ui),
+                new Remove(metro, ui)
+        );
+
+        new MetroCLI(metro, ui, commands).run();
+
     }
 
 }
