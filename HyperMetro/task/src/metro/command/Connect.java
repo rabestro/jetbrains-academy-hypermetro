@@ -13,7 +13,6 @@ public class Connect extends HyperMetroCommand {
     @Override
     public String apply(final List<String> parameters) {
         validateParametersNumber(parameters, 4);
-
         final var source = new StationID(parameters.get(0), parameters.get(1));
         final var target = new StationID(parameters.get(2), parameters.get(3));
 

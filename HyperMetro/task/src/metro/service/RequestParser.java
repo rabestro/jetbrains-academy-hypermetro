@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class RequestParser {
     private static final Pattern COMMAND_PATTERN =
-            Pattern.compile("/?(?<command>[-\\w]+)(\\s+(?<parameters>.*))?");
+            Pattern.compile("/?(?<command>[-\\w]+)(?:\\s+(?<parameters>.*))?");
 
     private final UserInterface ui;
     private final ParameterParser parameterParser;
