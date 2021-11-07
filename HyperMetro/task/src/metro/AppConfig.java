@@ -1,9 +1,6 @@
 package metro;
 
-import metro.command.AddHead;
-import metro.command.Append;
-import metro.command.Command;
-import metro.command.Output;
+import metro.command.*;
 import metro.model.MetroMap;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
@@ -44,7 +41,8 @@ public class AppConfig {
         return Map.of(
                 "output", new Output(getMetroService()),
                 "append", new Append(getMetroService()),
-                "add-head", new AddHead(getMetroService())
+                "add-head", new AddHead(getMetroService()),
+                "connect", new Connect(getMetroService())
         );
     }
 

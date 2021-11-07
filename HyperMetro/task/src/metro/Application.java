@@ -52,7 +52,7 @@ public class Application {
         final var lines = json.getAsJsonObject()
                 .entrySet().stream()
                 .map(MetroLine::from)
-                .collect(toUnmodifiableMap(MetroLine::getName, identity()));
+                .collect(toUnmodifiableMap(MetroLine::getLineName, identity()));
         metroMap.setLines(lines);
         LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
     }

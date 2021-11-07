@@ -10,15 +10,16 @@ import java.util.Set;
 @Data
 public class MetroStation {
     private final StationID stationID;
-    private final Set<StationID> transfer;
-    private Set<StationID> next = new HashSet<>();
-    private Set<StationID> prev = new HashSet<>();
+    private Set<StationID> transfer = Set.of();
+    private Set<StationID> next = Set.of();
+    private Set<StationID> prev = Set.of();
 
     static MetroStation from(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
         final var transfer = parseTransfer(jsonStation.get("transfer"));
-        final var stationId = new StationID(line, name);
-        return new MetroStation(stationId, transfer);
+        final var station = new MetroStation(new StationID(line, name));
+        station.setTransfer(transfer);
+        return station;
     }
 
     private static Set<StationID> parseTransfer(final JsonElement jsonElement) {
