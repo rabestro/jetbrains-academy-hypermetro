@@ -6,11 +6,8 @@ import metro.model.StationID;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public interface MetroService {
-    Optional<MetroLine> findMetroLine(String name);
-
     MetroLine getMetroLine(String name);
 
     Collection<MetroStation> getLineStations(String name);

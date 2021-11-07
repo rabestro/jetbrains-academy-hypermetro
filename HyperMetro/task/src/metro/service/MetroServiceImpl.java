@@ -12,10 +12,6 @@ public class MetroServiceImpl implements MetroService {
     private final MetroMap metroMap;
 
     @Override
-    public Optional<MetroLine> findMetroLine(final String name) {
-        return metroMap.getLine(name);
-    }
-
     public MetroLine getMetroLine(final String name) {
         return metroMap.getLine(name).orElseThrow(() -> new NoSuchElementException(
                 "There is no metro line with a name '" + name + "'"));
@@ -33,6 +29,7 @@ public class MetroServiceImpl implements MetroService {
                         "There is no station '" + name + "' on the metro line '" + line + "'"));
     }
 
+    @Override
     public Collection<MetroStation> getLineStations(final String name) {
         return metroMap.getLine(name)
                 .orElseThrow(() -> new NoSuchElementException(
@@ -40,19 +37,23 @@ public class MetroServiceImpl implements MetroService {
                 .getStations();
     }
 
+    @Override
     public void addHead(final String lineName, final String stationName) {
         getMetroLine(lineName).addHead(stationName);
     }
 
+    @Override
     public void append(final String lineName, final String stationName) {
         getMetroLine(lineName).append(stationName);
     }
 
+    @Override
     public void remove(final String lineName, final String stationName) {
         final var station = getMetroStation(lineName, stationName);
         getMetroLine(lineName).remove(station);
     }
 
+    @Override
     public void connect(final StationID s1, final StationID s2) {
         final var source = getMetroStation(s1);
         final var target = getMetroStation(s2);
@@ -60,6 +61,7 @@ public class MetroServiceImpl implements MetroService {
         target.setTransfer(Set.of(s1));
     }
 
+    @Override
     public List<StationID> route(final StationID source, final StationID target) {
         final var queue = new LinkedList<PathStep>();
         final var visited = new HashSet<StationID>();
