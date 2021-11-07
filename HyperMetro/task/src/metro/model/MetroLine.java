@@ -18,14 +18,6 @@ public class MetroLine implements Iterable<MetroStation> {
     private final String name;
     private final LinkedList<MetroStation> stations;
 
-    public void append(final String name) {
-        final var station = new MetroStation(new StationID(this.name, name), Set.of());
-        if (!stations.isEmpty()) {
-            station.setPrev(Set.of(stations.getLast().getStationID()));
-        }
-        stations.add(station);
-    }
-
     public static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
         final var jsonStations = jsonLine.getValue().getAsJsonObject();
         final var stations = new LinkedList<MetroStation>();
@@ -38,6 +30,28 @@ public class MetroLine implements Iterable<MetroStation> {
         });
 
         return new MetroLine(metroLineName, stations);
+    }
+
+    public void addHead(final String name) {
+        final var sid = new StationID(this.name, name);
+        final var station = new MetroStation(sid, Set.of());
+        if (!stations.isEmpty()) {
+            final var prevStation = stations.getFirst();
+            prevStation.setPrev(Set.of(sid));
+            station.setNext(Set.of(prevStation.getStationID()));
+        }
+        stations.addFirst(station);
+    }
+
+    public void append(final String name) {
+        final var sid = new StationID(this.name, name);
+        final var station = new MetroStation(sid, Set.of());
+        if (!stations.isEmpty()) {
+            final var lastStation = stations.getLast();
+            lastStation.setNext(Set.of(sid));
+            station.setPrev(Set.of(lastStation.getStationID()));
+        }
+        stations.add(station);
     }
 
     @Override

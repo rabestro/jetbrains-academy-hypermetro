@@ -13,5 +13,7 @@ public interface MetroService {
 
     Collection<MetroStation> getLineStations(String name);
 
+    void addHead(String lineName, String stationName);
+
     void append(String lineName, String stationName);
 }

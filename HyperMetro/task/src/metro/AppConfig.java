@@ -1,5 +1,6 @@
 package metro;
 
+import metro.command.AddHead;
 import metro.command.Append;
 import metro.command.Command;
 import metro.command.Output;
@@ -38,16 +39,12 @@ public class AppConfig {
         return () -> ui().printLine("Invalid command.");
     }
 
-    @Bean(name = "output")
-    public Command getOutput() {
-        return new Output(getMetroService());
-    }
-
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
         return Map.of(
-                "output", getOutput(),
-                "append", new Append(getMetroService())
+                "output", new Output(getMetroService()),
+                "append", new Append(getMetroService()),
+                "add-head", new AddHead(getMetroService())
         );
     }
 

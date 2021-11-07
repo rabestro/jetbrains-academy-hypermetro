@@ -30,6 +30,10 @@ public class MetroServiceImpl implements MetroService {
                 .getStations();
     }
 
+    public void addHead(final String lineName, final String stationName) {
+        getMetroLine(lineName).addHead(stationName);
+    }
+
     public void append(final String lineName, final String stationName) {
         getMetroLine(lineName).append(stationName);
     }
