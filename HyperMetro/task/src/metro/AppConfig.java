@@ -45,7 +45,8 @@ public class AppConfig {
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
-                "route", new Route(getMetroService())
+                "route", new Route(getMetroService()),
+                "fastest-route", new FastestRoute(getMetroService())
         );
     }
 
