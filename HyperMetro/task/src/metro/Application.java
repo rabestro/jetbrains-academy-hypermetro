@@ -1,7 +1,7 @@
 package metro;
 
 import lombok.AllArgsConstructor;
-import metro.action.ActionParser;
+import metro.command.ActionParser;
 import metro.model.MetroMap;
 import metro.ui.UserInterface;
 

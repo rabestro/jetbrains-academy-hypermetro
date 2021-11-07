@@ -1,4 +1,4 @@
-package metro.action;
+package metro.command;
 
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package metro.action;
+package metro.command;
 
 import lombok.AllArgsConstructor;
 import metro.ui.UserInterface;

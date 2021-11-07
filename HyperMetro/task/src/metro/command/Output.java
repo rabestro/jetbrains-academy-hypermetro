@@ -1,50 +1,45 @@
 package metro.command;
 
-import metro.entity.Line;
-import metro.entity.LineStation;
-import metro.entity.Metro;
-import metro.entity.Station;
+import lombok.AllArgsConstructor;
+import metro.model.MetroLine;
+import metro.model.MetroMap;
+import metro.model.MetroStation;
+import metro.model.StationID;
 import metro.ui.UserInterface;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class Output extends MetroCommand {
+@AllArgsConstructor
+public class Output implements Action {
     private static final String DEPOT = "depot";
-    protected final UserInterface ui;
 
-    public Output(final Metro metro, final UserInterface ui) {
-        super(metro);
-        this.ui = ui;
-    }
+    private final UserInterface ui;
 
     @Override
-    public void accept(final List<String> parameters) {
-        if (parameters.size() != 1) {
-            ui.printLine("Invalid number of parameters");
-            return;
-        }
-        final var lineName = parameters.get(0);
-        metro.getLine(lineName).ifPresentOrElse(
-                this::printLine,
-                () -> ui.printLine("The line " + lineName + " is invalid.")
-        );
+    public void accept(final MetroMap metroMap, final List<String> parameters) {
+        Action.checkParametersNumber(parameters, 1);
+        final var metroLineName = parameters.get(0);
+        final var metroLine = metroMap.getLine(metroLineName).orElseThrow();
+        printLine(metroLine);
     }
 
-    private void printLine(final Line line) {
+    private void printLine(final MetroLine metroLine) {
         ui.printLine(DEPOT);
-        line.forEach(this::printStation);
+        metroLine.forEach(this::printStation);
         ui.printLine(DEPOT);
     }
 
-    private void printStation(final Station station) {
-        ui.printLine(station.name() + printTransfer(station.getTransfer()));
+    private void printStation(final MetroStation metroStation) {
+        final var name = metroStation.getStationID().getName();
+        final var transfer = transferToString(metroStation.getTransfer());
+        ui.printLine(name + transfer);
     }
 
-    private String printTransfer(List<LineStation> stations) {
-        if (stations.isEmpty()) {
-            return "";
-        }
-        final var first = stations.get(0);
-        return " - " + first.getStation() + " (" + first.getLine() + " line)";
+    private String transferToString(final Set<StationID> transferStations) {
+        return transferStations.stream()
+                .map(station -> " - " + station.getName() + " (" + station.getLine() + " line)")
+                .collect(Collectors.joining());
     }
 }

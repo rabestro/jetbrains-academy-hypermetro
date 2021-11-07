@@ -8,20 +8,20 @@
     <bean id="metro" class="metro.model.MetroMap"/>
 
     <!-- Commands -->
-    <bean id="commandExit" class="metro.action.ExitPredicate"/>
-    <bean id="commandInvalid" class="metro.action.InvalidCommand">
+    <bean id="commandExit" class="metro.command.ExitPredicate"/>
+    <bean id="commandInvalid" class="metro.command.InvalidCommand">
         <constructor-arg ref="userInterface"/>
     </bean>
-    <bean id="commandOutput" class="metro.action.Output">
+    <bean id="commandOutput" class="metro.command.Output">
         <constructor-arg ref="userInterface"/>
     </bean>
 
     <util:map id="commandMap" map-class="java.util.HashMap" key-type="java.lang.String"
-              value-type="metro.action.Action">
+              value-type="metro.command.Action">
         <entry key="output" value-ref="commandOutput"/>
     </util:map>
 
-    <bean id="requestParser" class="metro.action.ActionParser">
+    <bean id="requestParser" class="metro.command.ActionParser">
         <constructor-arg ref="userInterface"/>
         <constructor-arg ref="commandInvalid"/>
         <constructor-arg ref="metro"/>

@@ -1,8 +1,8 @@
 package metro;
 
-import metro.action.Action;
-import metro.action.ActionParser;
-import metro.action.Output;
+import metro.command.Action;
+import metro.command.ActionParser;
+import metro.command.Output;
 import metro.model.MetroMap;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
