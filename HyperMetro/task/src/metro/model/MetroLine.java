@@ -33,6 +33,10 @@ public class MetroLine implements Iterable<MetroStation> {
         return stations.stream().filter(s -> s.getStationID().getName().equals(name)).findAny();
     }
 
+    public void remove(final MetroStation station) {
+        stations.remove(station);
+    }
+
     public void addHead(final String name) {
         final var sid = new StationID(lineName, name);
         final var station = new MetroStation(sid);

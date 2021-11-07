@@ -19,4 +19,6 @@ public interface MetroService {
     void append(String lineName, String stationName);
 
     void connect(StationID s1, StationID s2);
+
+    void remove(String lineName, String stationName);
 }

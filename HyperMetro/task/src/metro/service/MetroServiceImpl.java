@@ -46,6 +46,10 @@ public class MetroServiceImpl implements MetroService {
         getMetroLine(lineName).append(stationName);
     }
 
+    public void remove(final String lineName, final String stationName) {
+        final var station = getMetroStation(lineName, stationName);
+        getMetroLine(lineName).remove(station);
+    }
 
     public void connect(final StationID s1, final StationID s2) {
         final var source = getMetroStation(s1.getLine(), s1.getName());

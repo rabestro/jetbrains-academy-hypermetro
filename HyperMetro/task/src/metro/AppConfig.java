@@ -42,7 +42,8 @@ public class AppConfig {
                 "output", new Output(getMetroService()),
                 "append", new Append(getMetroService()),
                 "add-head", new AddHead(getMetroService()),
-                "connect", new Connect(getMetroService())
+                "connect", new Connect(getMetroService()),
+                "remove", new Remove(getMetroService())
         );
     }
 
