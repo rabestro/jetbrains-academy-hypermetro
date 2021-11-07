@@ -1,11 +1,12 @@
 package metro;
 
+import metro.command.Append;
 import metro.command.Command;
-import metro.command.ActionParser;
 import metro.command.Output;
 import metro.model.MetroMap;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
+import metro.service.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +45,10 @@ public class AppConfig {
 
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
-        return Map.of("output", getOutput());
+        return Map.of(
+                "output", getOutput(),
+                "append", new Append(getMetroService())
+        );
     }
 
     @Bean(name = "metro")
@@ -53,8 +57,8 @@ public class AppConfig {
     }
 
     @Bean(name = "requestParser")
-    public ActionParser getRequestParser() {
-        return new ActionParser(ui(), getMetro(), getCommands(), invalidCommand());
+    public RequestParser getRequestParser() {
+        return new RequestParser(ui(), getMetro(), getCommands(), invalidCommand());
     }
 
     @Bean(name = "application")

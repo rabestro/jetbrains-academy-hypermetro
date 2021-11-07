@@ -4,7 +4,7 @@ import metro.service.MetroService;
 
 import java.util.List;
 
-public class Append extends HyperMetroCommand{
+public class Append extends HyperMetroCommand {
 
     public Append(final MetroService metroService) {
         super(metroService);

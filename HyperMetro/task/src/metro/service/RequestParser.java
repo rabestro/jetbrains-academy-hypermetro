@@ -1,6 +1,7 @@
-package metro.command;
+package metro.service;
 
 import lombok.AllArgsConstructor;
+import metro.command.Command;
 import metro.model.MetroMap;
 import metro.ui.UserInterface;
 
@@ -9,7 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 @AllArgsConstructor
-public class ActionParser {
+public class RequestParser {
     private static final Pattern COMMAND_PATTERN =
             Pattern.compile("/(?<command>[-\\w]+)(\\s+(?<parameters>.*))?");
 

@@ -2,9 +2,9 @@ package metro;
 
 import com.google.gson.JsonParser;
 import lombok.AllArgsConstructor;
-import metro.command.ActionParser;
 import metro.model.MetroLine;
 import metro.model.MetroMap;
+import metro.service.RequestParser;
 import metro.ui.UserInterface;
 
 import java.io.IOException;
@@ -24,11 +24,10 @@ public class Application {
 
     private final UserInterface ui;
     private final Predicate<String> exit;
-    private final ActionParser requestParser;
+    private final RequestParser requestParser;
     private final MetroMap metroMap;
 
     public void run(final String fileName) {
-        LOGGER.log(INFO, "HyperMetro command line interface started");
         try {
             loadMetroMap(fileName);
             commandLineInterface();
@@ -37,7 +36,17 @@ public class Application {
         }
     }
 
+    private void commandLineInterface() {
+        LOGGER.log(INFO, "HyperMetro command line interface started");
+
+        Stream.generate(ui::readLine)
+                .takeWhile(not(exit))
+                .map(requestParser::parse)
+                .forEach(Runnable::run);
+    }
+
     private void loadMetroMap(final String fileName) throws IOException {
+        LOGGER.log(INFO, "Loading Metro from file: " + fileName);
         final var reader = Files.newBufferedReader(Paths.get(fileName));
         final var json = new JsonParser().parse(reader);
         final var lines = json.getAsJsonObject()
@@ -45,13 +54,7 @@ public class Application {
                 .map(MetroLine::from)
                 .collect(toUnmodifiableMap(MetroLine::getName, identity()));
         metroMap.setLines(lines);
-    }
-
-    private void commandLineInterface() {
-        Stream.generate(ui::readLine)
-                .takeWhile(not(exit))
-                .map(requestParser::parse)
-                .forEach(Runnable::run);
+        LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
     }
 
 }

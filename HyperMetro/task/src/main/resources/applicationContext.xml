@@ -21,7 +21,7 @@
         <entry key="output" value-ref="commandOutput"/>
     </util:map>
 
-    <bean id="requestParser" class="metro.command.ActionParser">
+    <bean id="requestParser" class="metro.service.RequestParser">
         <constructor-arg ref="userInterface"/>
         <constructor-arg ref="commandInvalid"/>
         <constructor-arg ref="metro"/>

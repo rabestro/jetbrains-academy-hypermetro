@@ -27,7 +27,10 @@ public class MetroServiceImpl implements MetroService {
         return metroMap.getLine(name)
                 .orElseThrow(() -> new NoSuchElementException(
                         "There is no metro line with a name '" + name + "'"))
-                .getStations()
-                .values();
+                .getStations();
+    }
+
+    public void append(final String lineName, final String stationName) {
+        getMetroLine(lineName).append(stationName);
     }
 }

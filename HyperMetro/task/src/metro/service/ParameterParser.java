@@ -1,6 +1,4 @@
-package metro.command;
-
-import org.springframework.stereotype.Component;
+package metro.service;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +6,6 @@ import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Component
 public class ParameterParser {
     private static final String WITHOUT_QUOTES = "(\\w+)";
     private static final String WITH_QUOTES = "\"([^\"]+)\"";
