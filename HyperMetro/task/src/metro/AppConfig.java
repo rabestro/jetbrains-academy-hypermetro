@@ -4,6 +4,7 @@ import metro.command.*;
 import metro.model.MetroMap;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
+import metro.service.ParameterParser;
 import metro.service.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
@@ -53,9 +54,14 @@ public class AppConfig {
         return new MetroMap();
     }
 
+    @Bean(name = "parameterParser")
+    public ParameterParser getParameterParser() {
+        return new ParameterParser();
+    }
+
     @Bean(name = "requestParser")
     public RequestParser getRequestParser() {
-        return new RequestParser(ui(), getMetro(), getCommands(), invalidCommand());
+        return new RequestParser(ui(), getParameterParser(), getCommands(), invalidCommand());
     }
 
     @Bean(name = "application")

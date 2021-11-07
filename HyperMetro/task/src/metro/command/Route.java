@@ -4,7 +4,7 @@ import metro.service.MetroService;
 
 import java.util.List;
 
-public class Route extends HyperMetroCommand{
+public class Route extends HyperMetroCommand {
     public Route(final MetroService metroService) {
         super(metroService);
     }

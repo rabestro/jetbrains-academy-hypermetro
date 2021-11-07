@@ -4,7 +4,7 @@ import metro.service.MetroService;
 
 import java.util.List;
 
-public class Remove extends HyperMetroCommand{
+public class Remove extends HyperMetroCommand {
     public Remove(final MetroService metroService) {
         super(metroService);
     }
