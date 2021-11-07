@@ -11,4 +11,8 @@ abstract class NamedEntity {
         return name;
     }
 
+    public boolean isNameEquals(String name) {
+        return this.name.equalsIgnoreCase(name);
+    }
+
 }

@@ -13,8 +13,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.function.Predicate.not;
+
 public class MetroCLI implements Runnable {
-    private static final String EXIT = "/exit";
+    private static final Predicate<String> EXIT = "/exit"::equalsIgnoreCase;
 
     private final Metro metro;
     private final UserInterface ui;
@@ -28,15 +30,14 @@ public class MetroCLI implements Runnable {
         this.metro = metro;
         this.commands = commands.stream()
                 .collect(Collectors.toUnmodifiableMap(Command::name, Function.identity()));
-        this.requestParser = new RequestParser(this.commands);
+        this.requestParser = new RequestParser(this.commands, this::printError);
     }
 
     @Override
     public void run() {
         Stream.generate(ui::readLine)
-                .takeWhile(Predicate.not(EXIT::equalsIgnoreCase))
+                .takeWhile(not(EXIT))
                 .map(requestParser::parse)
-                .map(optional -> optional.orElse(this::printError))
                 .forEach(Runnable::run);
     }
 

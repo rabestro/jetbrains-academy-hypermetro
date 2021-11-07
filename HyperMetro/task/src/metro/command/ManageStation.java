@@ -10,6 +10,8 @@ import java.util.function.BiConsumer;
 public class ManageStation extends MetroCommand {
     private final UserInterface ui;
     private final BiConsumer<Line, String> action;
+    private String lineName;
+    private String stationName;
 
     public ManageStation(
             final Metro metro,
@@ -26,8 +28,8 @@ public class ManageStation extends MetroCommand {
             ui.printLine("Invalid number of parameters");
             return;
         }
-        final var lineName = parameters.get(0);
-        final var stationName = parameters.get(1);
+        lineName = parameters.get(0);
+        stationName = parameters.get(1);
 
         metro.getLine(lineName).ifPresentOrElse(
                 line -> action.accept(line, stationName),
