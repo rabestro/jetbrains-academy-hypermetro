@@ -2,6 +2,7 @@ package metro;
 
 import lombok.AllArgsConstructor;
 import metro.action.ActionParser;
+import metro.model.MetroMap;
 import metro.ui.UserInterface;
 
 import java.util.function.Predicate;
@@ -17,6 +18,7 @@ public class Application implements Runnable {
     private final UserInterface ui;
     private final Predicate<String> exit;
     private final ActionParser requestParser;
+    private final MetroMap metroMap;
 
     @Override
     public void run() {
