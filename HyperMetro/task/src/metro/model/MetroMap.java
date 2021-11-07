@@ -1,6 +1,7 @@
 package metro.model;
 
 import com.google.gson.JsonParser;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
+@Setter
 public class MetroMap {
     private Map<String, MetroLine> lines = Map.of();
 

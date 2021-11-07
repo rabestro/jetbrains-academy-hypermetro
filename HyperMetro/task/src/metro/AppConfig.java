@@ -4,6 +4,8 @@ import metro.command.Command;
 import metro.command.ActionParser;
 import metro.command.Output;
 import metro.model.MetroMap;
+import metro.service.MetroService;
+import metro.service.MetroServiceImpl;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,11 @@ public class AppConfig {
         return new ConsoleInterface();
     }
 
+    @Bean(name = "metroService")
+    public MetroService getMetroService() {
+        return new MetroServiceImpl(getMetro());
+    }
+
     @Bean(name = "exit")
     public Predicate<String> exit() {
         return "/exit"::equalsIgnoreCase;
@@ -32,7 +39,7 @@ public class AppConfig {
 
     @Bean(name = "output")
     public Command getOutput() {
-        return new Output(ui());
+        return new Output(getMetroService());
     }
 
     @Bean(name = "commands")
@@ -51,7 +58,7 @@ public class AppConfig {
     }
 
     @Bean(name = "application")
-    public Runnable getApplication() {
+    public Application getApplication() {
         return new Application(ui(), exit(), getRequestParser(), getMetro());
     }
 }

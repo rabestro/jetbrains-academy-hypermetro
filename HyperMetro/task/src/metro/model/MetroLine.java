@@ -17,7 +17,7 @@ public class MetroLine implements Iterable<MetroStation> {
     private final String name;
     private final LinkedHashMap<String, MetroStation> stations;
 
-    static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
+    public static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
         final var jsonStations = jsonLine.getValue().getAsJsonObject();
         final var stations = new LinkedHashMap<String, MetroStation>();
         final var metroLineName = jsonLine.getKey();

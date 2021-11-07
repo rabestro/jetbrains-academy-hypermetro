@@ -5,6 +5,7 @@ import metro.model.MetroMap;
 import metro.ui.UserInterface;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 @AllArgsConstructor
@@ -34,8 +35,8 @@ public class ActionParser {
 
         return () -> {
             try {
-                actions.get(commandName).accept(metroMap, parameters);
-            } catch (IllegalArgumentException exception) {
+                ui.printLine(actions.get(commandName).apply(parameters));
+            } catch (NoSuchElementException | IllegalArgumentException exception) {
                 ui.printLine(exception.getMessage());
             }
         };

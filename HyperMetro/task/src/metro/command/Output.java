@@ -1,45 +1,39 @@
 package metro.command;
 
-import lombok.AllArgsConstructor;
-import metro.model.MetroLine;
-import metro.model.MetroMap;
 import metro.model.MetroStation;
 import metro.model.StationID;
-import metro.ui.UserInterface;
+import metro.service.MetroService;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-@AllArgsConstructor
-public class Output implements Command {
+import static java.util.stream.Collectors.joining;
+
+public class Output extends HyperMetroCommand {
     private static final String DEPOT = "depot";
 
-    private final UserInterface ui;
+    public Output(final MetroService metroService) {
+        super(metroService);
+    }
 
     @Override
-    public void accept(final MetroMap metroMap, final List<String> parameters) {
-        Command.checkParametersNumber(parameters, 1);
-        final var metroLineName = parameters.get(0);
-        final var metroLine = metroMap.getLine(metroLineName).orElseThrow();
-        printLine(metroLine);
+    public String apply(final List<String> parameters) {
+        validateParametersNumber(parameters, 1);
+        return metroService.getLineStations(parameters.get(0)).stream()
+                .map(this::printStation)
+                .collect(joining("\n", DEPOT + '\n', '\n' + DEPOT));
     }
 
-    private void printLine(final MetroLine metroLine) {
-        ui.printLine(DEPOT);
-        metroLine.forEach(this::printStation);
-        ui.printLine(DEPOT);
-    }
-
-    private void printStation(final MetroStation metroStation) {
+    private String printStation(final MetroStation metroStation) {
         final var name = metroStation.getStationID().getName();
         final var transfer = transferToString(metroStation.getTransfer());
-        ui.printLine(name + transfer);
+        return name + transfer;
     }
 
     private String transferToString(final Set<StationID> transferStations) {
         return transferStations.stream()
                 .map(station -> " - " + station.getName() + " (" + station.getLine() + " line)")
-                .collect(Collectors.joining());
+                .collect(joining());
     }
+
 }
