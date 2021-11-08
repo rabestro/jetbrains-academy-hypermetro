@@ -1,6 +1,7 @@
 package metro.service;
 
 import metro.model.MetroLine;
+import metro.model.MetroNode;
 import metro.model.MetroStation;
 import metro.model.StationID;
 
@@ -23,4 +24,6 @@ public interface MetroService {
     void remove(StationID target);
 
     List<StationID> route(StationID source, StationID target);
+
+    List<MetroNode> fastestRoute(StationID source, StationID target);
 }

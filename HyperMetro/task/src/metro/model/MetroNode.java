@@ -6,5 +6,17 @@ import lombok.Data;
 public class MetroNode {
     private final MetroStation station;
     private MetroNode previous;
-    private int distance;
+    private int distance = Integer.MAX_VALUE;
+
+    public boolean noVisited() {
+        return distance == Integer.MAX_VALUE;
+    }
+
+    public String getLine() {
+        return station.getStationID().getLine();
+    }
+
+    public String getName() {
+        return station.getStationID().getName();
+    }
 }

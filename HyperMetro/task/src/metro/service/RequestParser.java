@@ -33,7 +33,7 @@ public class RequestParser {
         return () -> {
             try {
                 ui.printLine(actions.get(commandName).apply(parameters));
-            } catch (NoSuchElementException | IllegalArgumentException exception) {
+            } catch (NullPointerException | NoSuchElementException | IllegalArgumentException exception) {
                 ui.printLine(exception.getMessage());
             }
         };
