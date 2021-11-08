@@ -55,14 +55,9 @@ public class AppConfig {
         return new MetroMap();
     }
 
-    @Bean(name = "parameterParser")
-    public ParameterParser getParameterParser() {
-        return new ParameterParser();
-    }
-
     @Bean(name = "requestParser")
     public RequestParser getRequestParser() {
-        return new RequestParser(ui(), getParameterParser(), getCommands(), invalidCommand());
+        return new RequestParser(ui(), new ParameterParser(), getCommands(), invalidCommand());
     }
 
     @Bean(name = "application")
