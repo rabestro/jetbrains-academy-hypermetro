@@ -17,16 +17,11 @@ public class MetroServiceImpl implements MetroService {
                 "There is no metro line with a name '" + name + "'"));
     }
 
-    public MetroStation getMetroStation(final StationID stationID) {
-        return getMetroLine(stationID.getLine()).getStation(stationID.getName()).orElseThrow(
-                () -> new NoSuchElementException("There is no station '" + stationID.getName()
-                        + "' on the metro line '" + stationID.getLine() + "'"));
-    }
-
-    public MetroStation getMetroStation(final String line, final String name) {
-        return getMetroLine(line).getStation(name)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "There is no station '" + name + "' on the metro line '" + line + "'"));
+    @Override
+    public MetroStation getMetroStation(final StationID stationId) {
+        return getMetroLine(stationId.getLine()).getStation(stationId.getName()).orElseThrow(
+                () -> new NoSuchElementException("There is no station '" + stationId.getName()
+                        + "' on the metro line '" + stationId.getLine() + "'"));
     }
 
     @Override
@@ -48,17 +43,14 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public void remove(final String lineName, final String stationName) {
-        final var station = getMetroStation(lineName, stationName);
-        getMetroLine(lineName).remove(station);
+    public void remove(final StationID target) {
+        getMetroLine(target.getLine()).remove(getMetroStation(target));
     }
 
     @Override
-    public void connect(final StationID s1, final StationID s2) {
-        final var source = getMetroStation(s1);
-        final var target = getMetroStation(s2);
-        source.setTransfer(Set.of(s2));
-        target.setTransfer(Set.of(s1));
+    public void connect(final StationID source, final StationID target) {
+        getMetroStation(source).setTransfer(Set.of(target));
+        getMetroStation(target).setTransfer(Set.of(source));
     }
 
     @Override
@@ -71,12 +63,7 @@ public class MetroServiceImpl implements MetroService {
             final var step = queue.pollFirst();
             final var sid = step.getStation().getStationID();
             if (sid.equals(target)) {
-                final var path = new LinkedList<StationID>();
-                Stream.iterate(step, Objects::nonNull, PathStep::getPrevious)
-                        .map(PathStep::getStation)
-                        .map(MetroStation::getStationID)
-                        .forEach(path::addFirst);
-                return path;
+                return createRoute(step);
             }
             visited.add(sid);
             step.getStation().getNeighbors().stream()
@@ -86,5 +73,14 @@ public class MetroServiceImpl implements MetroService {
                     .forEach(queue::add);
         }
         return List.of();
+    }
+
+    private List<StationID> createRoute(final PathStep pathStep) {
+        final var path = new LinkedList<StationID>();
+        Stream.iterate(pathStep, Objects::nonNull, PathStep::getPrevious)
+                .map(PathStep::getStation)
+                .map(MetroStation::getStationID)
+                .forEach(path::addFirst);
+        return path;
     }
 }

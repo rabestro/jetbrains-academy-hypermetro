@@ -10,6 +10,8 @@ import java.util.List;
 public interface MetroService {
     MetroLine getMetroLine(String name);
 
+    MetroStation getMetroStation(StationID stationId);
+
     Collection<MetroStation> getLineStations(String name);
 
     void addHead(String lineName, String stationName);
@@ -18,7 +20,7 @@ public interface MetroService {
 
     void connect(StationID source, StationID target);
 
-    void remove(String lineName, String stationName);
+    void remove(StationID target);
 
     List<StationID> route(StationID source, StationID target);
 }
