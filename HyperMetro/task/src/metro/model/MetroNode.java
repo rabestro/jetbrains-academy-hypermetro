@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MetroNode {
-    private MetroStation station;
+    private final MetroStation station;
     private MetroNode previous;
     private int distance;
 }

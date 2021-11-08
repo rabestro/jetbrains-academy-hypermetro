@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Getter
 @ToString
@@ -65,5 +66,9 @@ public class MetroLine implements Iterable<MetroStation> {
     @Override
     public Iterator<MetroStation> iterator() {
         return stations.iterator();
+    }
+
+    public Stream<MetroStation> stream() {
+        return stations.stream();
     }
 }

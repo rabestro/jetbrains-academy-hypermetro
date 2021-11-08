@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 @Configuration
@@ -29,7 +30,7 @@ public class AppConfig {
 
     @Bean(name = "exit")
     public Predicate<String> exit() {
-        return "/exit"::equalsIgnoreCase;
+        return Set.of("/exit", "exit", "quit", "/quit")::contains;
     }
 
     @Bean(name = "invalid")
