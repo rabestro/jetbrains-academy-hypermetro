@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
+    private static final int TRANSFER_TIME = 5;
+
     private final MetroMap metroMap;
 
     @Override
@@ -51,6 +53,18 @@ public class MetroServiceImpl implements MetroService {
     public void connect(final StationID source, final StationID target) {
         getMetroStation(source).setTransfer(Set.of(target));
         getMetroStation(target).setTransfer(Set.of(source));
+    }
+
+    public List<MetroNode> fastestRoute(final StationID source, final StationID target) {
+        return List.of();
+    }
+
+    public Map<StationID, Integer> getNeighbors(final MetroStation station) {
+        final var neighbors = new HashMap<StationID, Integer>();
+        station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
+        station.getTransfer().forEach(id -> neighbors.put(id, TRANSFER_TIME));
+        station.getPrev().forEach(id-> neighbors.put(id, getMetroStation(id).getTime()));
+        return neighbors;
     }
 
     @Override
