@@ -26,11 +26,11 @@ public class Output extends HyperMetroCommand {
 
     private String printStation(final MetroStation metroStation) {
         final var name = metroStation.getStationID().getName();
-        final var transfer = transferToString(metroStation.getTransfer());
+        final var transfer = printTransfer(metroStation.getTransfer());
         return name + transfer;
     }
 
-    private String transferToString(final Set<StationID> transferStations) {
+    private String printTransfer(final Set<StationID> transferStations) {
         return transferStations.stream()
                 .map(station -> " - " + station.getName() + " (" + station.getLine() + " line)")
                 .collect(joining());
