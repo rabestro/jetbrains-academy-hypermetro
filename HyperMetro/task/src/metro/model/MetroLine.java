@@ -30,7 +30,7 @@ public class MetroLine implements Iterable<MetroStation> {
         return metroLine;
     }
 
-    public Optional<MetroStation> getStation(final String name) {
+    Optional<MetroStation> getStation(final String name) {
         return stations.stream().filter(s -> s.getStationID().getName().equals(name)).findAny();
     }
 

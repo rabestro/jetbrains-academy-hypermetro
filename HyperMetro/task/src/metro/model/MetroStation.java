@@ -41,12 +41,4 @@ public class MetroStation {
         return transfer;
     }
 
-    public Set<StationID> getNeighbors() {
-        final var neighbors = new HashSet<StationID>();
-        neighbors.addAll(next);
-        neighbors.addAll(prev);
-        neighbors.addAll(transfer);
-        return neighbors;
-    }
-
 }

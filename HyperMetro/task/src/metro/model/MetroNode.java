@@ -8,7 +8,7 @@ public class MetroNode {
     private MetroNode previous;
     private int distance = Integer.MAX_VALUE;
 
-    public boolean noVisited() {
+    public boolean notVisited() {
         return distance == Integer.MAX_VALUE;
     }
 
