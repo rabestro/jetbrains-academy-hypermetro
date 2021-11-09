@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static java.lang.System.Logger.Level.DEBUG;
 import static java.util.Objects.requireNonNull;
 
 @AllArgsConstructor
@@ -64,7 +63,29 @@ public class MetroServiceImpl implements MetroService {
                 + "' on the metro line '" + station.getLine() + "'";
     }
 
-    public List<MetroNode> fastestRoute(final StationID source, final StationID target) {
+    @Override
+    public LinkedList<MetroNode> route(final StationID source, final StationID target) {
+        final var queue = new LinkedList<MetroNode>();
+        final var visited = new HashSet<StationID>();
+        queue.add(new MetroNode(getMetroStation(source)));
+        while (!queue.isEmpty()) {
+            final var step = queue.pollFirst();
+            final var sid = step.getStation().getStationID();
+            if (sid.equals(target)) {
+                return buildRoute(step);
+            }
+            visited.add(sid);
+            step.getStation().getNeighbors().stream()
+                    .filter(Predicate.not(visited::contains))
+                    .map(this::getMetroStation)
+                    .map(MetroNode::new)
+                    .peek(n -> n.setPrevious(step))
+                    .forEach(queue::add);
+        }
+        return new LinkedList<>();
+    }
+
+    public LinkedList<MetroNode> fastestRoute(final StationID source, final StationID target) {
         final var nodes = metroMap.getNodes();
         final var sourceNode = requireNonNull(nodes.get(source), no(source));
         final var targetNode = requireNonNull(nodes.get(target), no(target));
@@ -76,7 +97,6 @@ public class MetroServiceImpl implements MetroService {
             final var node = queue.pollFirst();
             final var neighbors = getNeighbors(node.getStation());
             neighbors.forEach((id, time) -> {
-                LOGGER.log(DEBUG, "id={0}, node={1} time={1}", id, node.getDistance(), time);
                 final var distance = node.getDistance() + time;
                 final var neighbor = nodes.get(id);
                 if (neighbor.noVisited()) {
@@ -91,7 +111,7 @@ public class MetroServiceImpl implements MetroService {
         return buildRoute(targetNode);
     }
 
-    private List<MetroNode> buildRoute(final MetroNode target) {
+    private LinkedList<MetroNode> buildRoute(final MetroNode target) {
         final var route = new LinkedList<MetroNode>();
         Stream.iterate(target, Objects::nonNull, MetroNode::getPrevious).forEach(route::addFirst);
         return route;
@@ -105,34 +125,4 @@ public class MetroServiceImpl implements MetroService {
         return neighbors;
     }
 
-    @Override
-    public List<StationID> route(final StationID source, final StationID target) {
-        final var queue = new LinkedList<PathStep>();
-        final var visited = new HashSet<StationID>();
-
-        queue.add(new PathStep(getMetroStation(source), null));
-        while (!queue.isEmpty()) {
-            final var step = queue.pollFirst();
-            final var sid = step.getStation().getStationID();
-            if (sid.equals(target)) {
-                return createRoute(step);
-            }
-            visited.add(sid);
-            step.getStation().getNeighbors().stream()
-                    .filter(Predicate.not(visited::contains))
-                    .map(this::getMetroStation)
-                    .map(s -> new PathStep(s, step))
-                    .forEach(queue::add);
-        }
-        return List.of();
-    }
-
-    private List<StationID> createRoute(final PathStep pathStep) {
-        final var path = new LinkedList<StationID>();
-        Stream.iterate(pathStep, Objects::nonNull, PathStep::getPrevious)
-                .map(PathStep::getStation)
-                .map(MetroStation::getStationID)
-                .forEach(path::addFirst);
-        return path;
-    }
 }

@@ -6,7 +6,7 @@ import metro.model.MetroStation;
 import metro.model.StationID;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.LinkedList;
 
 public interface MetroService {
     MetroLine getMetroLine(String name);
@@ -23,7 +23,7 @@ public interface MetroService {
 
     void remove(StationID target);
 
-    List<StationID> route(StationID source, StationID target);
+    LinkedList<MetroNode> route(StationID source, StationID target);
 
-    List<MetroNode> fastestRoute(StationID source, StationID target);
+    LinkedList<MetroNode> fastestRoute(StationID source, StationID target);
 }
