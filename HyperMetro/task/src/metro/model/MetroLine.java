@@ -9,24 +9,28 @@ import lombok.ToString;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static java.lang.System.Logger.Level.DEBUG;
+
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class MetroLine implements Iterable<MetroStation> {
+    private static final System.Logger LOGGER = System.getLogger("MetroLine");
+
     private final String lineName;
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
-        final var jsonStations = jsonLine.getValue().getAsJsonObject();
         final var lineName = jsonLine.getKey();
         final var metroLine = new MetroLine(lineName);
+        LOGGER.log(DEBUG, "Import metro line: " + lineName);
 
-        jsonStations.entrySet().forEach(station -> {
-            final var jsonStation = station.getValue().getAsJsonObject();
+        final var jsonStations = jsonLine.getValue().getAsJsonArray();
+        jsonStations.forEach(station -> {
+            final var jsonStation = station.getAsJsonObject();
             final var metroStation = MetroStation.from(lineName, jsonStation);
             metroLine.append(metroStation);
         });
-
         return metroLine;
     }
 
