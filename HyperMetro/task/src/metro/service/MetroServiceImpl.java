@@ -51,27 +51,41 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public LinkedList<MetroNode> route(final StationID source, final StationID target) {
-        final var visited = new HashSet<StationID>();
+        final var nodes = metroMap.getNodes();
+        final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
+        final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
         final var queue = new LinkedList<MetroNode>();
-        queue.add(new MetroNode(getMetroStation(source)));
+        queue.add(sourceNode);
+
         while (!queue.isEmpty()) {
             final var step = queue.pollFirst();
-            final var sid = step.getStation().getStationID();
-            if (sid.equals(target)) {
+            if (step.equals(targetNode)) {
                 return buildRoute(step);
             }
-            visited.add(sid);
-            getNeighbors(step.getStation()).keySet()
+            step.visit();
+            getNeighborsTimeless(step.getStation())
+                    .keySet()
                     .stream()
-                    .filter(not(visited::contains))
-                    .map(this::getMetroStation)
-                    .map(MetroNode::new)
+                    .map(nodes::get)
+                    .filter(not(MetroNode::isVisited))
                     .forEach(metroNode -> {
                         metroNode.setPrevious(step);
-                        queue.add(metroNode);
+                        if (metroNode.getDistance() == 0) {
+                            queue.addFirst(metroNode);
+                        } else {
+                            queue.add(metroNode);
+                        }
                     });
         }
         return new LinkedList<>();
+    }
+
+    public Map<StationID, Integer> getNeighborsTimeless(final MetroStation station) {
+        final var neighbors = new HashMap<StationID, Integer>();
+        station.getTransfer().forEach(id -> neighbors.put(id, 0));
+        station.getNext().forEach(id -> neighbors.put(id, 1));
+        station.getPrev().forEach(id -> neighbors.put(id, 1));
+        return neighbors;
     }
 
     @Override
