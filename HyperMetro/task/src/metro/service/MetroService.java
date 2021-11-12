@@ -20,7 +20,7 @@ public interface MetroService {
 
     void remove(StationID target);
 
-    LinkedList<MetroNode> route(StationID source, StationID target);
+    LinkedList<StationID> route(StationID source, StationID target);
 
     LinkedList<MetroNode> fastestRoute(StationID source, StationID target);
 }

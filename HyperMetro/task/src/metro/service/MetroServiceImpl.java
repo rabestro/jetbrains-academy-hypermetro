@@ -1,6 +1,8 @@
 package metro.service;
 
 import lombok.AllArgsConstructor;
+import metro.algorithm.BreadthFirstSearchAlgorithm;
+import metro.algorithm.Node;
 import metro.model.*;
 
 import java.util.*;
@@ -8,6 +10,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -50,21 +54,20 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public LinkedList<MetroNode> route(final StationID source, final StationID target) {
-        return findRoute(source, target, this::getNeighborsTimeless);
+    public LinkedList<StationID> route(final StationID source, final StationID target) {
+        final Map<StationID, Node<StationID>> nodes = metroMap.getAllStations().stream()
+                .map(MetroStation::getStationID)
+                .map(SimpleNode::new)
+                .collect(toUnmodifiableMap(SimpleNode::getId, identity()));
+
+        final var strategy = new BreadthFirstSearchAlgorithm<StationID>(nodes);
+
+        return strategy.findRoute(source, target);
     }
 
     @Override
     public LinkedList<MetroNode> fastestRoute(final StationID source, final StationID target) {
         return findRoute(source, target, this::getNeighbors);
-    }
-
-    public Map<StationID, Integer> getNeighborsTimeless(final MetroStation station) {
-        final var neighbors = new HashMap<StationID, Integer>();
-        station.getTransfer().forEach(id -> neighbors.put(id, 1));
-        station.getNext().forEach(id -> neighbors.put(id, 1000));
-        station.getPrev().forEach(id -> neighbors.put(id, 1000));
-        return neighbors;
     }
 
     private LinkedList<MetroNode> findRoute(
@@ -110,4 +113,24 @@ public class MetroServiceImpl implements MetroService {
         return neighbors;
     }
 
+    class SimpleNode extends Node<StationID> {
+
+        protected SimpleNode(final StationID stationID) {
+            super(stationID);
+        }
+
+        @Override
+        protected Set<StationID> getNeighbors() {
+            final var neighbors = new HashSet<StationID>();
+            final var station = metroMap.getStation(getId()).orElseThrow();
+            neighbors.addAll(station.getNext());
+            neighbors.addAll(station.getPrev());
+            station.getTransfer().forEach(stationID -> {
+                final var transfer = metroMap.getStation(stationID).orElseThrow();
+                neighbors.addAll(transfer.getNext());
+                neighbors.addAll(transfer.getPrev());
+            });
+            return neighbors;
+        }
+    }
 }
