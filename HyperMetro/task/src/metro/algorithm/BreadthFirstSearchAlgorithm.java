@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static java.util.function.Predicate.not;
 
 public class BreadthFirstSearchAlgorithm<T> {
     private final Map<T, Node<T>> nodes;
@@ -29,7 +30,7 @@ public class BreadthFirstSearchAlgorithm<T> {
             }
             visited.add(step.getId());
             step.getNeighbors().stream()
-                    .filter(Predicate.not(visited::contains))
+                    .filter(not(visited::contains))
                     .map(nodes::get)
                     .map(step::setNextStep)
                     .forEach(queue::add);

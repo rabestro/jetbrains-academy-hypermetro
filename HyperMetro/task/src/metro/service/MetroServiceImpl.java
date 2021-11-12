@@ -60,7 +60,7 @@ public class MetroServiceImpl implements MetroService {
                 .map(SimpleNode::new)
                 .collect(toUnmodifiableMap(SimpleNode::getId, identity()));
 
-        final var strategy = new BreadthFirstSearchAlgorithm<StationID>(nodes);
+        final var strategy = new BreadthFirstSearchAlgorithm<>(nodes);
 
         return strategy.findRoute(source, target);
     }
