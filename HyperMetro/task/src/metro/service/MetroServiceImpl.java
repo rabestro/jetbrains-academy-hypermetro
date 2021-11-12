@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static java.lang.System.Logger.Level.DEBUG;
+import static java.lang.System.Logger.Level.INFO;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
@@ -114,13 +116,13 @@ public class MetroServiceImpl implements MetroService {
     }
 
     class SimpleNode extends Node<StationID> {
-
         protected SimpleNode(final StationID stationID) {
             super(stationID);
         }
 
         @Override
         protected Set<StationID> getNeighbors() {
+            LOGGER.log(INFO, getId());
             final var neighbors = new HashSet<StationID>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             neighbors.addAll(station.getNext());
@@ -130,6 +132,7 @@ public class MetroServiceImpl implements MetroService {
                 neighbors.addAll(transfer.getNext());
                 neighbors.addAll(transfer.getPrev());
             });
+            LOGGER.log(DEBUG, neighbors);
             return neighbors;
         }
     }
