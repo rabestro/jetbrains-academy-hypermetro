@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import static java.util.function.Predicate.not;
 
-public class BreadthFirstSearchAlgorithm<T> {
+public class BreadthFirstSearchAlgorithm<T> implements SearchAlgorithm<T> {
     private final Map<T, Node<T>> nodes;
 
     public BreadthFirstSearchAlgorithm(final Map<T, Node<T>> nodes) {
