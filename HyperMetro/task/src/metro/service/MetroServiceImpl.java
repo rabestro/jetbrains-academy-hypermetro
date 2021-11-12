@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import metro.model.*;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -51,45 +51,26 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public LinkedList<MetroNode> route(final StationID source, final StationID target) {
-        final var nodes = metroMap.getNodes();
-        final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
-        final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
-        final var queue = new LinkedList<MetroNode>();
-        queue.add(sourceNode);
-
-        while (!queue.isEmpty()) {
-            final var step = queue.pollFirst();
-            if (step.equals(targetNode)) {
-                return buildRoute(step);
-            }
-            step.visit();
-            getNeighborsTimeless(step.getStation())
-                    .keySet()
-                    .stream()
-                    .map(nodes::get)
-                    .filter(not(MetroNode::isVisited))
-                    .forEach(metroNode -> {
-                        metroNode.setPrevious(step);
-                        if (metroNode.getDistance() == 0) {
-                            queue.addFirst(metroNode);
-                        } else {
-                            queue.add(metroNode);
-                        }
-                    });
-        }
-        return new LinkedList<>();
-    }
-
-    public Map<StationID, Integer> getNeighborsTimeless(final MetroStation station) {
-        final var neighbors = new HashMap<StationID, Integer>();
-        station.getTransfer().forEach(id -> neighbors.put(id, 0));
-        station.getNext().forEach(id -> neighbors.put(id, 1));
-        station.getPrev().forEach(id -> neighbors.put(id, 1));
-        return neighbors;
+        return findRoute(source, target, this::getNeighborsTimeless);
     }
 
     @Override
     public LinkedList<MetroNode> fastestRoute(final StationID source, final StationID target) {
+        return findRoute(source, target, this::getNeighbors);
+    }
+
+    public Map<StationID, Integer> getNeighborsTimeless(final MetroStation station) {
+        final var neighbors = new HashMap<StationID, Integer>();
+        station.getTransfer().forEach(id -> neighbors.put(id, 1));
+        station.getNext().forEach(id -> neighbors.put(id, 1000));
+        station.getPrev().forEach(id -> neighbors.put(id, 1000));
+        return neighbors;
+    }
+
+    private LinkedList<MetroNode> findRoute(
+            final StationID source,
+            final StationID target,
+            final Function<MetroStation, Map<StationID, Integer>> strategy) {
         final var nodes = metroMap.getNodes();
         final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
         final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
@@ -99,7 +80,7 @@ public class MetroServiceImpl implements MetroService {
 
         while (!queue.isEmpty()) {
             final var node = queue.pollFirst();
-            final var neighbors = getNeighbors(node.getStation());
+            final var neighbors = strategy.apply(node.getStation());
             neighbors.forEach((id, time) -> {
                 final var distance = node.getDistance() + time;
                 final var neighbor = nodes.get(id);

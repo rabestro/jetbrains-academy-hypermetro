@@ -1,0 +1,6 @@
+/route "Victoria line" "Green Park" "Northern line" "Oval"
+/route "Victoria line" "Green Park" "Jubilee line" "Green Park"
+/route "Victoria line" "Green Park" "Jubilee line" "Westminster"
+/route "Victoria line" "Green Park" "Jubilee line" Waterloo
+/route "Victoria line" "Green Park" "Northern line" Waterloo
+/route "Victoria line" "Green Park" "Northern line" Kennington

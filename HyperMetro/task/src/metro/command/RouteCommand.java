@@ -10,6 +10,7 @@ import java.util.StringJoiner;
 import java.util.function.BiFunction;
 
 abstract class RouteCommand extends HyperMetroCommand {
+    private static final System.Logger LOGGER = System.getLogger("RouteCommand");
 
     RouteCommand(final MetroService metroService) {
         super(metroService);
@@ -34,6 +35,7 @@ abstract class RouteCommand extends HyperMetroCommand {
                 line = node.getLine();
                 stringJoiner.add("Transition to line " + line);
             }
+            LOGGER.log(System.Logger.Level.INFO, String.format("[%3d] %s", node.getDistance(), node.getName()));
             stringJoiner.add(node.getName());
         }
         return stringJoiner.toString();
