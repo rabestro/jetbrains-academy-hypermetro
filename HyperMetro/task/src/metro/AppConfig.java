@@ -35,11 +35,6 @@ public class AppConfig {
         return Set.of("/exit", "exit", "quit", "/quit")::contains;
     }
 
-    @Bean(name = "invalid")
-    public Runnable invalidCommand() {
-        return () -> ui().printLine("Invalid command.");
-    }
-
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
         return Map.of(
@@ -60,7 +55,7 @@ public class AppConfig {
 
     @Bean(name = "requestParser")
     public RequestParser getRequestParser() {
-        return new RequestParser(ui(), new ParameterParser(), getCommands(), invalidCommand());
+        return new RequestParser(ui(), new ParameterParser(), getCommands());
     }
 
     @Bean(name = "application")

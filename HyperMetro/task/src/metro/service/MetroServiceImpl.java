@@ -7,13 +7,12 @@ import metro.model.*;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.System.Logger.Level.DEBUG;
 import static java.lang.System.Logger.Level.INFO;
 import static java.util.Objects.requireNonNull;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -57,10 +56,8 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public LinkedList<StationID> route(final StationID source, final StationID target) {
-        final Map<StationID, Node<StationID>> nodes = metroMap.getAllStations().stream()
-                .map(MetroStation::getStationID)
-                .map(SimpleNode::new)
-                .collect(toUnmodifiableMap(SimpleNode::getId, identity()));
+        final Set<Node<StationID>> nodes = metroMap.stream().map(SimpleNode::new)
+                .collect(Collectors.toUnmodifiableSet());
 
         final var strategy = new BreadthFirstSearchAlgorithm<>(nodes);
 
@@ -79,6 +76,7 @@ public class MetroServiceImpl implements MetroService {
         final var nodes = metroMap.getNodes();
         final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
         final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
+
         sourceNode.setDistance(0);
         final var queue = new LinkedList<MetroNode>();
         queue.add(sourceNode);
@@ -121,17 +119,13 @@ public class MetroServiceImpl implements MetroService {
         }
 
         @Override
-        protected Set<StationID> getNeighbors() {
+        protected Map<StationID, Integer> getNeighbors() {
             LOGGER.log(INFO, getId());
-            final var neighbors = new HashSet<StationID>();
+            final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
-            neighbors.addAll(station.getNext());
-            neighbors.addAll(station.getPrev());
-            station.getTransfer().forEach(stationID -> {
-                final var transfer = metroMap.getStation(stationID).orElseThrow();
-                neighbors.addAll(transfer.getNext());
-                neighbors.addAll(transfer.getPrev());
-            });
+            station.getNext().forEach(id -> neighbors.put(id, 1));
+            station.getPrev().forEach(id -> neighbors.put(id, 1));
+            station.getTransfer().forEach(id -> neighbors.put(id, 1));
             LOGGER.log(DEBUG, neighbors);
             return neighbors;
         }

@@ -3,16 +3,17 @@ package metro.algorithm;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
+import java.util.Set;
 
+import static java.util.function.Function.identity;
 import static java.util.function.Predicate.not;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 
 public class BreadthFirstSearchAlgorithm<T> implements SearchAlgorithm<T> {
     private final Map<T, Node<T>> nodes;
 
-    public BreadthFirstSearchAlgorithm(final Map<T, Node<T>> nodes) {
-        this.nodes = nodes;
+    public BreadthFirstSearchAlgorithm(final Set<Node<T>> nodes) {
+        this.nodes = nodes.stream().collect(toUnmodifiableMap(Node::getId, identity()));
     }
 
     public LinkedList<T> findRoute(T source, T target) {
@@ -24,24 +25,18 @@ public class BreadthFirstSearchAlgorithm<T> implements SearchAlgorithm<T> {
         queue.add(sourceNode);
 
         while (!queue.isEmpty()) {
-            final var step = queue.pollFirst();
-            if (step.getId().equals(target)) {
-                return buildPath(step);
+            final var node = queue.pollFirst();
+            if (node.getId().equals(target)) {
+                return buildPath(node);
             }
-            visited.add(step.getId());
-            step.getNeighbors().stream()
+            visited.add(node.getId());
+            node.getNeighbors().keySet().stream()
                     .filter(not(visited::contains))
                     .map(nodes::get)
-                    .map(step::setNextStep)
+                    .map(node::setNextNode)
                     .forEach(queue::add);
         }
         return new LinkedList<>();
     }
 
-    private LinkedList<T> buildPath(Node<T> step) {
-        final var path = new LinkedList<T>();
-        Stream.iterate(step, Objects::nonNull, Node::getPrevious)
-                .map(Node::getId).forEach(path::addFirst);
-        return path;
-    }
 }
