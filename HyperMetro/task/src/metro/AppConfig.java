@@ -39,6 +39,7 @@ public class AppConfig {
     public Map<String, Command> getCommands() {
         return Map.of(
                 "output", new Output(getMetroService()),
+                "print", new Print(getMetroService()),
                 "append", new Append(getMetroService()),
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),

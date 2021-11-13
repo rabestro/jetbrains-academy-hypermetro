@@ -15,6 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.System.Logger.Level.DEBUG;
+import static java.lang.System.Logger.Level.TRACE;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -32,7 +33,9 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public MetroStation getMetroStation(final StationID station) {
-        return metroMap.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        final var metroStation = metroMap.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        LOGGER.log(TRACE, "ID={0}, find station: {1}", station, metroStation);
+        return metroStation;
     }
 
     @Override

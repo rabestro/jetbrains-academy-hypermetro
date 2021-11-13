@@ -31,20 +31,6 @@ public class MapLoaderImpl implements MapLoader {
         return hasTime ? jsonStation.get("time").getAsInt() : 1;
     }
 
-    private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
-        LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
-        final var stations = new HashSet<StationID>();
-        if (!jsonElement.isJsonNull()) {
-            jsonElement.getAsJsonArray().forEach(element -> {
-                final var name = element.getAsString();
-                final var stationId = new StationID(line, name);
-                stations.add(stationId);
-                LOGGER.log(TRACE, "Add {0}", stationId);
-            });
-        }
-        return stations;
-    }
-
     @Override
     public void load(final String fileName) throws IOException {
         LOGGER.log(INFO, "Loading Metro from file: " + fileName);
@@ -67,8 +53,10 @@ public class MapLoaderImpl implements MapLoader {
         jsonStations.forEach(station -> {
             final var jsonStation = station.getAsJsonObject();
             final var metroStation = parseMetroStation(lineName, jsonStation);
+            LOGGER.log(TRACE, station);
             metroLine.append(metroStation);
         });
+        LOGGER.log(TRACE, metroLine);
         return metroLine;
     }
 
@@ -82,6 +70,21 @@ public class MapLoaderImpl implements MapLoader {
         station.setTransfer(parseTransfer(jsonStation.get("transfer")));
         LOGGER.log(TRACE, station);
         return station;
+    }
+
+    private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
+        LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
+        final var stations = new HashSet<StationID>();
+        if (!jsonElement.isJsonNull()) {
+            jsonElement.getAsJsonArray().forEach(element -> {
+                final var name = element.getAsString();
+                final var stationId = new StationID(line, name);
+                stations.add(stationId);
+                LOGGER.log(TRACE, "Add {0}", stationId);
+            });
+        }
+        LOGGER.log(TRACE, "Stations: {0}", stations);
+        return stations;
     }
 
     private Set<StationID> parseTransfer(final JsonElement jsonElement) {
