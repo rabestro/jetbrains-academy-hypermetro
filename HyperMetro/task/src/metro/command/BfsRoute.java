@@ -5,8 +5,8 @@ import metro.service.MetroService;
 
 import java.util.List;
 
-public class Route extends RouteCommand {
-    public Route(final MetroService metroService) {
+public class BfsRoute extends RouteCommand {
+    public BfsRoute(final MetroService metroService) {
         super(metroService);
     }
 
@@ -15,8 +15,7 @@ public class Route extends RouteCommand {
         validateParametersNumber(parameters, 4);
         final var source = new StationID(parameters.get(0), parameters.get(1));
         final var target = new StationID(parameters.get(2), parameters.get(3));
-        final var route = metroService.route(source, target);
+        final var route = metroService.bfsRoute(source, target);
         return printRoute(route);
     }
-
 }

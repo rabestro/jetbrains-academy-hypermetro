@@ -1,5 +1,6 @@
 package metro.command;
 
+import metro.algorithm.Node;
 import metro.model.MetroNode;
 import metro.model.StationID;
 import metro.service.MetroService;
@@ -26,18 +27,18 @@ abstract class RouteCommand extends HyperMetroCommand {
         return strategy.apply(source, target);
     }
 
-    String printRoute(final LinkedList<MetroNode> route) {
+    String printRoute(final LinkedList<Node<StationID>> route) {
         final var stringJoiner = new StringJoiner("\n");
-        var line = route.getFirst().getLine();
+        var line = route.getFirst().getId().getLine();
 
         for (final var node : route) {
-            if (!node.getLine().equals(line)) {
-                line = node.getLine();
+            if (!node.getId().getLine().equals(line)) {
+                line = node.getId().getLine();
                 stringJoiner.add("Transition to line " + line);
             }
-            LOGGER.log(System.Logger.Level.INFO, String.format("[%3d] %s", node.getDistance(), node.getName()));
-            stringJoiner.add(node.getName());
+            stringJoiner.add(node.getId().getName());
         }
         return stringJoiner.toString();
     }
+
 }

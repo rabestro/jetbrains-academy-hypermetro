@@ -1,12 +1,9 @@
 package metro.command;
 
-import metro.algorithm.Node;
 import metro.model.StationID;
 import metro.service.MetroService;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class FastestRoute extends RouteCommand {
     public FastestRoute(final MetroService metroService) {
@@ -20,20 +17,7 @@ public class FastestRoute extends RouteCommand {
         final var target = new StationID(parameters.get(2), parameters.get(3));
         final var route = metroService.fastestRoute(source, target);
         final var totalTime = route.getLast().getDistance();
-        return print(route) + "\nTotal: " + totalTime + " minutes in the way";
+        return printRoute(route) + "\nTotal: " + totalTime + " minutes in the way";
     }
 
-    String print(final LinkedList<Node<StationID>> route) {
-        final var stringJoiner = new StringJoiner("\n");
-        var line = route.getFirst().getId().getLine();
-
-        for (final var node : route) {
-            if (!node.getId().getLine().equals(line)) {
-                line = node.getId().getLine();
-                stringJoiner.add("Transition to line " + line);
-            }
-            stringJoiner.add(node.getId().getName());
-        }
-        return stringJoiner.toString();
-    }
 }

@@ -16,8 +16,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static java.lang.System.Logger.Level.DEBUG;
-import static java.lang.System.Logger.Level.INFO;
+import static java.lang.System.Logger.Level.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
@@ -71,12 +70,12 @@ public class MapLoaderImpl implements MapLoader {
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
         final var station = new MetroStation(new StationID(line, name));
-        LOGGER.log(DEBUG, "Import station '" + name + "' (" + line + ")");
-
+        LOGGER.log(TRACE, "Import station '" + name + "' (" + line + ")");
         station.setTime(getTime(jsonStation));
         station.setPrev(parseStations(line, jsonStation.get("prev")));
         station.setNext(parseStations(line, jsonStation.get("next")));
         station.setTransfer(parseTransfer(jsonStation.get("transfer")));
+        LOGGER.log(TRACE, station);
         return station;
     }
 

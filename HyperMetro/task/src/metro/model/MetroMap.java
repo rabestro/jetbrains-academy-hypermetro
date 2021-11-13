@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toUnmodifiableMap;
-
 @Setter
 public class MetroMap {
     private Map<String, MetroLine> lines = Map.of();
@@ -21,11 +19,6 @@ public class MetroMap {
     public Optional<MetroStation> getStation(final StationID stationID) {
         return getLine(stationID.getLine())
                 .flatMap(metroLine -> metroLine.getStation(stationID.getName()));
-    }
-
-    public Map<StationID, MetroNode> getNodes() {
-        return lines.values().stream().flatMap(MetroLine::stream)
-                .collect(toUnmodifiableMap(MetroStation::getStationID, MetroNode::new));
     }
 
     public Stream<StationID> stream() {

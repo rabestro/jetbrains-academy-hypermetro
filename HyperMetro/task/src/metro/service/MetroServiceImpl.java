@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import metro.algorithm.BreadthFirstSearchAlgorithm;
 import metro.algorithm.DijkstrasAlgorithm;
 import metro.algorithm.Node;
-import metro.model.*;
+import metro.algorithm.SearchAlgorithm;
+import metro.model.MetroLine;
+import metro.model.MetroMap;
+import metro.model.MetroStation;
+import metro.model.StationID;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.lang.System.Logger.Level.DEBUG;
-import static java.lang.System.Logger.Level.INFO;
-import static java.util.Objects.requireNonNull;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -56,11 +57,21 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public LinkedList<Node<StationID>> route(final StationID source, final StationID target) {
+    public LinkedList<Node<StationID>> bfsRoute(final StationID source, final StationID target) {
         final Set<Node<StationID>> nodes = metroMap.stream().map(SimpleNode::new)
                 .collect(Collectors.toUnmodifiableSet());
 
         final var strategy = new BreadthFirstSearchAlgorithm<>(nodes);
+
+        return strategy.findRoute(source, target);
+    }
+
+    @Override
+    public LinkedList<Node<StationID>> route(final StationID source, final StationID target) {
+        final Set<Node<StationID>> nodes = metroMap.stream().map(MetroNode::new)
+                .collect(Collectors.toUnmodifiableSet());
+
+        final var strategy = new DijkstrasAlgorithm<>(nodes);
 
         return strategy.findRoute(source, target);
     }
@@ -75,48 +86,32 @@ public class MetroServiceImpl implements MetroService {
         return strategy.findRoute(source, target);
     }
 
-    private LinkedList<MetroNode> findRoute(
-            final StationID source,
-            final StationID target,
-            final Function<MetroStation, Map<StationID, Integer>> strategy) {
-        final var nodes = metroMap.getNodes();
-        final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
-        final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
+    private LinkedList<Node<StationID>> findRoute(
+            final StationID source, final StationID target,
+            Function<StationID, Node<StationID>> nodeFunction,
+            Function<Set<Node<StationID>>, SearchAlgorithm<StationID>> searchAlgorithmFunction
+    ) {
+        final Set<Node<StationID>> nodes = metroMap.stream().map(nodeFunction)
+                .collect(Collectors.toUnmodifiableSet());
+        return searchAlgorithmFunction.apply(nodes).findRoute(source, target);
+    }
 
-        sourceNode.setDistance(0);
-        final var queue = new LinkedList<MetroNode>();
-        queue.add(sourceNode);
-
-        while (!queue.isEmpty()) {
-            final var node = queue.pollFirst();
-            final var neighbors = strategy.apply(node.getStation());
-            neighbors.forEach((id, time) -> {
-                final var distance = node.getDistance() + time;
-                final var neighbor = nodes.get(id);
-                if (neighbor.notVisited()) {
-                    queue.add(neighbor);
-                }
-                if (distance < neighbor.getDistance()) {
-                    neighbor.setPrevious(node);
-                    neighbor.setDistance(distance);
-                }
-            });
+    private class MetroNode extends Node<StationID> {
+        private MetroNode(final StationID stationID) {
+            super(stationID);
         }
-        return buildRoute(targetNode);
-    }
 
-    private LinkedList<MetroNode> buildRoute(final MetroNode target) {
-        final var route = new LinkedList<MetroNode>();
-        Stream.iterate(target, Objects::nonNull, MetroNode::getPrevious).forEach(route::addFirst);
-        return route;
-    }
-
-    public Map<StationID, Integer> getNeighbors(final MetroStation station) {
-        final var neighbors = new HashMap<StationID, Integer>();
-        station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
-        station.getTransfer().forEach(id -> neighbors.put(id, TRANSFER_TIME));
-        station.getPrev().forEach(id -> neighbors.put(id, getMetroStation(id).getTime()));
-        return neighbors;
+        @Override
+        protected Map<StationID, Integer> getNeighbors() {
+            LOGGER.log(DEBUG, getId());
+            final var neighbors = new HashMap<StationID, Integer>();
+            final var station = metroMap.getStation(getId()).orElseThrow();
+            station.getNext().forEach(id -> neighbors.put(id, 1));
+            station.getPrev().forEach(id -> neighbors.put(id, 1));
+            station.getTransfer().forEach(id -> neighbors.put(id, 0));
+            LOGGER.log(DEBUG, neighbors);
+            return neighbors;
+        }
     }
 
     private class SimpleNode extends Node<StationID> {
@@ -126,7 +121,7 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(INFO, getId());
+            LOGGER.log(DEBUG, getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, 1));
@@ -144,7 +139,7 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(INFO, getId());
+            LOGGER.log(DEBUG, getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
