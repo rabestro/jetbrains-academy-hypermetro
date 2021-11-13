@@ -32,10 +32,15 @@ public class MapLoaderImpl implements MapLoader {
     }
 
     private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
+        LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
         final var stations = new HashSet<StationID>();
         if (!jsonElement.isJsonNull()) {
-            jsonElement.getAsJsonArray()
-                    .forEach(element -> stations.add(new StationID(line, element.getAsString())));
+            jsonElement.getAsJsonArray().forEach(element -> {
+                final var name = element.getAsString();
+                final var stationId = new StationID(line, name);
+                stations.add(stationId);
+                LOGGER.log(TRACE, "Add {0}", stationId);
+            });
         }
         return stations;
     }

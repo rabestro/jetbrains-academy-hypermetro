@@ -28,3 +28,9 @@ Oval
 "Northern line", "Waterloo", "Kennington", "Oval"};
 
 /route "Victoria line" "Green Park" "Northern line" "Waterloo"
+
+TEST 4
+/route "Piccadilly line" "Heathrow Terminal 5" "Piccadilly line" "Hounslow West"
+TEST 5
+/route "Piccadilly line" "Hatton Cross" "Piccadilly line" "Heathrow Terminal 4"
+output "Piccadilly line"
