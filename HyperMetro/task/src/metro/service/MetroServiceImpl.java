@@ -10,10 +10,7 @@ import metro.model.MetroStation;
 import metro.model.StationID;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.lang.System.Logger.Level.DEBUG;
-import static java.lang.System.Logger.Level.TRACE;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -31,9 +28,7 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public MetroStation getMetroStation(final StationID station) {
-        final var metroStation = metroMap.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
-        LOGGER.log(TRACE, "ID={0}, find station: {1}", station, metroStation);
-        return metroStation;
+        return metroMap.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
     }
 
     @Override
@@ -59,31 +54,22 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public LinkedList<Node<StationID>> bfsRoute(final StationID source, final StationID target) {
-        final Set<Node<StationID>> nodes = metroMap.stream().map(SimpleNode::new)
-                .collect(Collectors.toUnmodifiableSet());
-
+        final Stream<Node<StationID>> nodes = metroMap.stream().map(SimpleNode::new);
         final var strategy = new BreadthFirstSearchAlgorithm<>(nodes);
-
         return strategy.findRoute(source, target);
     }
 
     @Override
     public LinkedList<Node<StationID>> route(final StationID source, final StationID target) {
-        final Set<Node<StationID>> nodes = metroMap.stream().map(MetroNode::new)
-                .collect(Collectors.toUnmodifiableSet());
-        LOGGER.log(DEBUG, "DijkstrasAlgorithm + MetroNode. Nodes: {0}", nodes.size());
+        final Stream<Node<StationID>> nodes = metroMap.stream().map(MetroNode::new);
         final var strategy = new DijkstrasAlgorithm<>(nodes);
-
         return strategy.findRoute(source, target);
     }
 
     @Override
     public LinkedList<Node<StationID>> fastestRoute(final StationID source, final StationID target) {
-        final Set<Node<StationID>> nodes = metroMap.stream().map(TimeNode::new)
-                .collect(Collectors.toUnmodifiableSet());
-
+        final Stream<Node<StationID>> nodes = metroMap.stream().map(TimeNode::new);
         final var strategy = new DijkstrasAlgorithm<>(nodes);
-
         return strategy.findRoute(source, target);
     }
 

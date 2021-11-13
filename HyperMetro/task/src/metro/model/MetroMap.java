@@ -4,8 +4,6 @@ import lombok.Setter;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Setter
@@ -23,12 +21,6 @@ public class MetroMap {
 
     public Stream<StationID> stream() {
         return lines.values().stream().flatMap(MetroLine::stream).map(MetroStation::getStationID);
-    }
-
-    public Set<MetroStation> getAllStations() {
-        return lines.values().stream()
-                .flatMap(MetroLine::stream)
-                .collect(Collectors.toUnmodifiableSet());
     }
 
 }

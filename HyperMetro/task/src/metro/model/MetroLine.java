@@ -38,13 +38,13 @@ public class MetroLine implements Iterable<MetroStation> {
         stations.addFirst(station);
     }
 
+    public void add(final MetroStation metroStation) {
+        stations.add(metroStation);
+    }
+
     public void append(final String name) {
         final var sid = new StationID(lineName, name);
         append(new MetroStation(sid));
-    }
-
-    public void add(final MetroStation metroStation) {
-        stations.add(metroStation);
     }
 
     public void append(final MetroStation metroStation) {

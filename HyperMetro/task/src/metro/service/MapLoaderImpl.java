@@ -39,7 +39,6 @@ public class MapLoaderImpl implements MapLoader {
                 final var name = element.getAsString();
                 final var stationId = new StationID(line, name);
                 stations.add(stationId);
-                LOGGER.log(TRACE, "Add {0}", stationId);
             });
         }
         LOGGER.log(TRACE, "Stations: {0}", stations);
