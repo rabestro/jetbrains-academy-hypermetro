@@ -53,10 +53,8 @@ public class MapLoaderImpl implements MapLoader {
         jsonStations.forEach(station -> {
             final var jsonStation = station.getAsJsonObject();
             final var metroStation = parseMetroStation(lineName, jsonStation);
-            LOGGER.log(TRACE, station);
-            metroLine.append(metroStation);
+            metroLine.add(metroStation);
         });
-        LOGGER.log(TRACE, metroLine);
         return metroLine;
     }
 
