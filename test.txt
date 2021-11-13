@@ -1,8 +1,30 @@
 /route "Victoria line" "Green Park" "Northern line" "Oval"
 /bfs-route "Victoria line" "Green Park" "Northern line" "Oval"
+/fastest-route "Victoria line" "Green Park" "Northern line" "Oval"
 
 /route "Victoria line" "Green Park" "Jubilee line" "Green Park"
 /route "Victoria line" "Green Park" "Jubilee line" "Westminster"
 /route "Victoria line" "Green Park" "Jubilee line" Waterloo
 /route "Victoria line" "Green Park" "Northern line" Waterloo
 /route "Victoria line" "Green Park" "Northern line" Kennington
+
+/output "Northern line"
+
+/route "Victoria line" "Green Park" "Northern line" "Oval"
+Green Park
+Victoria
+Pimlico
+Vauxhall
+Stockwell
+Transition to line Northern line
+Stockwell
+Oval
+
+{"Green Park",
+"Jubilee line",
+"Green Park",
+"Westminster",
+"Waterloo",
+"Northern line", "Waterloo", "Kennington", "Oval"};
+
+/route "Victoria line" "Green Park" "Northern line" "Waterloo"

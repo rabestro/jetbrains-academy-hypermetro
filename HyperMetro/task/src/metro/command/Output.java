@@ -6,11 +6,14 @@ import metro.service.MetroService;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 
 public class Output extends HyperMetroCommand {
-    private static final String DEPOT = "depot";
+    private static final String PREFIX_PREV = "<---| ";
+    private static final String PREFIX_NEXT = "--->| ";
+    private static final String PREFIX_TRAN = "<---> ";
 
     public Output(final MetroService metroService) {
         super(metroService);
@@ -22,19 +25,22 @@ public class Output extends HyperMetroCommand {
         return metroService.getMetroLine(parameters.get(0))
                 .getStations().stream()
                 .map(this::printStation)
-                .collect(joining("\n", DEPOT + '\n', '\n' + DEPOT));
+                .collect(joining(System.lineSeparator()));
     }
 
     private String printStation(final MetroStation metroStation) {
         final var name = metroStation.getStationID().getName();
-        final var transfer = printTransfer(metroStation.getTransfer());
-        return name + transfer;
+        return name + System.lineSeparator()
+                + printNeighbors(PREFIX_PREV, metroStation.getPrev())
+                + printNeighbors(PREFIX_NEXT, metroStation.getNext())
+                + printNeighbors(PREFIX_TRAN, metroStation.getTransfer());
     }
 
-    private String printTransfer(final Set<StationID> transferStations) {
-        return transferStations.stream()
-                .map(station -> " - " + station.getName() + " (" + station.getLine() + " line)")
-                .collect(joining());
+    private String printNeighbors(final String prefix, final Set<StationID> stations) {
+        final Function<StationID, String> name = prefix.equals(PREFIX_TRAN) ? StationID::getLine : StationID::getName;
+        return stations.isEmpty() ? "" : stations.stream()
+                .map(name.andThen(prefix::concat))
+                .collect(joining(System.lineSeparator())) + System.lineSeparator();
     }
 
 }

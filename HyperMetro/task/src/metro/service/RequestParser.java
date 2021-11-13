@@ -30,7 +30,7 @@ public class RequestParser {
 
         return () -> {
             try {
-                LOGGER.log(DEBUG, "Execute '{0}'", userInput);
+                LOGGER.log(DEBUG, "Execute: {0}", userInput);
                 ui.printLine(command.apply(parameters));
             } catch (NullPointerException | NoSuchElementException | IllegalArgumentException exception) {
                 LOGGER.log(WARNING, exception::getMessage);

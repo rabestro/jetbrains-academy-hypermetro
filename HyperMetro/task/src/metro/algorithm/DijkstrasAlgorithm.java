@@ -30,14 +30,14 @@ public class DijkstrasAlgorithm<T> implements SearchAlgorithm<T> {
             final var neighbors = node.getNeighbors();
             neighbors.forEach((id, time) -> {
                 final var distance = node.getDistance() + time;
-                final var neighbor = nodes.get(id);
-                if (visited.contains(id)) {
-                    queue.add(neighbor);
+                final var nextNode = nodes.get(id);
+                if (!visited.contains(id)) {
+                    queue.add(nextNode);
                     visited.add(id);
                 }
-                if (distance < neighbor.getDistance()) {
-                    neighbor.setPrevious(node);
-                    neighbor.setDistance(distance);
+                if (distance < nextNode.getDistance()) {
+                    nextNode.setPrevious(node);
+                    nextNode.setDistance(distance);
                 }
             });
         }

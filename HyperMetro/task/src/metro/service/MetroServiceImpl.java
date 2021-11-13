@@ -70,7 +70,7 @@ public class MetroServiceImpl implements MetroService {
     public LinkedList<Node<StationID>> route(final StationID source, final StationID target) {
         final Set<Node<StationID>> nodes = metroMap.stream().map(MetroNode::new)
                 .collect(Collectors.toUnmodifiableSet());
-
+        LOGGER.log(DEBUG, "DijkstrasAlgorithm + MetroNode. Nodes: {0}", nodes.size());
         final var strategy = new DijkstrasAlgorithm<>(nodes);
 
         return strategy.findRoute(source, target);
@@ -103,7 +103,7 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, getId());
+            LOGGER.log(DEBUG, "MetroNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, 1));
@@ -121,7 +121,7 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, getId());
+            LOGGER.log(DEBUG, "SimpleNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, 1));
@@ -139,7 +139,7 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, getId());
+            LOGGER.log(DEBUG, "TimeNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
