@@ -34,3 +34,7 @@ TEST 4
 TEST 5
 /route "Piccadilly line" "Hatton Cross" "Piccadilly line" "Heathrow Terminal 4"
 output "Piccadilly line"
+print "Piccadilly line" "Hatton Cross" 
+
+print "Central line" "North Acton" 
+print "DLR 1" Westferry

@@ -24,6 +24,7 @@ public class Application {
     public void run(final String fileName) {
         try {
             mapLoader.load(fileName);
+
             LOGGER.log(INFO, "HyperMetro started");
 
             Stream.generate(ui::readLine)
