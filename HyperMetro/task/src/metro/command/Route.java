@@ -1,5 +1,6 @@
 package metro.command;
 
+import metro.algorithm.Node;
 import metro.model.StationID;
 import metro.service.MetroService;
 
@@ -21,16 +22,16 @@ public class Route extends RouteCommand {
         return print(route);
     }
 
-    String print(final LinkedList<StationID> route) {
+    String print(final LinkedList<Node<StationID>> route) {
         final var stringJoiner = new StringJoiner("\n");
-        var line = route.getFirst().getLine();
+        var line = route.getFirst().getId().getLine();
 
         for (final var node : route) {
-            if (!node.getLine().equals(line)) {
-                line = node.getLine();
+            if (!node.getId().getLine().equals(line)) {
+                line = node.getId().getLine();
                 stringJoiner.add("Transition to line " + line);
             }
-            stringJoiner.add(node.getName());
+            stringJoiner.add(node.getId().getName());
         }
         return stringJoiner.toString();
     }

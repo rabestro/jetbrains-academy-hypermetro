@@ -1,7 +1,7 @@
 package metro.service;
 
+import metro.algorithm.Node;
 import metro.model.MetroLine;
-import metro.model.MetroNode;
 import metro.model.MetroStation;
 import metro.model.StationID;
 
@@ -20,7 +20,7 @@ public interface MetroService {
 
     void remove(StationID target);
 
-    LinkedList<StationID> route(StationID source, StationID target);
+    LinkedList<Node<StationID>> route(StationID source, StationID target);
 
-    LinkedList<MetroNode> fastestRoute(StationID source, StationID target);
+    LinkedList<Node<StationID>> fastestRoute(StationID source, StationID target);
 }

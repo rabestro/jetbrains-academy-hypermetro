@@ -7,18 +7,18 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 public class DijkstrasAlgorithm<T> implements SearchAlgorithm<T> {
-    private final Map<T, Vertex<T>> nodes;
+    private final Map<T, Node<T>> nodes;
 
-    public DijkstrasAlgorithm(final Set<Vertex<T>> nodes) {
-        this.nodes = nodes.stream().collect(toUnmodifiableMap(Vertex::getId, identity()));
+    public DijkstrasAlgorithm(final Set<Node<T>> nodes) {
+        this.nodes = nodes.stream().collect(toUnmodifiableMap(Node::getId, identity()));
     }
 
     @Override
-    public List<T> findRoute(final T source, final T target) {
+    public LinkedList<Node<T>> findRoute(final T source, final T target) {
         final var sourceNode = requireNonNull(nodes.get(source));
         final var targetNode = requireNonNull(nodes.get(target));
         final var visited = new HashSet<T>();
-        final var queue = new LinkedList<Vertex<T>>();
+        final var queue = new LinkedList<Node<T>>();
         sourceNode.setDistance(0);
         queue.add(sourceNode);
 

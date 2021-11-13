@@ -6,6 +6,7 @@ import java.util.Objects;
 public abstract class Node<T> {
     private final T id;
     private Node<T> previous;
+    private int distance = Integer.MAX_VALUE;
 
     protected Node(final T id) {
         this.id = id;
@@ -26,6 +27,14 @@ public abstract class Node<T> {
 
     void setPrevious(Node<T> node) {
         previous = node;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(final int distance) {
+        this.distance = distance;
     }
 
     protected abstract Map<T, Integer> getNeighbors();

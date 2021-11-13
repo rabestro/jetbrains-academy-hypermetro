@@ -16,7 +16,7 @@ public class BreadthFirstSearchAlgorithm<T> implements SearchAlgorithm<T> {
         this.nodes = nodes.stream().collect(toUnmodifiableMap(Node::getId, identity()));
     }
 
-    public LinkedList<T> findRoute(T source, T target) {
+    public LinkedList<Node<T>> findRoute(T source, T target) {
         final var queue = new LinkedList<Node<T>>();
         final var visited = new HashSet<T>();
 

@@ -6,12 +6,11 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public interface SearchAlgorithm<T> {
-    List<T> findRoute(T source, T target);
+    List<Node<T>> findRoute(T source, T target);
 
-    default LinkedList<T> buildPath(Node<T> target) {
-        final var path = new LinkedList<T>();
-        Stream.iterate(target, Objects::nonNull, Node::getPrevious)
-                .map(Node::getId).forEach(path::addFirst);
+    default LinkedList<Node<T>> buildPath(Node<T> target) {
+        final var path = new LinkedList<Node<T>>();
+        Stream.iterate(target, Objects::nonNull, Node::getPrevious).forEach(path::addFirst);
         return path;
     }
 }
