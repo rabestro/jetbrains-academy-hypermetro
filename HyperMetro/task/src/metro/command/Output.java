@@ -21,8 +21,8 @@ public class Output extends HyperMetroCommand {
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, 1);
-        return metroService.getMetroLine(parameters.get(0))
+        validateParametersNumber(parameters, REQUIRED_ONE);
+        return metroService.getMetroLine(parameters.get(SOURCE_LINE))
                 .getStations().stream()
                 .map(this::printStation)
                 .collect(joining(System.lineSeparator()));

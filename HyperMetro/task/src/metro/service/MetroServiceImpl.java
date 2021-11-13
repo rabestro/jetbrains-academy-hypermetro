@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import metro.algorithm.BreadthFirstSearchAlgorithm;
 import metro.algorithm.DijkstrasAlgorithm;
 import metro.algorithm.Node;
-import metro.algorithm.SearchAlgorithm;
 import metro.model.MetroLine;
 import metro.model.MetroMap;
 import metro.model.MetroStation;
 import metro.model.StationID;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.System.Logger.Level.DEBUG;
@@ -89,16 +87,6 @@ public class MetroServiceImpl implements MetroService {
         return strategy.findRoute(source, target);
     }
 
-    private LinkedList<Node<StationID>> findRoute(
-            final StationID source, final StationID target,
-            Function<StationID, Node<StationID>> nodeFunction,
-            Function<Set<Node<StationID>>, SearchAlgorithm<StationID>> searchAlgorithmFunction
-    ) {
-        final Set<Node<StationID>> nodes = metroMap.stream().map(nodeFunction)
-                .collect(Collectors.toUnmodifiableSet());
-        return searchAlgorithmFunction.apply(nodes).findRoute(source, target);
-    }
-
     private class MetroNode extends Node<StationID> {
         private MetroNode(final StationID stationID) {
             super(stationID);
@@ -106,13 +94,11 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, "MetroNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, 1));
             station.getPrev().forEach(id -> neighbors.put(id, 1));
             station.getTransfer().forEach(id -> neighbors.put(id, 0));
-            LOGGER.log(DEBUG, neighbors);
             return neighbors;
         }
     }
@@ -124,13 +110,11 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, "SimpleNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, 1));
             station.getPrev().forEach(id -> neighbors.put(id, 1));
             station.getTransfer().forEach(id -> neighbors.put(id, 1));
-            LOGGER.log(DEBUG, neighbors);
             return neighbors;
         }
     }
@@ -142,13 +126,11 @@ public class MetroServiceImpl implements MetroService {
 
         @Override
         protected Map<StationID, Integer> getNeighbors() {
-            LOGGER.log(DEBUG, "TimeNode: {0}", getId());
             final var neighbors = new HashMap<StationID, Integer>();
             final var station = metroMap.getStation(getId()).orElseThrow();
             station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
             station.getTransfer().forEach(id -> neighbors.put(id, TRANSFER_TIME));
             station.getPrev().forEach(id -> neighbors.put(id, getMetroStation(id).getTime()));
-            LOGGER.log(DEBUG, neighbors);
             return neighbors;
         }
     }

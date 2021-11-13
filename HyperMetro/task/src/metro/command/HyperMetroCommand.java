@@ -7,6 +7,15 @@ import java.util.List;
 
 @AllArgsConstructor
 abstract class HyperMetroCommand implements Command {
+    static final int REQUIRED_ONE = 1;
+    static final int REQUIRED_TWO = 2;
+    static final int REQUIRED_FOUR = 4;
+
+    static final int SOURCE_LINE = 0;
+    static final int SOURCE_NAME = 1;
+    static final int TARGET_LINE = 2;
+    static final int TARGET_NAME = 3;
+
     final MetroService metroService;
 
     void validateParametersNumber(final List<String> parameters, final int requiredNumber) {

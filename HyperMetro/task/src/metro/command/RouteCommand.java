@@ -5,7 +5,9 @@ import metro.model.StationID;
 import metro.service.MetroService;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringJoiner;
+import java.util.function.BiFunction;
 
 import static java.lang.System.Logger.Level.DEBUG;
 
@@ -16,8 +18,17 @@ abstract class RouteCommand extends HyperMetroCommand {
         super(metroService);
     }
 
+    LinkedList<Node<StationID>> findRoute(
+            final List<String> parameters,
+            final BiFunction<StationID, StationID, LinkedList<Node<StationID>>> strategy) {
+        validateParametersNumber(parameters, REQUIRED_FOUR);
+        final var source = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var target = new StationID(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
+        return strategy.apply(source, target);
+    }
+
     String printRoute(final LinkedList<Node<StationID>> route) {
-        final var stringJoiner = new StringJoiner("\n");
+        final var stringJoiner = new StringJoiner(System.lineSeparator());
         var line = route.getFirst().getId().getLine();
 
         for (final var node : route) {

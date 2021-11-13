@@ -11,8 +11,8 @@ public class AddHead extends HyperMetroCommand {
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, 2);
-        metroService.addHead(parameters.get(0), parameters.get(1));
+        validateParametersNumber(parameters, REQUIRED_TWO);
+        metroService.addHead(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
         return "Metro station successfully added";
     }
 }

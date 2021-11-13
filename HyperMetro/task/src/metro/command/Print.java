@@ -10,7 +10,7 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 
-public class Print extends HyperMetroCommand{
+public class Print extends HyperMetroCommand {
     private static final String PREFIX_PREV = "<---| ";
     private static final String PREFIX_NEXT = "--->| ";
     private static final String PREFIX_TRAN = "<---> ";
@@ -21,8 +21,8 @@ public class Print extends HyperMetroCommand{
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, 2);
-        final var stationId = new StationID(parameters.get(0), parameters.get(1));
+        validateParametersNumber(parameters, REQUIRED_TWO);
+        final var stationId = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
         final var station = metroService.getMetroStation(stationId);
         return printStation(station);
     }
