@@ -1,15 +1,8 @@
 package metro.algorithm;
 
 import java.util.LinkedList;
-import java.util.Objects;
-import java.util.stream.Stream;
 
+@FunctionalInterface
 public interface SearchAlgorithm<T> {
     LinkedList<Node<T>> findRoute(T source, T target);
-
-    default LinkedList<Node<T>> buildPath(Node<T> target) {
-        final var path = new LinkedList<Node<T>>();
-        Stream.iterate(target, Objects::nonNull, Node::getPrevious).forEach(path::addFirst);
-        return path;
-    }
 }
