@@ -1,19 +1,16 @@
 package metro.service;
 
 import metro.model.MetroLine;
+import metro.model.MetroNode;
 import metro.model.MetroStation;
 import metro.model.StationID;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.LinkedList;
 
 public interface MetroService {
-    Optional<MetroLine> findMetroLine(String name);
-
     MetroLine getMetroLine(String name);
 
-    Collection<MetroStation> getLineStations(String name);
+    MetroStation getMetroStation(StationID stationId);
 
     void addHead(String lineName, String stationName);
 
@@ -21,7 +18,9 @@ public interface MetroService {
 
     void connect(StationID source, StationID target);
 
-    void remove(String lineName, String stationName);
+    void remove(StationID target);
 
-    List<StationID> route(StationID source, StationID target);
+    LinkedList<MetroNode> route(StationID source, StationID target);
+
+    LinkedList<MetroNode> fastestRoute(StationID source, StationID target);
 }

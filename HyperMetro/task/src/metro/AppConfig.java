@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 @Configuration
@@ -29,7 +30,7 @@ public class AppConfig {
 
     @Bean(name = "exit")
     public Predicate<String> exit() {
-        return "/exit"::equalsIgnoreCase;
+        return Set.of("/exit", "exit", "quit", "/quit")::contains;
     }
 
     @Bean(name = "invalid")
@@ -45,7 +46,8 @@ public class AppConfig {
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
-                "route", new Route(getMetroService())
+                "route", new Route(getMetroService()),
+                "fastest-route", new FastestRoute(getMetroService())
         );
     }
 
@@ -54,14 +56,9 @@ public class AppConfig {
         return new MetroMap();
     }
 
-    @Bean(name = "parameterParser")
-    public ParameterParser getParameterParser() {
-        return new ParameterParser();
-    }
-
     @Bean(name = "requestParser")
     public RequestParser getRequestParser() {
-        return new RequestParser(ui(), getParameterParser(), getCommands(), invalidCommand());
+        return new RequestParser(ui(), new ParameterParser(), getCommands(), invalidCommand());
     }
 
     @Bean(name = "application")
