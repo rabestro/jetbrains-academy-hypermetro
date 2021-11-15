@@ -12,7 +12,7 @@ public class ConsoleInterface implements UserInterface {
 
     @Override
     @SuppressWarnings("squid:S106")
-    public void printLine(final String line) {
-        System.out.println(line);
+    public void printLine(final Object line) {
+        System.out.println(line.toString());
     }
 }

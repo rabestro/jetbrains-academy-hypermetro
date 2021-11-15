@@ -1,8 +1,8 @@
 package metro.command;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.Function;
 
-public interface Command extends Consumer<List<String>> {
+public interface Command extends Function<List<String>, String> {
     String name();
 }

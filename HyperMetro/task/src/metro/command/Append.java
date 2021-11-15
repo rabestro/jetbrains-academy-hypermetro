@@ -1,12 +1,19 @@
 package metro.command;
 
-import metro.entity.Line;
-import metro.entity.Metro;
-import metro.ui.UserInterface;
+import metro.service.MetroService;
 
-public class Append extends ManageStation {
-    public Append(final Metro metro, final UserInterface ui) {
-        super(metro, ui, Line::append);
+import java.util.List;
+
+public class Append extends HyperMetroCommand {
+
+    public Append(final MetroService metroService) {
+        super(metroService);
     }
 
+    @Override
+    public String apply(final List<String> parameters) {
+        validateParametersNumber(parameters, 2);
+        metroService.append(parameters.get(0), parameters.get(1));
+        return "Metro station successfully added";
+    }
 }
