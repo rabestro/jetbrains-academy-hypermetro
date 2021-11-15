@@ -1,7 +1,7 @@
 package metro;
 
 import lombok.AllArgsConstructor;
-import metro.service.MapLoader;
+import metro.repository.MetroRepository;
 import metro.service.RequestParser;
 import metro.ui.UserInterface;
 
@@ -19,11 +19,11 @@ public class Application {
     private final UserInterface ui;
     private final Predicate<String> exit;
     private final RequestParser requestParser;
-    private final MapLoader mapLoader;
+    private final MetroRepository repository;
 
     public void run(final String fileName) {
         try {
-            mapLoader.load(fileName);
+            repository.load(fileName);
 
             LOGGER.log(INFO, "HyperMetro started");
 

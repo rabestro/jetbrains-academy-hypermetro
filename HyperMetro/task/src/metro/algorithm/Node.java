@@ -1,13 +1,16 @@
 package metro.algorithm;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Node<T> {
+public class Node<T> {
     private final T id;
+    private final Map<Node<T>, Integer> edges = new HashMap<>();
+
     private Node<T> previous;
     private int distance = Integer.MAX_VALUE;
 
-    protected Node(final T id) {
+    public Node(final T id) {
         this.id = id;
     }
 
@@ -28,6 +31,14 @@ public abstract class Node<T> {
         previous = node;
     }
 
+    public Map<Node<T>, Integer> getEdges() {
+        return edges;
+    }
+
+    public void addEdge(final Node<T> node, final Integer distance) {
+        edges.put(node, distance);
+    }
+
     public int getDistance() {
         return distance;
     }
@@ -35,7 +46,5 @@ public abstract class Node<T> {
     public void setDistance(final int distance) {
         this.distance = distance;
     }
-
-    protected abstract Map<T, Integer> getNeighbors();
 
 }

@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static java.lang.System.Logger.Level.*;
 import static java.util.function.Function.identity;
@@ -24,6 +25,40 @@ public class MetroRepositoryImpl implements MetroRepository {
     private static final System.Logger LOGGER = System.getLogger("MapLoader");
 
     private MetroMap metroMap;
+
+    private static int getTime(final JsonObject jsonStation) {
+        final var hasTime = jsonStation.has("time") && !jsonStation.get("time").isJsonNull();
+        return hasTime ? jsonStation.get("time").getAsInt() : 1;
+    }
+
+    private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
+        LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
+        final var stations = new HashSet<StationID>();
+        if (!jsonElement.isJsonNull()) {
+            jsonElement.getAsJsonArray().forEach(element -> {
+                final var name = element.getAsString();
+                final var stationId = new StationID(line, name);
+                stations.add(stationId);
+            });
+        }
+        LOGGER.log(TRACE, "Stations: {0}", stations);
+        return stations;
+    }
+
+    @Override
+    public Optional<MetroLine> getLine(final String name) {
+        return metroMap.getLine(name);
+    }
+
+    @Override
+    public Optional<MetroStation> getStation(final StationID stationId) {
+        return metroMap.getStation(stationId);
+    }
+
+    @Override
+    public Stream<StationID> stream() {
+        return metroMap.stream();
+    }
 
     @Override
     public void load(final String fileName) throws IOException {
@@ -36,16 +71,6 @@ public class MetroRepositoryImpl implements MetroRepository {
                 .collect(toUnmodifiableMap(MetroLine::getLineName, identity()));
         metroMap = new MetroMap(lines);
         LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
-    }
-
-    @Override
-    public Optional<MetroLine> getLine(final String name) {
-        return metroMap.getLine(name);
-    }
-
-    @Override
-    public Optional<MetroStation> getStation(final StationID stationId) {
-        return metroMap.getStation(stationId);
     }
 
     private MetroLine parseMetroLine(final Map.Entry<String, JsonElement> jsonLine) {
@@ -72,25 +97,6 @@ public class MetroRepositoryImpl implements MetroRepository {
         station.setTransfer(parseTransfer(jsonStation.get("transfer")));
         LOGGER.log(TRACE, station);
         return station;
-    }
-
-    private static int getTime(final JsonObject jsonStation) {
-        final var hasTime = jsonStation.has("time") && !jsonStation.get("time").isJsonNull();
-        return hasTime ? jsonStation.get("time").getAsInt() : 1;
-    }
-
-    private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
-        LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
-        final var stations = new HashSet<StationID>();
-        if (!jsonElement.isJsonNull()) {
-            jsonElement.getAsJsonArray().forEach(element -> {
-                final var name = element.getAsString();
-                final var stationId = new StationID(line, name);
-                stations.add(stationId);
-            });
-        }
-        LOGGER.log(TRACE, "Stations: {0}", stations);
-        return stations;
     }
 
     private Set<StationID> parseTransfer(final JsonElement jsonElement) {

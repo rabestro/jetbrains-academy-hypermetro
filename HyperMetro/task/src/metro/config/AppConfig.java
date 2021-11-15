@@ -3,7 +3,12 @@ package metro.config;
 import metro.Application;
 import metro.command.*;
 import metro.model.MetroMap;
-import metro.service.*;
+import metro.repository.MetroRepository;
+import metro.repository.MetroRepositoryImpl;
+import metro.service.MetroService;
+import metro.service.MetroServiceImpl;
+import metro.service.ParameterParser;
+import metro.service.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -23,12 +28,7 @@ public class AppConfig {
 
     @Bean(name = "metroService")
     public MetroService getMetroService() {
-        return new MetroServiceImpl(getMetro());
-    }
-
-    @Bean(name = "mapLoader")
-    public MapLoader getMapLoader() {
-        return new MapLoaderImpl(getMetro());
+        return new MetroServiceImpl(getRepository());
     }
 
     @Bean(name = "exit")
@@ -56,6 +56,11 @@ public class AppConfig {
         return new MetroMap();
     }
 
+    @Bean(name = "repository")
+    public MetroRepository getRepository() {
+        return new MetroRepositoryImpl();
+    }
+
     @Bean(name = "requestParser")
     public RequestParser getRequestParser() {
         return new RequestParser(ui(), new ParameterParser(), getCommands());
@@ -63,6 +68,6 @@ public class AppConfig {
 
     @Bean(name = "application")
     public Application getApplication() {
-        return new Application(ui(), exit(), getRequestParser(), getMapLoader());
+        return new Application(ui(), exit(), getRequestParser(), getRepository());
     }
 }

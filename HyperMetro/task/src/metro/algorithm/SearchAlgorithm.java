@@ -1,8 +1,8 @@
 package metro.algorithm;
 
-import java.util.LinkedList;
+import java.util.Deque;
 
 @FunctionalInterface
 public interface SearchAlgorithm<T> {
-    LinkedList<Node<T>> findRoute(T source, T target);
+    Deque<Node<T>> findRoute(Node<T> source, Node<T> target);
 }
