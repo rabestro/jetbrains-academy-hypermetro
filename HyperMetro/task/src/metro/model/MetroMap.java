@@ -10,6 +10,13 @@ import java.util.stream.Stream;
 public class MetroMap {
     private Map<String, MetroLine> lines = Map.of();
 
+    public MetroMap() {
+    }
+
+    public MetroMap(final Map<String, MetroLine> lines) {
+        this.lines = lines;
+    }
+
     public Optional<MetroLine> getLine(final String name) {
         return Optional.ofNullable(lines.get(name));
     }

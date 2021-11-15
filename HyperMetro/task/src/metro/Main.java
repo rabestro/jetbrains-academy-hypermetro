@@ -1,5 +1,6 @@
 package metro;
 
+import metro.config.AppConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {

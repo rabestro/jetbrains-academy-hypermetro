@@ -1,5 +1,6 @@
-package metro;
+package metro.config;
 
+import metro.Application;
 import metro.command.*;
 import metro.model.MetroMap;
 import metro.service.*;
