@@ -1,33 +1,10 @@
 package metro.model;
 
-import lombok.Setter;
+import lombok.Value;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
-@Setter
+@Value
 public class MetroMap {
-    private Map<String, MetroLine> lines = Map.of();
-
-    public MetroMap() {
-    }
-
-    public MetroMap(final Map<String, MetroLine> lines) {
-        this.lines = lines;
-    }
-
-    public Optional<MetroLine> getLine(final String name) {
-        return Optional.ofNullable(lines.get(name));
-    }
-
-    public Optional<MetroStation> getStation(final StationID stationID) {
-        return getLine(stationID.getLine())
-                .flatMap(metroLine -> metroLine.getStation(stationID.getName()));
-    }
-
-    public Stream<StationID> stream() {
-        return lines.values().stream().flatMap(MetroLine::stream).map(MetroStation::getStationID);
-    }
-
+    Map<String, MetroLine> lines;
 }

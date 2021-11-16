@@ -19,7 +19,7 @@ public class MetroLine implements Iterable<MetroStation> {
     private final String lineName;
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
-    Optional<MetroStation> getStation(final String name) {
+    public Optional<MetroStation> getStation(final String name) {
         return stations.stream().filter(s -> s.getStationID().getName().equals(name)).findAny();
     }
 

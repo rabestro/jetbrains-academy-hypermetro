@@ -2,7 +2,6 @@ package metro.config;
 
 import metro.Application;
 import metro.command.*;
-import metro.model.MetroMap;
 import metro.repository.MetroRepository;
 import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
@@ -49,11 +48,6 @@ public class AppConfig {
                 "bfs-route", new BfsRoute(getMetroService()),
                 "fastest-route", new FastestRoute(getMetroService())
         );
-    }
-
-    @Bean(name = "metro")
-    public MetroMap getMetro() {
-        return new MetroMap();
     }
 
     @Bean(name = "repository")

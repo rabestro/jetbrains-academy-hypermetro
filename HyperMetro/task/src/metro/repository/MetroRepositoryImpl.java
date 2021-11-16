@@ -47,17 +47,17 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public Optional<MetroLine> getLine(final String name) {
-        return metroMap.getLine(name);
+        return Optional.ofNullable(metroMap.getLines().get(name));
     }
 
     @Override
     public Optional<MetroStation> getStation(final StationID stationId) {
-        return metroMap.getStation(stationId);
+        return getLine(stationId.getLine()).flatMap(metroLine -> metroLine.getStation(stationId.getName()));
     }
 
     @Override
     public Stream<StationID> stream() {
-        return metroMap.stream();
+        return metroMap.getLines().values().stream().flatMap(MetroLine::stream).map(MetroStation::getStationID);
     }
 
     @Override
