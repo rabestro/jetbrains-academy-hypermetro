@@ -6,13 +6,13 @@ public class ConsoleInterface implements UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
 
     @Override
-    public String readLine() {
+    public String read() {
         return scanner.nextLine();
     }
 
     @Override
     @SuppressWarnings("squid:S106")
-    public void printLine(final Object line) {
+    public void write(final Object line) {
         System.out.println(line.toString());
     }
 }

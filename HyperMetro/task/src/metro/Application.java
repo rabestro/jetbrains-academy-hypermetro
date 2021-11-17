@@ -2,7 +2,7 @@ package metro;
 
 import lombok.AllArgsConstructor;
 import metro.repository.MetroRepository;
-import metro.service.RequestParser;
+import metro.controller.Broker;
 import metro.ui.UserInterface;
 
 import java.io.IOException;
@@ -18,23 +18,24 @@ public class Application {
 
     private final UserInterface ui;
     private final Predicate<String> exit;
-    private final RequestParser requestParser;
+    private final Broker broker;
     private final MetroRepository repository;
 
-    public void run(final String fileName) {
+    public void start(final String fileName) {
+        LOGGER.log(INFO, "HyperMetro started");
         try {
             repository.load(fileName);
-
-            LOGGER.log(INFO, "HyperMetro started");
-
-            Stream.generate(ui::readLine)
-                    .takeWhile(not(exit))
-                    .map(requestParser::parse)
-                    .forEach(Runnable::run);
-
         } catch (IOException exception) {
-            ui.printLine(exception.getMessage());
+            ui.write(exception.getMessage());
+            return;
         }
+
+        commandLineInterface();
+
+        LOGGER.log(INFO, "HyperMetro finished");
     }
 
+    private void commandLineInterface() {
+        Stream.generate(ui::read).takeWhile(not(exit)).map(broker).forEach(ui::write);
+    }
 }

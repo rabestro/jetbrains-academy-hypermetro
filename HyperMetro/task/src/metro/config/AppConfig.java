@@ -2,12 +2,11 @@ package metro.config;
 
 import metro.Application;
 import metro.command.*;
+import metro.controller.Broker;
 import metro.repository.MetroRepository;
 import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
-import metro.service.ParameterParser;
-import metro.service.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -56,8 +55,8 @@ public class AppConfig {
     }
 
     @Bean(name = "requestParser")
-    public RequestParser getRequestParser() {
-        return new RequestParser(ui(), new ParameterParser(), getCommands());
+    public Broker getRequestParser() {
+        return new Broker(getCommands());
     }
 
     @Bean(name = "application")
