@@ -4,7 +4,7 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class DijkstrasAlgorithm<T> extends AbstractSearchAlgorithm<T> {
+public class DijkstrasAlgorithm<T> implements SearchAlgorithm<T> {
 
     @Override
     public Deque<Node<T>> findRoute(final Node<T> source, final Node<T> target) {

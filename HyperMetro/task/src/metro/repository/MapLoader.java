@@ -16,29 +16,11 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.lang.System.Logger.Level.*;
-import static java.lang.System.Logger.Level.TRACE;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 class MapLoader {
     private static final System.Logger LOGGER = System.getLogger("MapLoader");
-
-    public MetroMap load(final String fileName) throws IOException {
-        LOGGER.log(INFO, "Loading Metro from file: " + fileName);
-        final var reader = Files.newBufferedReader(Paths.get(fileName));
-        final var json = new JsonParser().parse(reader);
-        final var lines = json.getAsJsonObject()
-                .entrySet().stream()
-                .map(this::parseMetroLine)
-                .collect(toUnmodifiableMap(MetroLine::getLineName, identity()));
-        LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
-        return new MetroMap(lines);
-    }
-
-    private static int getTime(final JsonObject jsonStation) {
-        final var hasTime = jsonStation.has("time") && !jsonStation.get("time").isJsonNull();
-        return hasTime ? jsonStation.get("time").getAsInt() : 1;
-    }
 
     private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
         LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
@@ -52,6 +34,23 @@ class MapLoader {
         }
         LOGGER.log(TRACE, "Stations: {0}", stations);
         return stations;
+    }
+
+    private static int getTime(final JsonObject jsonStation) {
+        final var hasTime = jsonStation.has("time") && !jsonStation.get("time").isJsonNull();
+        return hasTime ? jsonStation.get("time").getAsInt() : 1;
+    }
+
+    public MetroMap load(final String fileName) throws IOException {
+        LOGGER.log(INFO, "Loading Metro from file: " + fileName);
+        final var reader = Files.newBufferedReader(Paths.get(fileName));
+        final var json = new JsonParser().parse(reader);
+        final var lines = json.getAsJsonObject()
+                .entrySet().stream()
+                .map(this::parseMetroLine)
+                .collect(toUnmodifiableMap(MetroLine::getLineName, identity()));
+        LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
+        return new MetroMap(lines);
     }
 
     private MetroLine parseMetroLine(final Map.Entry<String, JsonElement> jsonLine) {
@@ -70,9 +69,10 @@ class MapLoader {
 
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
-        final var station = new MetroStation(new StationID(line, name));
-        LOGGER.log(TRACE, "Import station '" + name + "' (" + line + ")");
-        station.setTime(getTime(jsonStation));
+        final var time = getTime(jsonStation);
+        final var id = new StationID(line, name);
+        final var station = new MetroStation(id, time);
+        LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
         station.setPrev(parseStations(line, jsonStation.get("prev")));
         station.setNext(parseStations(line, jsonStation.get("next")));
         station.setTransfer(parseTransfer(jsonStation.get("transfer")));

@@ -29,7 +29,7 @@ public class MetroLine implements Iterable<MetroStation> {
 
     public void addHead(final String name) {
         final var sid = new StationID(lineName, name);
-        final var station = new MetroStation(sid);
+        final var station = new MetroStation(sid, 1);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
             prevStation.setPrev(Set.of(sid));
@@ -44,7 +44,7 @@ public class MetroLine implements Iterable<MetroStation> {
 
     public void append(final String name) {
         final var sid = new StationID(lineName, name);
-        append(new MetroStation(sid));
+        append(new MetroStation(sid, 1));
     }
 
     public void append(final MetroStation metroStation) {

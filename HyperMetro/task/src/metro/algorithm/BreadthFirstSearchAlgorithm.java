@@ -6,9 +6,9 @@ import java.util.LinkedList;
 
 import static java.util.function.Predicate.not;
 
-public class BreadthFirstSearchAlgorithm<T> extends AbstractSearchAlgorithm<T> {
+public class BreadthFirstSearchAlgorithm<T> implements SearchAlgorithm<T> {
 
-    public Deque<Node<T>> findRoute(Node<T> source, Node<T> target) {
+    public Deque<Node<T>> findRoute(final Node<T> source, final Node<T> target) {
         final var queue = new LinkedList<Node<T>>();
         final var visited = new HashSet<Node<T>>();
 
