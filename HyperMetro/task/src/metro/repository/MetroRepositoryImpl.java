@@ -20,7 +20,7 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public Optional<MetroStation> getStation(final StationID stationId) {
-        return getLine(stationId.getLine()).flatMap(metroLine -> metroLine.getStation(stationId.getName()));
+        return getLine(stationId.line()).flatMap(metroLine -> metroLine.getStation(stationId.name()));
     }
 
     @Override

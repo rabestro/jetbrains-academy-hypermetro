@@ -49,7 +49,7 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public void remove(final StationID target) {
-        getMetroLine(target.getLine()).remove(getMetroStation(target));
+        getMetroLine(target.line()).remove(getMetroStation(target));
     }
 
     @Override

@@ -20,7 +20,7 @@ public class MetroLine implements Iterable<MetroStation> {
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public Optional<MetroStation> getStation(final String name) {
-        return stations.stream().filter(s -> s.getStationID().getName().equals(name)).findAny();
+        return stations.stream().filter(s -> s.getStationID().name().equals(name)).findAny();
     }
 
     public void remove(final MetroStation station) {
