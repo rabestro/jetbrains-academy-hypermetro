@@ -15,7 +15,7 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public Optional<MetroLine> getLine(final String name) {
-        return Optional.ofNullable(metroMap.getLines().get(name));
+        return Optional.ofNullable(metroMap.lines().get(name));
     }
 
     @Override
@@ -25,7 +25,7 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public Stream<StationID> stream() {
-        return metroMap.getLines().values().stream().flatMap(MetroLine::stream).map(MetroStation::getStationID);
+        return metroMap.lines().values().stream().flatMap(MetroLine::stream).map(MetroStation::getStationID);
     }
 
     @Override
