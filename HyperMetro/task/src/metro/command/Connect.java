@@ -12,9 +12,9 @@ public class Connect extends HyperMetroCommand {
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, 4);
-        final var source = new StationID(parameters.get(0), parameters.get(1));
-        final var target = new StationID(parameters.get(2), parameters.get(3));
+        validateParametersNumber(parameters, REQUIRED_FOUR);
+        final var source = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var target = new StationID(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
 
         metroService.connect(source, target);
 

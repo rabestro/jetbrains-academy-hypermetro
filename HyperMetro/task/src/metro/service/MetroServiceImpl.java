@@ -1,13 +1,22 @@
 package metro.service;
 
 import lombok.AllArgsConstructor;
-import metro.model.*;
+import metro.algorithm.BreadthFirstSearchAlgorithm;
+import metro.algorithm.DijkstrasAlgorithm;
+import metro.algorithm.Node;
+import metro.algorithm.SearchAlgorithm;
+import metro.model.MetroLine;
+import metro.model.MetroStation;
+import metro.model.StationID;
+import metro.repository.MetroRepository;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.Deque;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.function.Predicate.not;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
@@ -16,16 +25,16 @@ public class MetroServiceImpl implements MetroService {
     private static final NoSuchElementException NOT_FOUND_EXCEPTION = new NoSuchElementException(NOT_FOUND);
     private static final int TRANSFER_TIME = 5;
 
-    private final MetroMap metroMap;
+    private final MetroRepository repository;
 
     @Override
     public MetroLine getMetroLine(final String name) {
-        return metroMap.getLine(name).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        return repository.getLine(name).orElseThrow(() -> NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public MetroStation getMetroStation(final StationID station) {
-        return metroMap.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        return repository.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
     }
 
     @Override
@@ -50,69 +59,73 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public LinkedList<MetroNode> route(final StationID source, final StationID target) {
-        final var visited = new HashSet<StationID>();
-        final var queue = new LinkedList<MetroNode>();
-        queue.add(new MetroNode(getMetroStation(source)));
-        while (!queue.isEmpty()) {
-            final var step = queue.pollFirst();
-            final var sid = step.getStation().getStationID();
-            if (sid.equals(target)) {
-                return buildRoute(step);
-            }
-            visited.add(sid);
-            getNeighbors(step.getStation()).keySet()
-                    .stream()
-                    .filter(not(visited::contains))
-                    .map(this::getMetroStation)
-                    .map(MetroNode::new)
-                    .forEach(metroNode -> {
-                        metroNode.setPrevious(step);
-                        queue.add(metroNode);
-                    });
-        }
-        return new LinkedList<>();
+    public Deque<Node<StationID>> bfsRoute(final StationID sourceId, final StationID targetId) {
+        return new RouteRequest(sourceId, targetId)
+                .useAlgorithm(new BreadthFirstSearchAlgorithm<>())
+                .find();
     }
 
     @Override
-    public LinkedList<MetroNode> fastestRoute(final StationID source, final StationID target) {
-        final var nodes = metroMap.getNodes();
-        final var sourceNode = requireNonNull(nodes.get(source), NOT_FOUND);
-        final var targetNode = requireNonNull(nodes.get(target), NOT_FOUND);
-        sourceNode.setDistance(0);
-        final var queue = new LinkedList<MetroNode>();
-        queue.add(sourceNode);
+    public Deque<Node<StationID>> route(final StationID sourceId, final StationID targetId) {
+        return new RouteRequest(sourceId, targetId)
+                .timeToTransfer((source, target) -> 0)
+                .find();
+    }
 
-        while (!queue.isEmpty()) {
-            final var node = queue.pollFirst();
-            final var neighbors = getNeighbors(node.getStation());
-            neighbors.forEach((id, time) -> {
-                final var distance = node.getDistance() + time;
-                final var neighbor = nodes.get(id);
-                if (neighbor.notVisited()) {
-                    queue.add(neighbor);
-                }
-                if (distance < neighbor.getDistance()) {
-                    neighbor.setPrevious(node);
-                    neighbor.setDistance(distance);
-                }
-            });
+    @Override
+    public Deque<Node<StationID>> fastestRoute(final StationID sourceId, final StationID targetId) {
+        return new RouteRequest(sourceId, targetId)
+                .timeToNext((source, target) -> source.getTime())
+                .timeToPrev((source, target) -> getMetroStation(target).getTime())
+                .timeToTransfer((source, target) -> TRANSFER_TIME)
+                .find();
+    }
+
+    private class RouteRequest {
+        private final StationID source;
+        private final StationID target;
+        private TimeFunction next = (s, t) -> 1;
+        private TimeFunction prev = (s, t) -> 1;
+        private TimeFunction tran = (s, t) -> 1;
+        private SearchAlgorithm<StationID> algorithm = new DijkstrasAlgorithm<>();
+
+        private RouteRequest(final StationID source, final StationID target) {
+            this.source = source;
+            this.target = target;
         }
-        return buildRoute(targetNode);
-    }
 
-    private LinkedList<MetroNode> buildRoute(final MetroNode target) {
-        final var route = new LinkedList<MetroNode>();
-        Stream.iterate(target, Objects::nonNull, MetroNode::getPrevious).forEach(route::addFirst);
-        return route;
-    }
+        public RouteRequest timeToNext(final TimeFunction next) {
+            this.next = next;
+            return this;
+        }
 
-    public Map<StationID, Integer> getNeighbors(final MetroStation station) {
-        final var neighbors = new HashMap<StationID, Integer>();
-        station.getNext().forEach(id -> neighbors.put(id, station.getTime()));
-        station.getTransfer().forEach(id -> neighbors.put(id, TRANSFER_TIME));
-        station.getPrev().forEach(id -> neighbors.put(id, getMetroStation(id).getTime()));
-        return neighbors;
+        public RouteRequest timeToPrev(final TimeFunction prev) {
+            this.prev = prev;
+            return this;
+        }
+
+        public RouteRequest timeToTransfer(final TimeFunction tran) {
+            this.tran = tran;
+            return this;
+        }
+
+        public RouteRequest useAlgorithm(final SearchAlgorithm<StationID> searchAlgorithm) {
+            this.algorithm = searchAlgorithm;
+            return this;
+        }
+
+        Deque<Node<StationID>> find() {
+            final var nodes = repository.stream().collect(toUnmodifiableMap(identity(), Node::new));
+            nodes.values().forEach(node -> {
+                final var s = getMetroStation(node.getId());
+                s.getNext().forEach(t -> node.addEdge(nodes.get(t), next.apply(s, t)));
+                s.getPrev().forEach(t -> node.addEdge(nodes.get(t), prev.apply(s, t)));
+                s.getTransfer().forEach(t -> node.addEdge(nodes.get(t), tran.apply(s, t)));
+            });
+            final var sourceNode = Objects.requireNonNull(nodes.get(source));
+            final var targetNode = Objects.requireNonNull(nodes.get(target));
+            return algorithm.findRoute(sourceNode, targetNode);
+        }
     }
 
 }

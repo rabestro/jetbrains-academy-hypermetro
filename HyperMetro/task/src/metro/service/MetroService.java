@@ -1,11 +1,11 @@
 package metro.service;
 
+import metro.algorithm.Node;
 import metro.model.MetroLine;
-import metro.model.MetroNode;
 import metro.model.MetroStation;
 import metro.model.StationID;
 
-import java.util.LinkedList;
+import java.util.Deque;
 
 public interface MetroService {
     MetroLine getMetroLine(String name);
@@ -20,7 +20,9 @@ public interface MetroService {
 
     void remove(StationID target);
 
-    LinkedList<MetroNode> route(StationID source, StationID target);
+    Deque<Node<StationID>> bfsRoute(StationID source, StationID target);
 
-    LinkedList<MetroNode> fastestRoute(StationID source, StationID target);
+    Deque<Node<StationID>> route(StationID source, StationID target);
+
+    Deque<Node<StationID>> fastestRoute(StationID source, StationID target);
 }

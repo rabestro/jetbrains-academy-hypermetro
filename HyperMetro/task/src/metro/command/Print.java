@@ -10,22 +10,21 @@ import java.util.function.Function;
 
 import static java.util.stream.Collectors.joining;
 
-public class Output extends HyperMetroCommand {
+public class Print extends HyperMetroCommand {
     private static final String PREFIX_PREV = "<---| ";
     private static final String PREFIX_NEXT = "--->| ";
     private static final String PREFIX_TRAN = "<---> ";
 
-    public Output(final MetroService metroService) {
+    public Print(final MetroService metroService) {
         super(metroService);
     }
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, REQUIRED_ONE);
-        return metroService.getMetroLine(parameters.get(SOURCE_LINE))
-                .getStations().stream()
-                .map(this::printStation)
-                .collect(joining(System.lineSeparator()));
+        validateParametersNumber(parameters, REQUIRED_TWO);
+        final var stationId = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var station = metroService.getMetroStation(stationId);
+        return printStation(station);
     }
 
     private String printStation(final MetroStation metroStation) {
@@ -33,7 +32,8 @@ public class Output extends HyperMetroCommand {
         return name + System.lineSeparator()
                 + printNeighbors(PREFIX_PREV, metroStation.getPrev())
                 + printNeighbors(PREFIX_NEXT, metroStation.getNext())
-                + printNeighbors(PREFIX_TRAN, metroStation.getTransfer());
+                + printNeighbors(PREFIX_TRAN, metroStation.getTransfer())
+                + "..... " + metroStation.getTime();
     }
 
     private String printNeighbors(final String prefix, final Set<StationID> stations) {
@@ -42,5 +42,4 @@ public class Output extends HyperMetroCommand {
                 .map(name.andThen(prefix::concat))
                 .collect(joining(System.lineSeparator())) + System.lineSeparator();
     }
-
 }

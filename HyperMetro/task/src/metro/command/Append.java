@@ -12,8 +12,8 @@ public class Append extends HyperMetroCommand {
 
     @Override
     public String apply(final List<String> parameters) {
-        validateParametersNumber(parameters, 2);
-        metroService.append(parameters.get(0), parameters.get(1));
+        validateParametersNumber(parameters, REQUIRED_TWO);
+        metroService.append(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
         return "Metro station successfully added";
     }
 }

@@ -1,36 +1,25 @@
 package metro.model;
 
-import com.google.gson.JsonElement;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Getter
 @ToString
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class MetroLine implements Iterable<MetroStation> {
+    private static final System.Logger LOGGER = System.getLogger("MetroLine");
+
     private final String lineName;
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
-    public static MetroLine from(final Map.Entry<String, JsonElement> jsonLine) {
-        final var jsonStations = jsonLine.getValue().getAsJsonObject();
-        final var lineName = jsonLine.getKey();
-        final var metroLine = new MetroLine(lineName);
-
-        jsonStations.entrySet().forEach(station -> {
-            final var jsonStation = station.getValue().getAsJsonObject();
-            final var metroStation = MetroStation.from(lineName, jsonStation);
-            metroLine.append(metroStation);
-        });
-
-        return metroLine;
-    }
-
-    Optional<MetroStation> getStation(final String name) {
+    public Optional<MetroStation> getStation(final String name) {
         return stations.stream().filter(s -> s.getStationID().getName().equals(name)).findAny();
     }
 
@@ -40,7 +29,7 @@ public class MetroLine implements Iterable<MetroStation> {
 
     public void addHead(final String name) {
         final var sid = new StationID(lineName, name);
-        final var station = new MetroStation(sid);
+        final var station = new MetroStation(sid, 1);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
             prevStation.setPrev(Set.of(sid));
@@ -49,12 +38,16 @@ public class MetroLine implements Iterable<MetroStation> {
         stations.addFirst(station);
     }
 
-    public void append(final String name) {
-        final var sid = new StationID(lineName, name);
-        append(new MetroStation(sid));
+    public void add(final MetroStation metroStation) {
+        stations.add(metroStation);
     }
 
-    private void append(final MetroStation metroStation) {
+    public void append(final String name) {
+        final var sid = new StationID(lineName, name);
+        append(new MetroStation(sid, 1));
+    }
+
+    public void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
             lastStation.setNext(Set.of(metroStation.getStationID()));

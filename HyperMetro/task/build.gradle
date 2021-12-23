@@ -2,7 +2,13 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
+    implementation 'com.google.code.gson:gson:2.8.9'
+
     // https://mvnrepository.com/artifact/org.springframework/spring-context
     implementation group: 'org.springframework', name: 'spring-context', version: '5.3.12'
+}
+
+repositories {
+    mavenCentral()
 }
 
