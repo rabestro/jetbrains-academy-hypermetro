@@ -1,41 +1,45 @@
 package metro.command;
 
-import metro.model.MetroNode;
+import metro.algorithm.Node;
 import metro.model.StationID;
 import metro.service.MetroService;
 
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.BiFunction;
 
+import static java.lang.System.Logger.Level.DEBUG;
+
 abstract class RouteCommand extends HyperMetroCommand {
+    private static final System.Logger LOGGER = System.getLogger("RouteCommand");
 
     RouteCommand(final MetroService metroService) {
         super(metroService);
     }
 
-    LinkedList<MetroNode> findRoute(
+    Deque<Node<StationID>> findRoute(
             final List<String> parameters,
-            final BiFunction<StationID, StationID, LinkedList<MetroNode>> strategy
-    ) {
-        validateParametersNumber(parameters, 4);
-        final var source = new StationID(parameters.get(0), parameters.get(1));
-        final var target = new StationID(parameters.get(2), parameters.get(3));
+            final BiFunction<StationID, StationID, Deque<Node<StationID>>> strategy) {
+        validateParametersNumber(parameters, REQUIRED_FOUR);
+        final var source = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var target = new StationID(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
         return strategy.apply(source, target);
     }
 
-    String printRoute(final LinkedList<MetroNode> route) {
-        final var stringJoiner = new StringJoiner("\n");
-        var line = route.getFirst().getLine();
+    String printRoute(final Deque<Node<StationID>> route) {
+        final var stringJoiner = new StringJoiner(System.lineSeparator());
+        var line = route.getFirst().getId().getLine();
 
         for (final var node : route) {
-            if (!node.getLine().equals(line)) {
-                line = node.getLine();
+            if (!node.getId().getLine().equals(line)) {
+                line = node.getId().getLine();
                 stringJoiner.add("Transition to line " + line);
             }
-            stringJoiner.add(node.getName());
+            stringJoiner.add(node.getId().getName());
+            LOGGER.log(DEBUG, "Station: {0}, distance: {1}", node.getId().getName(), node.getDistance());
         }
         return stringJoiner.toString();
     }
+
 }

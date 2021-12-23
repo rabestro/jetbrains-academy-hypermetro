@@ -1,11 +1,12 @@
-package metro;
+package metro.config;
 
+import metro.Application;
 import metro.command.*;
-import metro.model.MetroMap;
+import metro.controller.Broker;
+import metro.repository.MetroRepository;
+import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
-import metro.service.ParameterParser;
-import metro.service.RequestParser;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ public class AppConfig {
 
     @Bean(name = "metroService")
     public MetroService getMetroService() {
-        return new MetroServiceImpl(getMetro());
+        return new MetroServiceImpl(getRepository());
     }
 
     @Bean(name = "exit")
@@ -33,36 +34,33 @@ public class AppConfig {
         return Set.of("/exit", "exit", "quit", "/quit")::contains;
     }
 
-    @Bean(name = "invalid")
-    public Runnable invalidCommand() {
-        return () -> ui().printLine("Invalid command.");
-    }
-
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
         return Map.of(
                 "output", new Output(getMetroService()),
+                "print", new Print(getMetroService()),
                 "append", new Append(getMetroService()),
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
                 "route", new Route(getMetroService()),
+                "bfs-route", new BfsRoute(getMetroService()),
                 "fastest-route", new FastestRoute(getMetroService())
         );
     }
 
-    @Bean(name = "metro")
-    public MetroMap getMetro() {
-        return new MetroMap();
+    @Bean(name = "repository")
+    public MetroRepository getRepository() {
+        return new MetroRepositoryImpl();
     }
 
     @Bean(name = "requestParser")
-    public RequestParser getRequestParser() {
-        return new RequestParser(ui(), new ParameterParser(), getCommands(), invalidCommand());
+    public Broker getRequestParser() {
+        return new Broker(getCommands());
     }
 
     @Bean(name = "application")
     public Application getApplication() {
-        return new Application(ui(), exit(), getRequestParser(), getMetro());
+        return new Application(ui(), exit(), getRequestParser(), getRepository());
     }
 }

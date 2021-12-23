@@ -1,7 +1,7 @@
 package metro.ui;
 
 public interface UserInterface {
-    String readLine();
+    String read();
 
-    void printLine(Object line);
+    void write(Object line);
 }

@@ -4,21 +4,19 @@ import lombok.AllArgsConstructor;
 import metro.service.MetroService;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 @AllArgsConstructor
 abstract class HyperMetroCommand implements Command {
-    static final String NOT_IMPLEMENTED = "This command is not yet implemented";
-    private static final Pattern CAMEL_CASE = Pattern.compile("(\\p{Lower})(\\p{Upper})");
-    final MetroService metroService;
+    static final int REQUIRED_ONE = 1;
+    static final int REQUIRED_TWO = 2;
+    static final int REQUIRED_FOUR = 4;
 
-    @Override
-    public String name() {
-        return CAMEL_CASE
-                .matcher(this.getClass().getSimpleName())
-                .replaceAll("$1-$2")
-                .toLowerCase();
-    }
+    static final int SOURCE_LINE = 0;
+    static final int SOURCE_NAME = 1;
+    static final int TARGET_LINE = 2;
+    static final int TARGET_NAME = 3;
+
+    final MetroService metroService;
 
     void validateParametersNumber(final List<String> parameters, final int requiredNumber) {
         if (parameters.size() != requiredNumber) {
