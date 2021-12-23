@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @ToString
 @AllArgsConstructor
 public class MetroLine implements Iterable<MetroStation> {
-    private static final System.Logger LOGGER = System.getLogger("MetroLine");
+    private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
     private final String lineName;
     private final LinkedList<MetroStation> stations = new LinkedList<>();
