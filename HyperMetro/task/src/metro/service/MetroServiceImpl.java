@@ -48,9 +48,7 @@ public class MetroServiceImpl implements MetroService {
     @Override
     public void append(final String lineName, final String stationName) {
         LOG.log(DEBUG, "Append station [{1}] to line [{0}]", lineName, stationName);
-        final var metroLine = getMetroLine(lineName);
-        final var sid = new StationID(lineName, stationName);
-        metroLine.append(new MetroStation(sid));
+        getMetroLine(lineName).append(stationName);
     }
 
     @Override

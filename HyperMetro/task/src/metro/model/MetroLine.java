@@ -42,7 +42,12 @@ public class MetroLine implements Iterable<MetroStation> {
         stations.add(metroStation);
     }
 
-    public void append(final MetroStation metroStation) {
+    public void append(final String stationName) {
+        final var sid = new StationID(lineName, stationName);
+        append(new MetroStation(sid));
+    }
+
+    private void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
             lastStation.setNext(Set.of(metroStation.getStationID()));
