@@ -11,6 +11,9 @@ import java.util.function.Function;
 import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 
+/**
+ * Prints a metro line
+ */
 public class Output extends HyperMetroCommand {
     private static final String PREFIX_PREV = "<---| ";
     private static final String PREFIX_NEXT = "--->| ";
