@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
+import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 
 public class Print extends HyperMetroCommand {
@@ -28,8 +29,8 @@ public class Print extends HyperMetroCommand {
     }
 
     private String printStation(final MetroStation metroStation) {
-        final var name = metroStation.getStationID().getName();
-        return name + System.lineSeparator()
+        final var name = metroStation.getStationID().name();
+        return name + lineSeparator()
                 + printNeighbors(PREFIX_PREV, metroStation.getPrev())
                 + printNeighbors(PREFIX_NEXT, metroStation.getNext())
                 + printNeighbors(PREFIX_TRAN, metroStation.getTransfer())
@@ -37,9 +38,9 @@ public class Print extends HyperMetroCommand {
     }
 
     private String printNeighbors(final String prefix, final Set<StationID> stations) {
-        final Function<StationID, String> name = prefix.equals(PREFIX_TRAN) ? StationID::getLine : StationID::getName;
+        final Function<StationID, String> name = prefix.equals(PREFIX_TRAN) ? StationID::line : StationID::name;
         return stations.isEmpty() ? "" : stations.stream()
                 .map(name.andThen(prefix::concat))
-                .collect(joining(System.lineSeparator())) + System.lineSeparator();
+                .collect(joining(lineSeparator())) + lineSeparator();
     }
 }

@@ -20,7 +20,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 class MapLoader {
-    private static final System.Logger LOGGER = System.getLogger("MapLoader");
+    private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
     private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
         LOGGER.log(TRACE, "Parse stations {0}", jsonElement);

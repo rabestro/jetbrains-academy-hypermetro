@@ -29,15 +29,15 @@ abstract class RouteCommand extends HyperMetroCommand {
 
     String printRoute(final Deque<Node<StationID>> route) {
         final var stringJoiner = new StringJoiner(System.lineSeparator());
-        var line = route.getFirst().getId().getLine();
+        var line = route.getFirst().getId().line();
 
         for (final var node : route) {
-            if (!node.getId().getLine().equals(line)) {
-                line = node.getId().getLine();
+            if (!node.getId().line().equals(line)) {
+                line = node.getId().line();
                 stringJoiner.add("Transition to line " + line);
             }
-            stringJoiner.add(node.getId().getName());
-            LOGGER.log(DEBUG, "Station: {0}, distance: {1}", node.getId().getName(), node.getDistance());
+            stringJoiner.add(node.getId().name());
+            LOGGER.log(DEBUG, "Station: {0}, distance: {1}", node.getId().name(), node.getDistance());
         }
         return stringJoiner.toString();
     }

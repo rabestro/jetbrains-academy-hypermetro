@@ -14,27 +14,28 @@ import java.util.Deque;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
-    private static final System.Logger LOGGER = System.getLogger("MetroService");
+    private static final System.Logger LOGGER = System.getLogger("HyperMetro");
     private static final String NOT_FOUND = "No such metro station or metro line was found.";
-    private static final NoSuchElementException NOT_FOUND_EXCEPTION = new NoSuchElementException(NOT_FOUND);
+    private static final Supplier<NoSuchElementException> NOT_FOUND_EXCEPTION = () -> new NoSuchElementException(NOT_FOUND);
     private static final int TRANSFER_TIME = 5;
 
     private final MetroRepository repository;
 
     @Override
     public MetroLine getMetroLine(final String name) {
-        return repository.getLine(name).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        return repository.getLine(name).orElseThrow(NOT_FOUND_EXCEPTION);
     }
 
     @Override
     public MetroStation getMetroStation(final StationID station) {
-        return repository.getStation(station).orElseThrow(() -> NOT_FOUND_EXCEPTION);
+        return repository.getStation(station).orElseThrow(NOT_FOUND_EXCEPTION);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public void remove(final StationID target) {
-        getMetroLine(target.getLine()).remove(getMetroStation(target));
+        getMetroLine(target.line()).remove(getMetroStation(target));
     }
 
     @Override
