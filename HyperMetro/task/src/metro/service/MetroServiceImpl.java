@@ -16,12 +16,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import static java.lang.System.Logger.Level.DEBUG;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @AllArgsConstructor
 public class MetroServiceImpl implements MetroService {
-    private static final System.Logger LOGGER = System.getLogger("HyperMetro");
+    private static final System.Logger LOG = System.getLogger("HyperMetro");
     private static final String NOT_FOUND = "No such metro station or metro line was found.";
     private static final Supplier<NoSuchElementException> NOT_FOUND_EXCEPTION = () -> new NoSuchElementException(NOT_FOUND);
     private static final int TRANSFER_TIME = 5;
@@ -40,21 +41,27 @@ public class MetroServiceImpl implements MetroService {
 
     @Override
     public void addHead(final String lineName, final String stationName) {
+        LOG.log(DEBUG, "AddHead station [{1}] to line [{0}]", lineName, stationName);
         getMetroLine(lineName).addHead(stationName);
     }
 
     @Override
     public void append(final String lineName, final String stationName) {
-        getMetroLine(lineName).append(stationName);
+        LOG.log(DEBUG, "Append station [{1}] to line [{0}]", lineName, stationName);
+        final var metroLine = getMetroLine(lineName);
+        final var sid = new StationID(lineName, stationName);
+        metroLine.append(new MetroStation(sid));
     }
 
     @Override
     public void remove(final StationID target) {
+        LOG.log(DEBUG, "Remove station [{0}]", target);
         getMetroLine(target.line()).remove(getMetroStation(target));
     }
 
     @Override
     public void connect(final StationID source, final StationID target) {
+        LOG.log(DEBUG, "Connect station [{0}] to [{1}]", target);
         getMetroStation(source).setTransfer(Set.of(target));
         getMetroStation(target).setTransfer(Set.of(source));
     }

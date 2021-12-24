@@ -11,7 +11,7 @@ public class MetroStation {
     private Set<StationID> next = Set.of();
     private Set<StationID> prev = Set.of();
 
-    MetroStation(final StationID sid) {
+    public MetroStation(final StationID sid) {
         stationID = sid;
         time = CONSTANT_TIME;
     }
