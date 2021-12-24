@@ -7,6 +7,13 @@ import java.util.stream.Stream;
 
 @FunctionalInterface
 public interface SearchAlgorithm<T> {
+    /**
+     * Finds the route from the source node to the target node.
+     *
+     * @param source node
+     * @param target node
+     * @return the route from the source node to the target node.
+     */
     Deque<Node<T>> findRoute(Node<T> source, Node<T> target);
 
     default Deque<Node<T>> buildPath(final Node<T> target) {

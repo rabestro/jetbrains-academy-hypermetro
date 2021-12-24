@@ -4,6 +4,10 @@ import metro.service.MetroService;
 
 import java.util.List;
 
+/**
+ * Prints the shortest (the smallest number of stations) way from one station to another.
+ * Breadth-First search algorithm is used.
+ */
 public class BfsRoute extends RouteCommand {
     public BfsRoute(final MetroService metroService) {
         super(metroService);
