@@ -54,13 +54,13 @@ public class AppConfig {
         return new MetroRepositoryImpl();
     }
 
-    @Bean(name = "requestParser")
-    public Broker getRequestParser() {
+    @Bean(name = "broker")
+    public Broker getBroker() {
         return new Broker(getCommands());
     }
 
     @Bean(name = "application")
     public Application getApplication() {
-        return new Application(ui(), exit(), getRequestParser(), getRepository());
+        return new Application(ui(), exit(), getBroker(), getRepository());
     }
 }
