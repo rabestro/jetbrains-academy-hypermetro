@@ -18,7 +18,7 @@ public class Node<T> {
         return id;
     }
 
-    Node<T> setNextNode(Node<T> nextNode) {
+    Node<T> setNextNode(final Node<T> nextNode) {
         nextNode.setPrevious(this);
         return nextNode;
     }
@@ -27,7 +27,7 @@ public class Node<T> {
         return previous;
     }
 
-    void setPrevious(Node<T> node) {
+    void setPrevious(final Node<T> node) {
         previous = node;
     }
 
