@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Node<T> {
+    static final int CONSTANT_DISTANCE = 1;
+
     private final T id;
     private final Map<Node<T>, Integer> edges = new HashMap<>();
 
@@ -33,6 +35,10 @@ public class Node<T> {
 
     public Map<Node<T>, Integer> getEdges() {
         return edges;
+    }
+
+    public void addEdge(final Node<T> node) {
+        edges.put(node, CONSTANT_DISTANCE);
     }
 
     public void addEdge(final Node<T> node, final Integer distance) {
