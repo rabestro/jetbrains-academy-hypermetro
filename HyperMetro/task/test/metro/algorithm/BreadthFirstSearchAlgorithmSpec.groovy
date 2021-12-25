@@ -39,7 +39,9 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
         where:
         sourceNode | targetNode || expected
         'A'        | 'B'        || ['A', 'B']
+        'B'        | 'A'        || ['B', 'A']
         'A'        | 'C'        || ['A', 'B', 'D', 'C']
+        'C'        | 'A'        || ['C', 'A']
         'E'        | 'B'        || ['E', 'F', 'D', 'C', 'A', 'B']
 
         and:
