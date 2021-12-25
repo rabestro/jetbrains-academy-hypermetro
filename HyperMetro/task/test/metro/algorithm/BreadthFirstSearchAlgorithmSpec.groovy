@@ -20,7 +20,7 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
     void setup() {
         GRAPH.each {
             def source = nodes[it.key]
-            it.value.each { source.addEdge(nodes[it], 1) }
+            it.value.each { source.addEdge(nodes[it]) }
         }
     }
 
