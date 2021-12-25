@@ -6,21 +6,21 @@ import spock.lang.Unroll
 
 class BreadthFirstSearchAlgorithmSpec extends Specification {
 
+    static final GRAPH = [
+            A: ['B'],
+            B: ['A', 'D'],
+            C: ['A'],
+            D: ['C', 'E'],
+            E: ['F'],
+            F: ['D', 'E']]
+
     @Shared
-    def nodes = createNodes 'A B C D E F'
+    Map<String, Node> nodes = GRAPH.collectEntries { [it.key, new Node(it.key)] }
 
     void setup() {
-        [['A', 'B', 5],
-         ['B', 'A', 9], ['B', 'D', 8],
-         ['C', 'A', 7],
-         ['D', 'C', 2], ['D', 'E', 3],
-         ['E', 'F', 7],
-         ['F', 'D', 1], ['F', 'E', 4]
-        ].each {
-            def source = nodes.get(it[0])
-            def target = nodes.get(it[1])
-            def distance = it[2] as Integer
-            source.addEdge(target, distance)
+        GRAPH.each {
+            def source = nodes[it.key]
+            it.value.each { source.addEdge(nodes[it], 1) }
         }
     }
 
@@ -46,10 +46,6 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
         source = nodes[sourceNode]
         target = nodes[targetNode]
 
-    }
-
-    private static Map<String, Node> createNodes(String vertex) {
-        vertex.split(/ /).collectEntries { [it, new Node(it)] }
     }
 
 }
