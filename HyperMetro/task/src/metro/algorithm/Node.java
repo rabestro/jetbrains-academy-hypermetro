@@ -53,4 +53,8 @@ public class Node<T> {
         this.distance = distance;
     }
 
+    @Override
+    public String toString() {
+        return "{" + id + '}';
+    }
 }
