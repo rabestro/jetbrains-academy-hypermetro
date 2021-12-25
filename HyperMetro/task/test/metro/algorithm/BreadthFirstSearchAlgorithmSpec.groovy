@@ -30,10 +30,10 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
         def algorithm = new BreadthFirstSearchAlgorithm()
 
         when:
-        def actual = algorithm.findRoute(source, target)
+        def route = algorithm.findRoute(source, target)
 
         then:
-        actual.id == expected
+        route.id == expected
 
         where:
         sourceNode | targetNode || expected
@@ -46,7 +46,6 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
         and:
         source = nodes[sourceNode]
         target = nodes[targetNode]
-
     }
 
 }
