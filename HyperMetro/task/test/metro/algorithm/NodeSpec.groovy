@@ -19,7 +19,7 @@ class NodeSpec extends Specification {
         id << ['A' as char, 12, new StationID('Bakerloo', 'Waterloo')]
     }
 
-    def 'should correctly creating a node'() {
+    def 'should correctly create a node'() {
         given:
         def node = new Node('A')
 
