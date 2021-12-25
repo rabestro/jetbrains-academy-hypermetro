@@ -9,14 +9,17 @@ class ParameterParserSpec extends Specification {
         def parser = new ParameterParser()
 
         when:
-        def result = parser.parse(line)
+        def parameters = parser.parse(line)
 
         then:
-        result == expected
+        parameters == expected
 
         where:
         line                                   | expected
         ''                                     | []
+        '      '                               | []
+        '     ""    '                          | []
+        null                                   | []
         'Waterloo'                             | ['Waterloo']
         '"Waterloo"'                           | ['Waterloo']
         '     "Waterloo"'                      | ['Waterloo']

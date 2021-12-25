@@ -18,35 +18,35 @@ class BreadthFirstSearchAlgorithmSpec extends Specification {
     Map<String, Node> nodes = GRAPH.collectEntries { [it.key, new Node(it.key)] }
 
     void setup() {
-        GRAPH.each {
-            def source = nodes[it.key]
-            it.value.each { source.addEdge(nodes[it]) }
+        GRAPH.each { source, edges ->
+            edges.each { nodes[source].addEdge(nodes[it]) }
         }
     }
 
-    @Unroll("from #sourceNode to #targetNode the path is #expected")
+    @Unroll("from #sourceId to #targetId the path is #expected")
     def "should find a route"() {
         given:
         def algorithm = new BreadthFirstSearchAlgorithm()
 
         when:
-        def actual = algorithm.findRoute(source, target)
+        def route = algorithm.findRoute(source, target)
 
         then:
-        actual.id == expected
+        route.id == expected
 
         where:
-        sourceNode | targetNode || expected
-        'A'        | 'B'        || ['A', 'B']
-        'B'        | 'A'        || ['B', 'A']
-        'A'        | 'C'        || ['A', 'B', 'D', 'C']
-        'C'        | 'A'        || ['C', 'A']
-        'E'        | 'B'        || ['E', 'F', 'D', 'C', 'A', 'B']
+        sourceId | targetId || expected
+        'A'      | 'A'      || ['A']
+        'B'      | 'B'      || ['B']
+        'A'      | 'B'      || ['A', 'B']
+        'B'      | 'A'      || ['B', 'A']
+        'A'      | 'C'      || ['A', 'B', 'D', 'C']
+        'C'      | 'A'      || ['C', 'A']
+        'E'      | 'B'      || ['E', 'F', 'D', 'C', 'A', 'B']
 
         and:
-        source = nodes[sourceNode]
-        target = nodes[targetNode]
-
+        source = nodes[sourceId]
+        target = nodes[targetId]
     }
 
 }

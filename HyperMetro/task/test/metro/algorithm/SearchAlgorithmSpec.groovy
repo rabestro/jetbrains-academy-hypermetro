@@ -6,7 +6,7 @@ import spock.lang.Subject
 class SearchAlgorithmSpec extends Specification {
 
     @Subject
-    SearchAlgorithm algorithm = new SearchAlgorithm() {
+    def algorithm = new SearchAlgorithm() {
         @Override
         Deque<Node> findRoute(Node source, Node target) {
             return null
