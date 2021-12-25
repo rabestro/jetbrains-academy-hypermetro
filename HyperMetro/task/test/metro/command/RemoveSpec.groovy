@@ -6,11 +6,8 @@ import spock.lang.Specification
 import spock.lang.Subject
 
 class RemoveSpec extends Specification {
-    static final SOURCE_LINE = 'Edgington'
-    static final SOURCE_STATION = 'Kennington'
     static final TARGET_LINE = 'Central'
     static final TARGET_STATION = 'Hanger Lane'
-    static final SOURCE = new StationID(SOURCE_LINE, SOURCE_STATION)
     static final TARGET = new StationID(TARGET_LINE, TARGET_STATION)
 
     def service = Mock MetroService
@@ -21,15 +18,15 @@ class RemoveSpec extends Specification {
     void setup() {
     }
 
-    def "should execute connect command"() {
+    def "should execute remove command"() {
         given:
-        def parameters = [SOURCE_LINE, SOURCE_STATION, TARGET_LINE, TARGET_STATION]
+        def parameters = [TARGET_LINE, TARGET_STATION]
 
         when:
         def result = command.apply(parameters)
 
         then:
-        1 * service.connect(SOURCE, TARGET)
+        1 * service.remove(TARGET)
 
         and:
         result.contains 'successfully'
