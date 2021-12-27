@@ -1,8 +1,9 @@
 package metro.service;
 
 import lombok.AllArgsConstructor;
-import metro.algorithm.BreadthFirstSearchAlgorithm;
+import metro.algorithm.BreadthFirstSearch;
 import metro.algorithm.DijkstrasAlgorithm;
+import metro.algorithm.Graph;
 import metro.algorithm.Node;
 import metro.algorithm.SearchAlgorithm;
 import metro.model.MetroLine;
@@ -10,10 +11,8 @@ import metro.model.MetroStation;
 import metro.model.StationID;
 import metro.repository.MetroRepository;
 
-import java.util.Deque;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static java.lang.System.Logger.Level.DEBUG;
@@ -65,10 +64,20 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public Deque<Node<StationID>> bfsRoute(final StationID sourceId, final StationID targetId) {
-        return new RouteRequest(sourceId, targetId)
-                .useAlgorithm(new BreadthFirstSearchAlgorithm<>())
-                .find();
+    public List<StationID> bfsRoute(final StationID sourceId, final StationID targetId) {
+        final var graph = new Graph<>(repository.stream().collect(toUnmodifiableMap(identity(), this::getEdges)));
+        final var algorithm = new BreadthFirstSearch<StationID>();
+        return algorithm.findPath(graph, sourceId, targetId);
+    }
+
+    private Map<StationID, Number> getEdges(final StationID id) {
+        final var edges = new HashMap<StationID, Number>();
+        final var station = getMetroStation(id);
+        final Consumer<StationID> equalTime = target -> edges.put(target, 1);
+        station.getNext().forEach(equalTime);
+        station.getPrev().forEach(equalTime);
+        station.getTransfer().forEach(equalTime);
+        return edges;
     }
 
     @Override
@@ -86,6 +95,7 @@ public class MetroServiceImpl implements MetroService {
                 .timeToTransfer((source, target) -> TRANSFER_TIME)
                 .find();
     }
+
 
     private class RouteRequest {
         private final StationID source;

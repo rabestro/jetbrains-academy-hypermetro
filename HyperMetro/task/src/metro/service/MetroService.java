@@ -6,6 +6,7 @@ import metro.model.MetroStation;
 import metro.model.StationID;
 
 import java.util.Deque;
+import java.util.List;
 
 public interface MetroService {
     /**
@@ -63,7 +64,7 @@ public interface MetroService {
      * @param target metro station id
      * @return the route from the source station to the target station.
      */
-    Deque<Node<StationID>> bfsRoute(StationID source, StationID target);
+    List<StationID> bfsRoute(StationID source, StationID target);
 
     /**
      * Finds the fastest way by using Dijkstra's algorithm.
