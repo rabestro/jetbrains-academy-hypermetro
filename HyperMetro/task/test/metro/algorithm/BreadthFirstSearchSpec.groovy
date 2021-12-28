@@ -2,36 +2,38 @@ package metro.algorithm
 
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Breadth First Search Algorithm")
 class BreadthFirstSearchSpec extends Specification {
-
     @Subject
     def algorithm = new BreadthFirstSearch<String>()
 
     def 'should find the shortest path for a simple graph'() {
-        given:
+        given: 'a simple graph with three nodes'
         def graph = new Graph([
                 A: [B: 7, C: 2],
                 B: [A: 3, C: 5],
                 C: [A: 1, B: 3]
         ])
 
-        when:
+        when: 'we use Breadth First Search algorithm to find the path'
         def path = algorithm.findPath(graph, source, target)
 
-        then:
+        then: 'we get the shortest path'
         path == shortest
 
         where:
         source | target || shortest
         'A'    | 'A'    || ['A']
         'A'    | 'B'    || ['A', 'B']
+        'A'    | 'C'    || ['A', 'C']
         'B'    | 'C'    || ['B', 'C']
         'C'    | 'B'    || ['C', 'B']
     }
 
     def 'should find the shortest path for a complex graph'() {
-        given:
+        given: 'a complex graph with eighth nodes'
         def graph = new Graph([
                 A: [B: 5, H: 2],
                 B: [A: 5, C: 7],
@@ -43,10 +45,10 @@ class BreadthFirstSearchSpec extends Specification {
                 H: [G: 3]
         ])
 
-        when:
+        when: 'we use Breadth First Search algorithm to find the path'
         def path = algorithm.findPath(graph, source, target)
 
-        then:
+        then: 'we get the shortest path'
         path == shortest
 
         where:

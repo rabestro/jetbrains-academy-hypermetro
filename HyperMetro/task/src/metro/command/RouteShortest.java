@@ -1,6 +1,5 @@
 package metro.command;
 
-import metro.algorithm.BreadthFirstSearch;
 import metro.service.MetroService;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class RouteShortest extends RouteCommand {
 
     @Override
     public String apply(final List<String> parameters) {
-        return findRoute(parameters, new BreadthFirstSearch<>());
+        return findRoute(parameters, BFS_ALGORITHM);
     }
 
 }

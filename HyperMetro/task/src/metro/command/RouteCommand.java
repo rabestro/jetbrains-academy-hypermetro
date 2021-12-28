@@ -1,17 +1,20 @@
 package metro.command;
 
-import metro.algorithm.Graph;
+import metro.algorithm.BreadthFirstSearch;
+import metro.algorithm.DijkstrasAlgorithm;
 import metro.algorithm.SearchAlgorithm;
 import metro.model.StationId;
 import metro.service.MetroService;
 
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.stream.IntStream;
 
 import static java.lang.System.Logger.Level.DEBUG;
 
 abstract class RouteCommand extends HyperMetroCommand {
+    static final SearchAlgorithm<StationId> DIJKSTRAS = new DijkstrasAlgorithm<>();
+    static final SearchAlgorithm<StationId> BFS_ALGORITHM =  new BreadthFirstSearch<>();
+
     int transferTime = 5;
     boolean hideTime = true;
 
@@ -25,7 +28,10 @@ abstract class RouteCommand extends HyperMetroCommand {
         final var target = new StationId(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
         final var graph = metroService.getMetroGraph(TRANSFER_TIME);
         final var route = algorithm.findPath(graph, source, target);
-        return printRoute(route) + printTime(graph, route);
+        final var timeMessage = hideTime ? "" :
+                "Total: " + (int) graph.getDistance(route) + " minutes in the way";
+
+        return printRoute(route) + timeMessage;
     }
 
     String printRoute(final List<StationId> route) {
@@ -43,14 +49,4 @@ abstract class RouteCommand extends HyperMetroCommand {
         return stringJoiner.toString();
     }
 
-    String printTime(Graph<StationId> graph, List<StationId> route) {
-        if (hideTime) {
-            return "";
-        }
-        final var time = IntStream.range(1, route.size())
-                .mapToObj(i -> graph.edges(route.get(i - 1)).get(route.get(i)))
-                .mapToInt(Number::intValue)
-                .sum();
-        return System.lineSeparator() + "Total: " + time + " minutes in the way";
-    }
 }
