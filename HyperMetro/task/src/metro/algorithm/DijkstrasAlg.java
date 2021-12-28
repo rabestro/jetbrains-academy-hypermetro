@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import static java.util.stream.Stream.iterate;
 
-public class Dijkstras<T> implements Algorithm<T> {
+public class DijkstrasAlg<T> implements Algorithm<T> {
 
     @Override
     public List<T> findPath(Graph<T> graph, T source, T target) {

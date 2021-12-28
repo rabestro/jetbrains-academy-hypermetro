@@ -1,8 +1,8 @@
 package metro;
 
 import lombok.AllArgsConstructor;
-import metro.repository.MetroRepository;
 import metro.controller.Broker;
+import metro.repository.MetroRepository;
 import metro.ui.UserInterface;
 
 import java.io.IOException;
