@@ -19,6 +19,7 @@ dependencies {
 
 
 test {
+    systemProperty 'spock.configuration', 'test/SpockConfig.groovy'
     systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
     systemProperty 'com.athaydes.spockframework.report.outputDir', 'docs'
     systemProperty 'com.athaydes.spockframework.report.projectName', 'HyperMetro'
