@@ -1,7 +1,7 @@
 package metro.command;
 
-import metro.algorithm.Algorithm;
-import metro.algorithm.DijkstrasAlg;
+import metro.algorithm.DijkstrasSearchAlgorithm;
+import metro.algorithm.SearchAlgorithm;
 import metro.model.StationId;
 import metro.service.MetroService;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * Transactions between lines is not considered as moving around the nodes of the graph.
  */
 public class Route extends RouteCommand {
-    private static final Algorithm<StationId> algorithm = new DijkstrasAlg<>();
+    private static final SearchAlgorithm<StationId> algorithm = new DijkstrasSearchAlgorithm<>();
 
     public Route(final MetroService metroService) {
         super(metroService);

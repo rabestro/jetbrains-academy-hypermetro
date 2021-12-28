@@ -9,7 +9,7 @@ import java.util.Objects;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Stream.iterate;
 
-public class BreadthFirstSearch<T> implements Algorithm<T> {
+public class BreadthFirstSearch<T> implements SearchAlgorithm<T> {
 
     @Override
     public List<T> findPath(Graph<T> graph, T source, T target) {
@@ -35,5 +35,4 @@ public class BreadthFirstSearch<T> implements Algorithm<T> {
         }
         return List.of();
     }
-
 }

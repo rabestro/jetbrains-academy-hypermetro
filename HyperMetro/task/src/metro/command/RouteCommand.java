@@ -1,6 +1,6 @@
 package metro.command;
 
-import metro.algorithm.Algorithm;
+import metro.algorithm.SearchAlgorithm;
 import metro.model.StationId;
 import metro.service.MetroService;
 
@@ -16,7 +16,7 @@ abstract class RouteCommand extends HyperMetroCommand {
         super(metroService);
     }
 
-    String findRoute(final List<String> parameters, final Algorithm<StationId> algorithm) {
+    String findRoute(final List<String> parameters, final SearchAlgorithm<StationId> algorithm) {
         validateParametersNumber(parameters, REQUIRED_FOUR);
         final var source = new StationId(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
         final var target = new StationId(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
