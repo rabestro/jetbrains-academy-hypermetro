@@ -2,7 +2,7 @@ package metro.service
 
 import metro.model.MetroLine
 import metro.model.MetroStation
-import metro.model.StationID
+import metro.model.StationId
 import metro.repository.MetroRepository
 import spock.lang.Specification
 import spock.lang.Subject
@@ -16,8 +16,8 @@ class MetroServiceImplSpec extends Specification {
     static final SOURCE_STATION = 'Kennington'
     static final TARGET_LINE = 'Central'
     static final TARGET_STATION = 'Hanger Lane'
-    static final SOURCE = new StationID(SOURCE_LINE, SOURCE_STATION)
-    static final TARGET = new StationID(TARGET_LINE, TARGET_STATION)
+    static final SOURCE = new StationId(SOURCE_LINE, SOURCE_STATION)
+    static final TARGET = new StationId(TARGET_LINE, TARGET_STATION)
 
     def repository = Mock MetroRepository
     def mockLine = Mock MetroLine

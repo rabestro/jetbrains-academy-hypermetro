@@ -7,6 +7,9 @@ import java.util.List;
 
 @AllArgsConstructor
 abstract class HyperMetroCommand implements Command {
+    static final System.Logger LOGGER = System.getLogger("");
+
+    static final int TRANSFER_TIME = 5;
     static final int REQUIRED_ONE = 1;
     static final int REQUIRED_TWO = 2;
     static final int REQUIRED_FOUR = 4;

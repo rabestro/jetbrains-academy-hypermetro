@@ -1,6 +1,6 @@
 package metro.command
 
-import metro.model.StationID
+import metro.model.StationId
 import metro.service.MetroService
 import spock.lang.Specification
 import spock.lang.Subject
@@ -8,7 +8,7 @@ import spock.lang.Subject
 class RemoveSpec extends Specification {
     static final TARGET_LINE = 'Central'
     static final TARGET_STATION = 'Hanger Lane'
-    static final TARGET = new StationID(TARGET_LINE, TARGET_STATION)
+    static final TARGET = new StationId(TARGET_LINE, TARGET_STATION)
 
     def service = Mock MetroService
 

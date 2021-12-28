@@ -6,7 +6,7 @@ import com.google.gson.JsonParser;
 import metro.model.MetroLine;
 import metro.model.MetroMap;
 import metro.model.MetroStation;
-import metro.model.StationID;
+import metro.model.StationId;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,14 +22,14 @@ import static java.util.stream.Collectors.toUnmodifiableMap;
 class MapLoader {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
-    private static Set<StationID> parseStations(final String line, final JsonElement jsonElement) {
+    private static Set<StationId> parseStations(final String line, final JsonElement jsonElement) {
         LOGGER.log(TRACE, "Parse stations {0}", jsonElement);
-        final var stations = new HashSet<StationID>();
+        final var stations = new HashSet<StationId>();
         if (!jsonElement.isJsonNull()) {
             jsonElement.getAsJsonArray().forEach(element -> {
                 final var name = element.getAsString();
-                final var stationId = new StationID(line, name);
-                stations.add(stationId);
+                final var id = new StationId(line, name);
+                stations.add(id);
             });
         }
         LOGGER.log(TRACE, "Stations: {0}", stations);
@@ -70,7 +70,7 @@ class MapLoader {
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
         final var time = getTime(jsonStation);
-        final var id = new StationID(line, name);
+        final var id = new StationId(line, name);
         final var station = new MetroStation(id, time);
         LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
         station.setPrev(parseStations(line, jsonStation.get("prev")));
@@ -80,20 +80,20 @@ class MapLoader {
         return station;
     }
 
-    private Set<StationID> parseTransfer(final JsonElement jsonElement) {
-        final var transfer = new HashSet<StationID>();
+    private Set<StationId> parseTransfer(final JsonElement jsonElement) {
+        final var transfer = new HashSet<StationId>();
         if (!jsonElement.isJsonNull()) {
             jsonElement.getAsJsonArray().forEach(element -> {
                 final var jsonObject = element.getAsJsonObject();
-                final var stationId = parseStationId(jsonObject);
-                transfer.add(stationId);
+                final var id = parseStationId(jsonObject);
+                transfer.add(id);
             });
         }
         return transfer;
     }
 
-    private StationID parseStationId(final JsonObject jsonObject) {
-        return new StationID(
+    private StationId parseStationId(final JsonObject jsonObject) {
+        return new StationId(
                 jsonObject.get("line").getAsString(),
                 jsonObject.get("station").getAsString()
         );

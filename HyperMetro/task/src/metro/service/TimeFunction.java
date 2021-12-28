@@ -1,9 +1,9 @@
 package metro.service;
 
 import metro.model.MetroStation;
-import metro.model.StationID;
+import metro.model.StationId;
 
 import java.util.function.BiFunction;
 
-public interface TimeFunction extends BiFunction<MetroStation, StationID, Integer> {
+public interface TimeFunction extends BiFunction<MetroStation, StationId, Integer> {
 }

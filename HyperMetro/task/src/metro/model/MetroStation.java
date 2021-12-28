@@ -5,48 +5,48 @@ import java.util.Set;
 public class MetroStation {
     private static final int CONSTANT_TIME = 1;
 
-    private final StationID stationID;
+    private final StationId id;
     private final int time;
-    private Set<StationID> transfer = Set.of();
-    private Set<StationID> next = Set.of();
-    private Set<StationID> prev = Set.of();
+    private Set<StationId> transfer = Set.of();
+    private Set<StationId> next = Set.of();
+    private Set<StationId> prev = Set.of();
 
-    public MetroStation(final StationID sid) {
-        stationID = sid;
+    public MetroStation(final StationId sid) {
+        id = sid;
         time = CONSTANT_TIME;
     }
 
-    public MetroStation(final StationID sid, final int time) {
-        this.stationID = sid;
+    public MetroStation(final StationId sid, final int time) {
+        this.id = sid;
         this.time = time;
     }
 
-    public Set<StationID> getTransfer() {
+    public Set<StationId> getTransfer() {
         return transfer;
     }
 
-    public void setTransfer(Set<StationID> transfer) {
+    public void setTransfer(Set<StationId> transfer) {
         this.transfer = transfer;
     }
 
-    public Set<StationID> getNext() {
+    public Set<StationId> getNext() {
         return next;
     }
 
-    public void setNext(Set<StationID> next) {
+    public void setNext(Set<StationId> next) {
         this.next = next;
     }
 
-    public Set<StationID> getPrev() {
+    public Set<StationId> getPrev() {
         return prev;
     }
 
-    public void setPrev(Set<StationID> prev) {
+    public void setPrev(Set<StationId> prev) {
         this.prev = prev;
     }
 
-    public StationID getStationID() {
-        return stationID;
+    public StationId getId() {
+        return id;
     }
 
     public int getTime() {

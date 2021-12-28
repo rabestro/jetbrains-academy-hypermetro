@@ -10,20 +10,21 @@ import java.util.List;
 /**
  * Prints the fastest way by using Dijkstra's algorithm.
  * The travel time between station is taken into account.
+ * Transferring from one line to another takes 5 minutes.
  * <p>
- * Transactions between lines is not considered as moving around the nodes of the graph.
+ * The program prints the estimate total travel time.
  */
-public class Route extends RouteCommand {
+public class RouteFastest extends RouteCommand {
     private static final SearchAlgorithm<StationId> algorithm = new DijkstrasSearchAlgorithm<>();
 
-    public Route(final MetroService metroService) {
+    public RouteFastest(MetroService metroService) {
         super(metroService);
-        transferTime = 0;
+        transferTime = 5;
+        hideTime = false;
     }
 
     @Override
-    public String apply(final List<String> parameters) {
+    public String apply(List<String> parameters) {
         return findRoute(parameters, algorithm);
     }
-
 }
