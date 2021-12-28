@@ -2,7 +2,7 @@
 Have you ever been worried about getting lost in the subway? Do you need to find a faster route to your destination? Write an application that will help you better navigate the complicated metro system.
 
 ## About
-This project is the implementation of the project HyperMetro from JetBrains Academy. The program loads the metro map (the file with the scheme is specified when the program starts). After loading the user through the command menu can execute the following commands:
+This project is the implementation of the project [HyperMetro](https://hyperskill.org/projects/120) from JetBrains Academy. The program loads the metro map (the file with the scheme is specified when the program starts). After loading the user through the command menu can execute the following commands:
 
 - add-head line station
 - append line station
