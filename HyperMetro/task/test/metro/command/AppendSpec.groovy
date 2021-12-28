@@ -3,7 +3,9 @@ package metro.command
 import metro.service.MetroService
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Command: /append")
 class AppendSpec extends Specification {
     def service = Mock MetroService
 

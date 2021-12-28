@@ -4,7 +4,9 @@ import metro.model.StationId
 import metro.service.MetroService
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Command: /connect")
 class ConnectSpec extends Specification {
     static final SOURCE_LINE = 'Edgington'
     static final SOURCE_STATION = 'Kennington'

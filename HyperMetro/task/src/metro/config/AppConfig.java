@@ -1,8 +1,12 @@
 package metro.config;
 
 import metro.Application;
+import metro.algorithm.BreadthFirstSearch;
+import metro.algorithm.DijkstrasAlgorithm;
+import metro.algorithm.SearchAlgorithm;
 import metro.command.*;
 import metro.controller.Broker;
+import metro.model.StationId;
 import metro.repository.MetroRepository;
 import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
@@ -34,6 +38,11 @@ public class AppConfig {
         return Set.of("/exit", "exit", "quit", "/quit")::contains;
     }
 
+    @Bean(name = "dijkstrasAlgorithm")
+    public SearchAlgorithm<StationId> dijkstrasAlgorithm() {
+        return new DijkstrasAlgorithm<>();
+    }
+
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
         return Map.of(
@@ -43,9 +52,9 @@ public class AppConfig {
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
-                "route", new Route(getMetroService()),
-                "shortest-route", new RouteShortest(getMetroService()),
-                "fastest-route", new RouteFastest(getMetroService())
+                "route", new Route(getMetroService(), dijkstrasAlgorithm(), 0, true),
+                "shortest-route", new Route(getMetroService(), new BreadthFirstSearch<>(), 5, true),
+                "fastest-route", new Route(getMetroService(), dijkstrasAlgorithm(), 5, false)
         );
     }
 

@@ -2,38 +2,41 @@ package metro.command
 
 import metro.service.MetroService
 import spock.lang.Specification
-import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Command: /add-head")
 class AddHeadSpec extends Specification {
     def service = Mock MetroService
 
-    @Subject
-    def command = new AddHead(service)
-
     def "should execute add-head command"() {
-        given:
-        def params = ['Bakerloo', 'Waterloo']
+        given: 'command /add-head'
+        def command = new AddHead(service)
 
-        when:
-        def result = command.apply(params)
+        and: 'metro line and station name as parameters'
+        def parameters = ['Bakerloo', 'Waterloo']
 
-        then:
+        when: 'we execute the command with these parameters'
+        def result = command.apply(parameters)
+
+        then: 'the appropriate service is called with these parameters'
         1 * service.addHead('Bakerloo', 'Waterloo')
 
-        and:
+        and: 'execution of the command is successful'
         result.contains 'successfully'
     }
 
-    def 'should check number of parameters'(){
-        given:
+    def 'should check number of parameters'() {
+        given: 'command /add-head'
+        def command = new AddHead(service)
+
+        and: 'incorrect number of parameters'
         def params = ['Bakerloo']
 
-        when:
+        when: 'we execute the command with incorrect parameters'
         command.apply(params)
 
-        then:
+        then: 'the parameters are checked and exception thrown'
         thrown IllegalArgumentException
     }
-
 
 }

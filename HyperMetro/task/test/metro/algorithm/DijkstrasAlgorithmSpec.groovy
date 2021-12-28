@@ -15,7 +15,7 @@ class DijkstrasAlgorithmSpec extends Specification {
     @Subject
     def algorithm = new DijkstrasAlgorithm<String>()
 
-    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java")
+    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/small.gif")
     def 'should find the fastest route for a simple graph'() {
         given: 'a simple graph with three nodes'
         def graph = new Graph([

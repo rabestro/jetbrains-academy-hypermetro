@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Tue Dec 28 21:28:23 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Tue Dec 28 22:28:03 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,11 +272,12 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.011 seconds</td>
+<td>0.012 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
+<pre class='title'>Command: /add-head</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -307,7 +308,27 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<pre class='block-source'>def params = ['Bakerloo', 'Waterloo']</pre>
+<div class='block-text'>command /add-head</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def command = new AddHead(service)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>metro line and station name as parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def parameters = ['Bakerloo', 'Waterloo']</pre>
 </td>
 </tr>
 <tr>
@@ -315,13 +336,25 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<pre class='block-source'>def result = command.apply(params)</pre>
+<div class='block-text'>we execute the command with these parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def result = command.apply(parameters)</pre>
 </td>
 </tr>
 <tr>
 <td>
 <div class='block-kind'>Then:</div>
 </td>
+<td>
+<div class='block-text'>the appropriate service is called with these parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
 <td>
 <pre class='block-source'>1 * service.addHead('Bakerloo', 'Waterloo')</pre>
 </td>
@@ -330,6 +363,12 @@ div.footer {
 <td>
 <div class='block-kind'>And:</div>
 </td>
+<td>
+<div class='block-text'>execution of the command is successful</div>
+</td>
+</tr>
+<tr>
+<td></td>
 <td>
 <pre class='block-source'>result.contains 'successfully'</pre>
 </td>
@@ -349,6 +388,26 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
+<div class='block-text'>command /add-head</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def command = new AddHead(service)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>incorrect number of parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
 <pre class='block-source'>def params = ['Bakerloo']</pre>
 </td>
 </tr>
@@ -357,6 +416,12 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
+<div class='block-text'>we execute the command with incorrect parameters</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
 <pre class='block-source'>command.apply(params)</pre>
 </td>
 </tr>
@@ -364,6 +429,12 @@ div.footer {
 <td>
 <div class='block-kind'>Then:</div>
 </td>
+<td>
+<div class='block-text'>the parameters are checked and exception thrown</div>
+</td>
+</tr>
+<tr>
+<td></td>
 <td>
 <pre class='block-source'>thrown IllegalArgumentException</pre>
 </td>
