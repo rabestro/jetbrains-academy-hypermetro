@@ -15,4 +15,12 @@ This project is the implementation of the project HyperMetro from JetBrains Acad
 
 ## Used Technologies
 
-The project is written in Java 17. 
+The project is written in Java 17. For parsing JSON file with metro map used library Google Gson. Additionally I used Spring Core and Lombock libraries. 
+
+## Tests
+
+### Functional Test
+The project includes one functional test from JetBrains Academy. This test is used to check the solution and accept the project. 
+
+### Unit Test
+In addition to the functional test, I wrote unit tests using Spock Framework 2. 
