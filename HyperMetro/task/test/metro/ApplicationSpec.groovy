@@ -5,7 +5,9 @@ import metro.ui.UserInterface
 import spock.lang.Rollup
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("HyperMetro Application")
 class ApplicationSpec extends Specification {
     def ui = Mock UserInterface
     def repository = Mock MetroRepository

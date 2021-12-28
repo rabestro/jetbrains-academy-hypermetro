@@ -53,8 +53,8 @@ public class AppConfig {
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
-                "route", new Route(getMetroService(), dijkstrasAlgorithm(), 0, true),
-                "shortest-route", new Route(getMetroService(), new BreadthFirstSearch<>(), 5, true),
+                "route", new Route(getMetroService(), new BreadthFirstSearch<>(), 0, true),
+                "shortest-route", new Route(getMetroService(), new BreadthFirstSearch<>(), 5, false),
                 "fastest-route", new Route(getMetroService(), dijkstrasAlgorithm(), 5, false)
         );
     }

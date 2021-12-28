@@ -42,6 +42,7 @@ class DijkstrasAlgorithmSpec extends Specification {
         'A'    | 'B'    || 5    | ['A', 'C', 'B']
     }
 
+    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/medium.gif")
     def 'should find the fastest route for a medium graph'() {
         given: "we use Dijkstra's algorithm to find the path"
         def graph = new Graph([
@@ -71,6 +72,7 @@ class DijkstrasAlgorithmSpec extends Specification {
         'C'    | 'A'    || 20   | ['C', 'D', 'E', 'B', 'A']
     }
 
+    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/complex.gif")
     def 'should find the fastest route for a complex graph'() {
         given: "a complex graph with eight nodes"
         def graph = new Graph([
