@@ -72,3 +72,7 @@ configure(subprojects.findAll {it.name != 'util'}) {
 wrapper {
     gradleVersion = hs.gradle.version
 }
+
+task('unitTest', type: Test) {
+    systemProperty 'com.athaydes.spockframework.report.outputDir', 'build/reports/spock'
+}

@@ -17,9 +17,10 @@ dependencies {
 
 }
 
+
 test {
     systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
-    systemProperty 'com.athaydes.spockframework.report.outputDir', '/docs'
+    systemProperty 'com.athaydes.spockframework.report.outputDir', 'docs'
     systemProperty 'com.athaydes.spockframework.report.projectName', 'HyperMetro'
     systemProperty 'com.athaydes.spockframework.report.projectVersion', 1.0
 }

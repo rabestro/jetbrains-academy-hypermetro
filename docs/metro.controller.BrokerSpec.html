@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Tue Dec 28 19:39:41 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Tue Dec 28 19:57:42 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,7 +272,7 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.047 seconds</td>
+<td>0.078 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -310,7 +310,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def request = 'command Bakerloo Waterloo'</pre>
 </td>
 </tr>
 <tr>
@@ -318,7 +318,7 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>broker.apply(request)</pre>
 </td>
 </tr>
 <tr>
@@ -326,7 +326,7 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>1 * command.apply(['Bakerloo', 'Waterloo'])</pre>
 </td>
 </tr>
 <tr>
@@ -344,7 +344,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def request = 'unknown Bakerloo Waterloo'</pre>
 </td>
 </tr>
 <tr>
@@ -352,7 +352,7 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def result = broker.apply(request)</pre>
 </td>
 </tr>
 <tr>
@@ -360,7 +360,15 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>0 * command.apply(_)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<pre class='block-source'>result =~ /(?i)invalid command/</pre>
 </td>
 </tr>
 <tr>
@@ -378,7 +386,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def request = 'command Bakerloo Waterloo'</pre>
 </td>
 </tr>
 <tr>
@@ -386,7 +394,7 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def result = broker.apply(request)</pre>
 </td>
 </tr>
 <tr>
@@ -394,15 +402,15 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>1 * command.apply(_) &gt;&gt; { throw exception }</pre>
 </td>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>Where:</div>
+<div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>result =~ message</pre>
 </td>
 </tr>
 <tr>

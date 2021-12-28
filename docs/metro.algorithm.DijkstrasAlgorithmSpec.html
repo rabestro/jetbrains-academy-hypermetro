@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Tue Dec 28 19:39:40 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Tue Dec 28 19:57:40 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -309,11 +309,27 @@ div.footer {
 </td>
 </tr>
 <tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = new Graph([
+        A: [B: 7, C: 2],
+        B: [A: 3, C: 5],
+        C: [A: 1, B: 3]
+])</pre>
+</td>
+</tr>
+<tr>
 <td>
 <div class='block-kind'>When:</div>
 </td>
 <td>
 <div class='block-text'>we use Dijkstra's algorithm to find the path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def path = algorithm.findPath(graph, source, target)</pre>
 </td>
 </tr>
 <tr>
@@ -325,11 +341,23 @@ div.footer {
 </td>
 </tr>
 <tr>
+<td></td>
+<td>
+<pre class='block-source'>path == fastest</pre>
+</td>
+</tr>
+<tr>
 <td>
 <div class='block-kind'>And:</div>
 </td>
 <td>
 <div class='block-text'>the distance calculated correctly</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.getDistance(path) == time as double</pre>
 </td>
 </tr>
 <tr>

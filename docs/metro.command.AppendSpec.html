@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Tue Dec 28 19:39:41 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Tue Dec 28 19:57:42 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,7 +272,7 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.016 seconds</td>
+<td>0.015 seconds</td>
 </tr>
 </tbody>
 </table>
@@ -307,7 +307,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def params = ['Bakerloo', 'Waterloo']</pre>
 </td>
 </tr>
 <tr>
@@ -315,7 +315,7 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def result = command.apply(params)</pre>
 </td>
 </tr>
 <tr>
@@ -323,7 +323,15 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>1 * service.append('Bakerloo', 'Waterloo')</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<pre class='block-source'>result.contains 'successfully'</pre>
 </td>
 </tr>
 <tr>
@@ -341,7 +349,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>def params = ['Bakerloo']</pre>
 </td>
 </tr>
 <tr>
@@ -349,7 +357,7 @@ div.footer {
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>command.apply(params)</pre>
 </td>
 </tr>
 <tr>
@@ -357,7 +365,7 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='block-text'>----</div>
+<pre class='block-source'>thrown IllegalArgumentException</pre>
 </td>
 </tr>
 </tbody>
