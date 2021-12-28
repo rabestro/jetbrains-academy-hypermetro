@@ -1,11 +1,3 @@
-plugins {
-    id 'groovy'
-}
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -17,5 +9,17 @@ dependencies {
             'org.codehaus.groovy:groovy-all:3.0.8',
             'org.spockframework:spock-core:2.0-groovy-3.0'
     )
+    testRuntimeClasspath( "com.athaydes:spock-reports:2.1.1-groovy-3.0" ) {
+//        transitive = false // this avoids affecting your version of Groovy/Spock
+    }
+    testImplementation 'org.slf4j:slf4j-api:1.7.32'
+    testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.32'
+
 }
 
+test {
+    systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
+    systemProperty 'com.athaydes.spockframework.report.outputDir', '/docs'
+    systemProperty 'com.athaydes.spockframework.report.projectName', 'HyperMetro'
+    systemProperty 'com.athaydes.spockframework.report.projectVersion', 1.0
+}

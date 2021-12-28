@@ -43,6 +43,11 @@ subprojects {
     test {
         systemProperty "file.encoding", "utf-8"
         outputs.upToDateWhen { false }
+
+        systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
+        systemProperty 'com.athaydes.spockframework.report.outputDir', '/docs'
+        systemProperty 'com.athaydes.spockframework.report.projectName', 'HyperMetro'
+        systemProperty 'com.athaydes.spockframework.report.projectVersion', 1.0
     }
 
     compileJava.options.encoding = 'utf-8'
