@@ -19,8 +19,7 @@ public class Dijkstras<T> implements Algorithm<T> {
 
         while (!queue.isEmpty()) {
             final var prev = queue.removeFirst();
-            final var edges = graph.nodes().get(prev);
-            edges.forEach((node, time) -> {
+            graph.edges(prev).forEach((node, time) -> {
                 final var distance = distances.get(prev) + time.doubleValue();
                 if (distance < distances.getOrDefault(node, Double.MAX_VALUE)) {
                     previous.put(node, prev);

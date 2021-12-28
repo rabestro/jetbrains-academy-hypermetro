@@ -1,6 +1,6 @@
 package metro.algorithm
 
-import metro.model.StationID
+import metro.model.StationId
 import spock.lang.Specification
 
 class NodeSpec extends Specification {
@@ -16,7 +16,7 @@ class NodeSpec extends Specification {
         actualId === id
 
         where:
-        id << ['A' as char, 12, new StationID('Bakerloo', 'Waterloo')]
+        id << ['A' as char, 12, new StationId('Bakerloo', 'Waterloo')]
     }
 
     def 'should correctly create a node'() {

@@ -1,7 +1,7 @@
 package metro.command;
 
 import metro.algorithm.Node;
-import metro.model.StationID;
+import metro.model.StationId;
 import metro.service.MetroService;
 
 import java.util.Deque;
@@ -18,16 +18,16 @@ abstract class RouteCommand extends HyperMetroCommand {
         super(metroService);
     }
 
-    Deque<Node<StationID>> findRoute(
+    Deque<Node<StationId>> findRoute(
             final List<String> parameters,
-            final BiFunction<StationID, StationID, Deque<Node<StationID>>> strategy) {
+            final BiFunction<StationId, StationId, Deque<Node<StationId>>> strategy) {
         validateParametersNumber(parameters, REQUIRED_FOUR);
-        final var source = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
-        final var target = new StationID(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
+        final var source = new StationId(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var target = new StationId(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
         return strategy.apply(source, target);
     }
 
-    String printRoute(final Deque<Node<StationID>> route) {
+    String printRoute(final Deque<Node<StationId>> route) {
         final var stringJoiner = new StringJoiner(System.lineSeparator());
         var line = route.getFirst().getId().line();
 

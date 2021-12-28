@@ -20,7 +20,7 @@ public class MetroLine implements Iterable<MetroStation> {
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public Optional<MetroStation> getStation(final String name) {
-        return stations.stream().filter(s -> s.getStationID().name().equals(name)).findAny();
+        return stations.stream().filter(s -> s.getId().name().equals(name)).findAny();
     }
 
     public void remove(final MetroStation station) {
@@ -28,12 +28,12 @@ public class MetroLine implements Iterable<MetroStation> {
     }
 
     public void addHead(final String name) {
-        final var sid = new StationID(lineName, name);
+        final var sid = new StationId(lineName, name);
         final var station = new MetroStation(sid);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
             prevStation.setPrev(Set.of(sid));
-            station.setNext(Set.of(prevStation.getStationID()));
+            station.setNext(Set.of(prevStation.getId()));
         }
         stations.addFirst(station);
     }
@@ -43,15 +43,15 @@ public class MetroLine implements Iterable<MetroStation> {
     }
 
     public void append(final String stationName) {
-        final var sid = new StationID(lineName, stationName);
+        final var sid = new StationId(lineName, stationName);
         append(new MetroStation(sid));
     }
 
     private void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
-            lastStation.setNext(Set.of(metroStation.getStationID()));
-            metroStation.setPrev(Set.of(lastStation.getStationID()));
+            lastStation.setNext(Set.of(metroStation.getId()));
+            metroStation.setPrev(Set.of(lastStation.getId()));
         }
         stations.add(metroStation);
     }

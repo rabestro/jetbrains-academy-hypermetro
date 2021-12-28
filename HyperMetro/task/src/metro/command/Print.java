@@ -1,7 +1,7 @@
 package metro.command;
 
 import metro.model.MetroStation;
-import metro.model.StationID;
+import metro.model.StationId;
 import metro.service.MetroService;
 
 import java.util.List;
@@ -23,13 +23,13 @@ public class Print extends HyperMetroCommand {
     @Override
     public String apply(final List<String> parameters) {
         validateParametersNumber(parameters, REQUIRED_TWO);
-        final var stationId = new StationID(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
+        final var stationId = new StationId(parameters.get(SOURCE_LINE), parameters.get(SOURCE_NAME));
         final var station = metroService.getMetroStation(stationId);
         return printStation(station);
     }
 
     private String printStation(final MetroStation metroStation) {
-        final var name = metroStation.getStationID().name();
+        final var name = metroStation.getId().name();
         return name + lineSeparator()
                 + printNeighbors(PREFIX_PREV, metroStation.getPrev())
                 + printNeighbors(PREFIX_NEXT, metroStation.getNext())
@@ -37,8 +37,8 @@ public class Print extends HyperMetroCommand {
                 + "..... " + metroStation.getTime();
     }
 
-    private String printNeighbors(final String prefix, final Set<StationID> stations) {
-        final Function<StationID, String> name = prefix.equals(PREFIX_TRAN) ? StationID::line : StationID::name;
+    private String printNeighbors(final String prefix, final Set<StationId> stations) {
+        final Function<StationId, String> name = prefix.equals(PREFIX_TRAN) ? StationId::line : StationId::name;
         return stations.isEmpty() ? "" : stations.stream()
                 .map(name.andThen(prefix::concat))
                 .collect(joining(lineSeparator())) + lineSeparator();

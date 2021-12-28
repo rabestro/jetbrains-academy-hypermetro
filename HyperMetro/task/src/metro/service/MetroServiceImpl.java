@@ -8,11 +8,12 @@ import metro.algorithm.Node;
 import metro.algorithm.SearchAlgorithm;
 import metro.model.MetroLine;
 import metro.model.MetroStation;
-import metro.model.StationID;
+import metro.model.StationId;
 import metro.repository.MetroRepository;
 
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static java.lang.System.Logger.Level.DEBUG;
@@ -34,7 +35,7 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public MetroStation getMetroStation(final StationID station) {
+    public MetroStation getMetroStation(final StationId station) {
         return repository.getStation(station).orElseThrow(NOT_FOUND_EXCEPTION);
     }
 
@@ -51,29 +52,43 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public void remove(final StationID target) {
+    public void remove(final StationId target) {
         LOG.log(DEBUG, "Remove station [{0}]", target);
         getMetroLine(target.line()).remove(getMetroStation(target));
     }
 
     @Override
-    public void connect(final StationID source, final StationID target) {
+    public void connect(final StationId source, final StationId target) {
         LOG.log(DEBUG, "Connect station [{0}] to [{1}]", target);
         getMetroStation(source).setTransfer(Set.of(target));
         getMetroStation(target).setTransfer(Set.of(source));
     }
 
     @Override
-    public List<StationID> bfsRoute(final StationID sourceId, final StationID targetId) {
-        final var graph = new Graph<>(repository.stream().collect(toUnmodifiableMap(identity(), this::getEdges)));
-        final var algorithm = new BreadthFirstSearch<StationID>();
-        return algorithm.findPath(graph, sourceId, targetId);
+    public List<StationId> shortestRoute(final StationId sourceId, final StationId targetId) {
+        final var schema = repository.stream().collect(toUnmodifiableMap(identity(), this::getEdges));
+        final var algorithm = new BreadthFirstSearch<StationId>();
+        return algorithm.findPath(new Graph<>(schema), sourceId, targetId);
     }
 
-    private Map<StationID, Number> getEdges(final StationID id) {
-        final var edges = new HashMap<StationID, Number>();
+    @Override
+    public Graph<StationId> getMetroGraph(final int transferTime) {
+        final Function<StationId, Map<StationId, Number>> getEdges = id -> {
+            final var edges = new HashMap<StationId, Number>();
+            final var source = getMetroStation(id);
+            source.getNext().forEach(target -> edges.put(target, source.getTime()));
+            source.getPrev().forEach(target -> edges.put(target, getMetroStation(target).getTime()));
+            source.getTransfer().forEach(target -> edges.put(target, transferTime));
+            return edges;
+        };
+        final var schema = repository.stream().collect(toUnmodifiableMap(identity(), getEdges));
+        return new Graph<>(schema);
+    }
+
+    private Map<StationId, Number> getEdges(final StationId id) {
+        final var edges = new HashMap<StationId, Number>();
         final var station = getMetroStation(id);
-        final Consumer<StationID> equalTime = target -> edges.put(target, 1);
+        final Consumer<StationId> equalTime = target -> edges.put(target, 1);
         station.getNext().forEach(equalTime);
         station.getPrev().forEach(equalTime);
         station.getTransfer().forEach(equalTime);
@@ -81,14 +96,14 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public Deque<Node<StationID>> route(final StationID sourceId, final StationID targetId) {
+    public Deque<Node<StationId>> route(final StationId sourceId, final StationId targetId) {
         return new RouteRequest(sourceId, targetId)
                 .timeToTransfer((source, target) -> 0)
                 .find();
     }
 
     @Override
-    public Deque<Node<StationID>> fastestRoute(final StationID sourceId, final StationID targetId) {
+    public Deque<Node<StationId>> fastestRoute(final StationId sourceId, final StationId targetId) {
         return new RouteRequest(sourceId, targetId)
                 .timeToNext((source, target) -> source.getTime())
                 .timeToPrev((source, target) -> getMetroStation(target).getTime())
@@ -98,14 +113,14 @@ public class MetroServiceImpl implements MetroService {
 
 
     private class RouteRequest {
-        private final StationID source;
-        private final StationID target;
+        private final StationId source;
+        private final StationId target;
         private TimeFunction next = (s, t) -> 1;
         private TimeFunction prev = (s, t) -> 1;
         private TimeFunction tran = (s, t) -> 1;
-        private SearchAlgorithm<StationID> algorithm = new DijkstrasAlgorithm<>();
+        private SearchAlgorithm<StationId> algorithm = new DijkstrasAlgorithm<>();
 
-        private RouteRequest(final StationID source, final StationID target) {
+        private RouteRequest(final StationId source, final StationId target) {
             this.source = source;
             this.target = target;
         }
@@ -125,12 +140,12 @@ public class MetroServiceImpl implements MetroService {
             return this;
         }
 
-        public RouteRequest useAlgorithm(final SearchAlgorithm<StationID> searchAlgorithm) {
+        public RouteRequest useAlgorithm(final SearchAlgorithm<StationId> searchAlgorithm) {
             this.algorithm = searchAlgorithm;
             return this;
         }
 
-        Deque<Node<StationID>> find() {
+        Deque<Node<StationId>> find() {
             final var nodes = repository.stream().collect(toUnmodifiableMap(identity(), Node::new));
             nodes.values().forEach(node -> {
                 final var s = getMetroStation(node.getId());

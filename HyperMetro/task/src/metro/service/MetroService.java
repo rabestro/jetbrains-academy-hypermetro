@@ -1,9 +1,10 @@
 package metro.service;
 
+import metro.algorithm.Graph;
 import metro.algorithm.Node;
 import metro.model.MetroLine;
 import metro.model.MetroStation;
-import metro.model.StationID;
+import metro.model.StationId;
 
 import java.util.Deque;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface MetroService {
      * @param stationId is metro station id
      * @return object representing Metro Station
      */
-    MetroStation getMetroStation(StationID stationId);
+    MetroStation getMetroStation(StationId stationId);
 
     /**
      * Adds a new station at the beginning of metro line.
@@ -47,14 +48,14 @@ public interface MetroService {
      * @param source metro station id
      * @param target metro station id
      */
-    void connect(StationID source, StationID target);
+    void connect(StationId source, StationId target);
 
     /**
      * Removes the metro station from metro map
      *
      * @param target metro station id
      */
-    void remove(StationID target);
+    void remove(StationId target);
 
     /**
      * Finds the shortest (the smallest number of stations) way from one station to another.
@@ -64,7 +65,15 @@ public interface MetroService {
      * @param target metro station id
      * @return the route from the source station to the target station.
      */
-    List<StationID> bfsRoute(StationID source, StationID target);
+    List<StationId> shortestRoute(StationId source, StationId target);
+
+    /**
+     * Creates an abstract Graph representing the metro schema
+     *
+     * @param transferTime time to transfer between metro lines
+     * @return the graph with nodes as metro station
+     */
+    Graph<StationId> getMetroGraph(int transferTime);
 
     /**
      * Finds the fastest way by using Dijkstra's algorithm.
@@ -76,7 +85,7 @@ public interface MetroService {
      * @param target metro station id
      * @return the route from the source station to the target station.
      */
-    Deque<Node<StationID>> route(StationID source, StationID target);
+    Deque<Node<StationId>> route(StationId source, StationId target);
 
     /**
      * Finds the fastest way by using Dijkstra's algorithm.
@@ -88,5 +97,5 @@ public interface MetroService {
      * @param target metro station id
      * @return the route from the source station to the target station.
      */
-    Deque<Node<StationID>> fastestRoute(StationID source, StationID target);
+    Deque<Node<StationId>> fastestRoute(StationId source, StationId target);
 }

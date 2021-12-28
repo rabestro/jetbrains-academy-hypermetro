@@ -44,7 +44,7 @@ public class AppConfig {
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
                 "route", new Route(getMetroService()),
-                "bfs-route", new BfsRoute(getMetroService()),
+                "shortest-route", new ShortestRoute(getMetroService()),
                 "fastest-route", new FastestRoute(getMetroService())
         );
     }

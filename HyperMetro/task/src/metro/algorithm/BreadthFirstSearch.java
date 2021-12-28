@@ -26,7 +26,7 @@ public class BreadthFirstSearch<T> implements Algorithm<T> {
                 return path;
             }
             visited.add(node);
-            graph.nodes().get(node).keySet().stream()
+            graph.edges(node).keySet().stream()
                     .filter(not(visited::contains))
                     .forEach(it -> {
                         previous.computeIfAbsent(it, x -> node);
