@@ -13,7 +13,7 @@ import static java.lang.System.Logger.Level.DEBUG;
 
 abstract class RouteCommand extends HyperMetroCommand {
     static final SearchAlgorithm<StationId> DIJKSTRAS = new DijkstrasAlgorithm<>();
-    static final SearchAlgorithm<StationId> BFS_ALGORITHM =  new BreadthFirstSearch<>();
+    static final SearchAlgorithm<StationId> BFS_ALGORITHM = new BreadthFirstSearch<>();
 
     int transferTime = 5;
     boolean hideTime = true;
@@ -28,7 +28,7 @@ abstract class RouteCommand extends HyperMetroCommand {
         final var target = new StationId(parameters.get(TARGET_LINE), parameters.get(TARGET_NAME));
         final var graph = metroService.getMetroGraph(TRANSFER_TIME);
         final var route = algorithm.findPath(graph, source, target);
-        final var timeMessage = hideTime ? "" :
+        final var timeMessage = hideTime ? "" : System.lineSeparator() +
                 "Total: " + (int) graph.getDistance(route) + " minutes in the way";
 
         return printRoute(route) + timeMessage;
