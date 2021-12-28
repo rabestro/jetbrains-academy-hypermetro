@@ -13,7 +13,7 @@ import static java.lang.System.Logger.Level.DEBUG;
 
 abstract class RouteCommand extends HyperMetroCommand {
     static final SearchAlgorithm<StationId> DIJKSTRAS = new DijkstrasAlgorithm<>();
-    static final SearchAlgorithm<StationId> BFS_ALGORITHM =  new BreadthFirstSearch<>();
+    static final SearchAlgorithm<StationId> BFS_ALGORITHM = new BreadthFirstSearch<>();
 
     int transferTime = 5;
     boolean hideTime = true;
