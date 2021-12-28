@@ -1,7 +1,7 @@
 package metro.command;
 
-import metro.algorithm.SearchAlgorithm;
 import metro.algorithm.DijkstrasSearchAlgorithm;
+import metro.algorithm.SearchAlgorithm;
 import metro.model.StationId;
 import metro.service.MetroService;
 
@@ -19,6 +19,7 @@ public class RouteFastest extends RouteCommand {
     public RouteFastest(MetroService metroService) {
         super(metroService);
         transferTime = 5;
+        hideTime = false;
     }
 
     @Override
