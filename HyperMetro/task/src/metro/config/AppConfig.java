@@ -11,6 +11,7 @@ import metro.repository.MetroRepository;
 import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
 import metro.service.MetroServiceImpl;
+import metro.ui.CLI;
 import metro.ui.ConsoleInterface;
 import metro.ui.UserInterface;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,11 @@ public class AppConfig {
         );
     }
 
+    @Bean(name = "cli")
+    public Runnable getCLI() {
+        return new CLI(ui(), exit(), getBroker());
+    }
+
     @Bean(name = "repository")
     public MetroRepository getRepository() {
         return new MetroRepositoryImpl();
@@ -70,6 +76,6 @@ public class AppConfig {
 
     @Bean(name = "application")
     public Application getApplication() {
-        return new Application(ui(), exit(), getBroker(), getRepository());
+        return new Application(ui(), getRepository(), getCLI());
     }
 }

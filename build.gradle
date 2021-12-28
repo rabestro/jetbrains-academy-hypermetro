@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'java'
 
-    def userJava = 17
+    def userJava = Integer.parseInt(JavaVersion.current().getMajorVersion())
     def hsJava = Integer.parseInt(hs.java.version)
     def testJava = Math.max(userJava, hsJava)
 
@@ -43,11 +43,6 @@ subprojects {
     test {
         systemProperty "file.encoding", "utf-8"
         outputs.upToDateWhen { false }
-
-        systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
-        systemProperty 'com.athaydes.spockframework.report.outputDir', '/docs'
-        systemProperty 'com.athaydes.spockframework.report.projectName', 'HyperMetro'
-        systemProperty 'com.athaydes.spockframework.report.projectVersion', 1.0
     }
 
     compileJava.options.encoding = 'utf-8'
@@ -71,8 +66,4 @@ configure(subprojects.findAll {it.name != 'util'}) {
 
 wrapper {
     gradleVersion = hs.gradle.version
-}
-
-task('unitTest', type: Test) {
-    systemProperty 'com.athaydes.spockframework.report.outputDir', 'build/reports/spock'
 }
