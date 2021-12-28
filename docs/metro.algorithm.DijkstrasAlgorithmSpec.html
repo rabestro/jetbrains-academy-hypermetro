@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Tue Dec 28 19:57:40 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Tue Dec 28 21:28:21 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -266,18 +266,33 @@ div.footer {
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+<td>3</td>
+<td>3</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.031 seconds</td>
+<td>0.105 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
 <pre class='title'>Dijkstra's Algorithm</pre>
+<pre class='narrative'>Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph</pre>
+<div class='issues'>
+<div>Issues:</div>
+<ul>
+<li>
+<a href='https://hyperskill.org/projects/120/stages/652/implement'>implement</a>
+</li>
+</ul>
+<div>See:</div>
+<ul>
+<li>
+<a href='https://hyperskill.org/learn/step/5772'>https://hyperskill.org/learn/step/5772</a>
+</li>
+</ul>
+</div>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -287,16 +302,30 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#1208189286' class='feature-toc-pass'>should find a route for a simple graph</a>
+<a href='#435174284' class='feature-toc-pass'>should find the fastest route for a simple graph</a>
+</li>
+<li>
+<a href='#1104935695' class='feature-toc-pass'>should find the fastest route for a medium graph</a>
+</li>
+<li>
+<a href='#528054578' class='feature-toc-pass'>should find the fastest route for a complex graph</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1208189286'>
-<span>should find a route for a simple graph</span>
+<div class='feature-description' id='435174284'>
+<span>should find the fastest route for a simple graph</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
+<div class='issues'>
+<div>See:</div>
+<ul>
+<li>
+<a href='https://rabestro.github.io/jetbrains-academy-hypermetro-java'>https://rabestro.github.io/jetbrains-academy-hypermetro-java</a>
+</li>
+</ul>
+</div>
 </div>
 </td>
 </tr>
@@ -425,6 +454,343 @@ div.footer {
 </td>
 <td>
 <div class='spec-status'>5/5 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='1104935695'>
+<span>should find the fastest route for a medium graph</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>we use Dijkstra's algorithm to find the path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = new Graph([
+        A: [B: 5],
+        B: [A: 5, C: 10],
+        C: [B: 20, D: 5],
+        D: [E: 5],
+        E: [B: 5]
+])</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we use Dijkstra's algorithm to find the path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def path = algorithm.findPath(graph, source, target)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>we get the fastest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>path == fastest</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the distance calculated correctly</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.getDistance(path) == time as double</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>source and target nodes are defined as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>source</th>
+<th class='ex-header'>target</th>
+<th class='ex-header'>time</th>
+<th class='ex-header'>fastest</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>0</td>
+<td class='ex-value'>[A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>B</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>0</td>
+<td class='ex-value'>[B]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>5</td>
+<td class='ex-value'>[A, B]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>B</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>5</td>
+<td class='ex-value'>[B, A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>C</td>
+<td class='ex-value'>15</td>
+<td class='ex-value'>[A, B, C]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>C</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>20</td>
+<td class='ex-value'>[C, D, E, B, A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>6/6 passed</div>
+</td>
+</tr>
+<tr>
+<td colspan='10'>
+<div class='feature-description' id='528054578'>
+<span>should find the fastest route for a complex graph</span>
+<span style='float: right; font-size: 60%;'>
+<a href='#toc'>Return</a>
+</span>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Given:</div>
+</td>
+<td>
+<div class='block-text'>a complex graph with eight nodes</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def graph = new Graph([
+        A: [B: 5, H: 2],
+        B: [A: 5, C: 7],
+        C: [B: 7, D: 3, G: 4],
+        D: [C: 20, E: 4],
+        E: [F: 5],
+        F: [G: 6],
+        G: [C: 4],
+        H: [G: 3]
+])</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>When:</div>
+</td>
+<td>
+<div class='block-text'>we use Dijkstra's algorithm to find the path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>def path = algorithm.findPath(graph, source, target)</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
+</td>
+<td>
+<div class='block-text'>we get the fastest path</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>path == fastest</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>And:</div>
+</td>
+<td>
+<div class='block-text'>the distance calculated correctly</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.getDistance(path) == time as double</pre>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Where:</div>
+</td>
+<td>
+<div class='block-text'>source and target nodes are defined as</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class='block-kind'>Examples:</div>
+</td>
+<td>
+<div class='spec-examples'>
+<table class='ex-table'>
+<thead>
+<tr>
+<th class='ex-header'>source</th>
+<th class='ex-header'>target</th>
+<th class='ex-header'>time</th>
+<th class='ex-header'>fastest</th>
+</tr>
+</thead>
+<tbody>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>0</td>
+<td class='ex-value'>[A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>B</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>0</td>
+<td class='ex-value'>[B]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>5</td>
+<td class='ex-value'>[A, B]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>B</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>5</td>
+<td class='ex-value'>[B, A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>C</td>
+<td class='ex-value'>9</td>
+<td class='ex-value'>[A, H, G, C]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>C</td>
+<td class='ex-value'>A</td>
+<td class='ex-value'>12</td>
+<td class='ex-value'>[C, B, A]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>A</td>
+<td class='ex-value'>G</td>
+<td class='ex-value'>5</td>
+<td class='ex-value'>[A, H, G]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>C</td>
+<td class='ex-value'>D</td>
+<td class='ex-value'>3</td>
+<td class='ex-value'>[C, D]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>D</td>
+<td class='ex-value'>C</td>
+<td class='ex-value'>19</td>
+<td class='ex-value'>[D, E, F, G, C]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>B</td>
+<td class='ex-value'>D</td>
+<td class='ex-value'>10</td>
+<td class='ex-value'>[B, C, D]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>D</td>
+<td class='ex-value'>B</td>
+<td class='ex-value'>26</td>
+<td class='ex-value'>[D, E, F, G, C, B]</td>
+<td class='ex-result'>OK</td>
+</tr>
+<tr class='ex-pass'>
+<td class='ex-value'>D</td>
+<td class='ex-value'>H</td>
+<td class='ex-value'>33</td>
+<td class='ex-value'>[D, E, F, G, C, B, A, H]</td>
+<td class='ex-result'>OK</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td>
+<div class='spec-status'>12/12 passed</div>
 </td>
 </tr>
 </tbody>
