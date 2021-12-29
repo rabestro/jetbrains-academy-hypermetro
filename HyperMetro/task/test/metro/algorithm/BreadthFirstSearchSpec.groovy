@@ -11,14 +11,12 @@ import spock.lang.Title
 @See("https://hyperskill.org/learn/step/7068")
 @Issue("https://hyperskill.org/projects/120/stages/651/implement")
 @Narrative("""
-Breadth First Search Algorithm algorithm is is a simple and efficient 
-algorithm for finding the shortest paths between nodes in the graph.
+Breadth First Search algorithm for finding the shortest paths between nodes in a graph
 """)
 class BreadthFirstSearchSpec extends Specification {
     @Subject
     def algorithm = new BreadthFirstSearch<String>()
 
-    @See("images/small.gif")
     def 'should find the shortest path for a simple graph'() {
         given: 'a simple graph with three nodes'
         def graph = new Graph([

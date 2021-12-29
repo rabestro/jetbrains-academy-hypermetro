@@ -4,7 +4,7 @@ subprojects {
     apply plugin: 'application'
     apply plugin: 'java'
 
-    def userJava = 17
+    def userJava = Integer.parseInt(JavaVersion.current().getMajorVersion())
     def hsJava = Integer.parseInt(hs.java.version)
     def testJava = Math.max(userJava, hsJava)
 
