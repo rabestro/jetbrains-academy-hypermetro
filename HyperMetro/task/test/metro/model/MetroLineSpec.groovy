@@ -7,15 +7,25 @@ import spock.lang.Title
 @Title("Model of Metro Line")
 class MetroLineSpec extends Specification {
 
-    static final LINE_NAME = 'Bakerloo'
+    static final BAKERLOO = 'Bakerloo'
     static final WATERLOO = 'Waterloo'
 
-    @Subject
-    def metroLine = new MetroLine(LINE_NAME)
+    static final WATERLOO_ID = new StationId(BAKERLOO, 'Waterloo')
+    static final ELEPHANT_ID = new StationId(BAKERLOO, 'Lambeth North')
+    static final LAMBETH_ID = new StationId(BAKERLOO, 'Elephant & Castle')
 
-    def waterloo = new StationId('Bakerloo', 'Waterloo')
+    @Subject
+    def metroLine = new MetroLine(BAKERLOO)
+
+    MetroStation waterloo
+    MetroStation elephant
+    MetroStation lambeth
 
     void setup() {
+        waterloo = new MetroStation(new StationId(BAKERLOO, 'Waterloo'))
+        lambeth = new MetroStation(new StationId(BAKERLOO, 'Lambeth North'))
+        elephant = new MetroStation(new StationId(BAKERLOO, 'Elephant & Castle'))
+        elephant.prev = [LAMBETH_ID] as Set
     }
 
     void cleanup() {
@@ -35,7 +45,7 @@ class MetroLineSpec extends Specification {
 
     def "should append a station to the empty line"() {
         given: 'the metro line created with no stations'
-        def line = new MetroLine(LINE_NAME)
+        def line = new MetroLine(BAKERLOO)
 
         when: 'we append a station to the empty line'
         line.append(WATERLOO)
@@ -53,7 +63,7 @@ class MetroLineSpec extends Specification {
         actual.get() == expected
 
         where: 'expected station has correct station id'
-        expected = new MetroStation(new StationId(LINE_NAME, WATERLOO))
+        expected = new MetroStation(new StationId(BAKERLOO, WATERLOO))
     }
 
     def "should get the name of the metro line"() {

@@ -2,6 +2,7 @@ package metro.model;
 
 import lombok.EqualsAndHashCode;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @EqualsAndHashCode
@@ -10,9 +11,9 @@ public class MetroStation {
 
     private final StationId id;
     private final int time;
-    private Set<StationId> transfer = Set.of();
-    private Set<StationId> next = Set.of();
-    private Set<StationId> prev = Set.of();
+    private final Set<StationId> next = new HashSet<>();
+    private final Set<StationId> prev = new HashSet<>();
+    private final Set<StationId> transfer = new HashSet<>();
 
     public MetroStation(final StationId sid) {
         id = sid;
@@ -28,24 +29,31 @@ public class MetroStation {
         return transfer;
     }
 
-    public void setTransfer(Set<StationId> transfer) {
-        this.transfer = transfer;
+    public void setTransfer(final Set<StationId> transfer) {
+        this.transfer.clear();
+        this.transfer.addAll(transfer);
     }
 
     public Set<StationId> getNext() {
         return next;
     }
 
-    public void setNext(Set<StationId> next) {
-        this.next = next;
+    public void setNext(final Set<StationId> next) {
+        this.next.clear();
+        this.next.addAll(next);
     }
 
     public Set<StationId> getPrev() {
         return prev;
     }
 
-    public void setPrev(Set<StationId> prev) {
-        this.prev = prev;
+    public void addPrev(final StationId station) {
+        this.prev.add(station);
+    }
+
+    public void setPrev(final Set<StationId> prev) {
+        this.prev.clear();
+        this.prev.addAll(prev);
     }
 
     public StationId getId() {
