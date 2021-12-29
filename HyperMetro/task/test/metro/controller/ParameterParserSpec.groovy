@@ -1,17 +1,28 @@
 package metro.controller
 
+import spock.lang.Issue
+import spock.lang.Narrative
 import spock.lang.Specification
+import spock.lang.Title
 
+@Title("Command's parameters parser")
+@Narrative("""
+if the name of the line or station consists of several words, 
+you should write it in quotation marks (after, they should be 
+excluded from the name). If the name of a station consists 
+of one word it should be parseable with or without quotes.
+""")
+@Issue("https://hyperskill.org/projects/120/stages/649/implement")
 class ParameterParserSpec extends Specification {
 
     def "should parse parameters"() {
-        given:
+        given: 'the parameter parser'
         def parser = new ParameterParser()
 
-        when:
+        when: 'we parse line with parameters'
         def parameters = parser.parse(line)
 
-        then:
+        then: 'we got expected list of parameters'
         parameters == expected
 
         where:

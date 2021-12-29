@@ -4,6 +4,7 @@ import metro.model.MetroLine
 import metro.model.MetroStation
 import metro.model.StationId
 import metro.repository.MetroRepository
+import spock.lang.Narrative
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Title
@@ -66,12 +67,14 @@ class MetroServiceImplSpec extends Specification {
     }
 
     def 'should remove the metro station from the metro map'() {
-        when:
+        when: 'we call the service to remove a metro station'
         service.remove(SOURCE)
 
-        then:
+        then: 'the service asks the repository to get a line and station'
         1 * repository.getLine(SOURCE_LINE) >> Optional.of(mockLine)
         1 * repository.getStation(SOURCE) >> Optional.of(mockStation)
+
+        and: 'method remove of appropriate metro line was called'
         1 * mockLine.remove(mockStation)
     }
 }

@@ -4,9 +4,10 @@ import metro.model.MetroLine
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Repository of Metro Map")
 class MetroRepositoryImpSpec extends Specification {
-
     @Shared
     def lineOne = Mock MetroLine
     @Shared
