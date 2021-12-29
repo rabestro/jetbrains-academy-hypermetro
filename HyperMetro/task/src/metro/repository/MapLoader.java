@@ -48,7 +48,7 @@ class MapLoader {
         final var lines = json.getAsJsonObject()
                 .entrySet().stream()
                 .map(this::parseMetroLine)
-                .collect(toUnmodifiableMap(MetroLine::getName, identity()));
+                .collect(toUnmodifiableMap(MetroLine::name, identity()));
         LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
         return new MetroMap(lines);
     }

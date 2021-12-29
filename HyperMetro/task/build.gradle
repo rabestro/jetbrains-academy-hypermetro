@@ -5,13 +5,16 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation group: 'org.springframework', name: 'spring-context', version: '5.3.12'
 
-    testCompileOnly(
-            'org.codehaus.groovy:groovy-all:3.0.8',
-            'org.spockframework:spock-core:2.0-groovy-3.0'
-    )
+    testImplementation platform('org.codehaus.groovy:groovy-bom:3.0.9')
+    testImplementation platform('org.spockframework:spock-bom:2.0-groovy-3.0')
+
+    testImplementation 'org.spockframework:spock-core'
+    testImplementation 'io.github.joke:spock-mockable:1.4.4'
+
     testRuntimeClasspath( "com.athaydes:spock-reports:2.1.1-groovy-3.0" ) {
 //        transitive = false // this avoids affecting your version of Groovy/Spock
     }
+
     testImplementation 'org.slf4j:slf4j-api:1.7.32'
     testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.32'
 

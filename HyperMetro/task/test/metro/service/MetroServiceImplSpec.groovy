@@ -1,5 +1,6 @@
 package metro.service
 
+import io.github.joke.spockmockable.Mockable
 import metro.model.MetroLine
 import metro.model.MetroStation
 import metro.model.StationId
@@ -9,6 +10,7 @@ import spock.lang.Subject
 import spock.lang.Title
 
 @Title("Metro Service")
+@Mockable(MetroLine)
 class MetroServiceImplSpec extends Specification {
     static final LINE_NAME = 'Bakerloo'
     static final STATION_NAME = 'Waterloo'
@@ -20,7 +22,9 @@ class MetroServiceImplSpec extends Specification {
     static final TARGET = new StationId(TARGET_LINE, TARGET_STATION)
 
     def repository = Mock MetroRepository
-    def mockLine = Mock MetroLine
+    def mockLine = Mock(MetroLine) {
+        it.stations() >> new LinkedList<MetroStation>()
+    }
     def station = new MetroStation(new StationId(SOURCE_LINE, SOURCE_STATION))
 
     @Subject

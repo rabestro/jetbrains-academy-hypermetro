@@ -1,22 +1,16 @@
 package metro.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
-
-import java.util.Iterator;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-@Getter
-@ToString
-@AllArgsConstructor
-public class MetroLine implements Iterable<MetroStation> {
+public record MetroLine(String name, Deque<MetroStation> stations) {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
-    private final String name;
-    private final LinkedList<MetroStation> stations = new LinkedList<>();
+    public MetroLine(String name) {
+        this(name, new LinkedList<>());
+    }
 
     public Optional<MetroStation> getStation(final String name) {
         return stations.stream().filter(s -> s.id().name().equals(name)).findAny();
@@ -29,12 +23,12 @@ public class MetroLine implements Iterable<MetroStation> {
     public void addHead(final String name) {
         final var sid = new StationId(this.name, name);
         final var station = new MetroStation(sid);
-        if (!stations.isEmpty()) {
-            final var prevStation = stations.getFirst();
+        if (!stations().isEmpty()) {
+            final var prevStation = stations().getFirst();
             prevStation.prev().add(sid);
             station.next().add(prevStation.id());
         }
-        stations.addFirst(station);
+        stations().addFirst(station);
     }
 
     public void add(final MetroStation metroStation) {
@@ -53,11 +47,6 @@ public class MetroLine implements Iterable<MetroStation> {
             metroStation.prev().add(lastStation.id());
         }
         stations.add(metroStation);
-    }
-
-    @Override
-    public Iterator<MetroStation> iterator() {
-        return stations.iterator();
     }
 
     public Stream<MetroStation> stream() {
