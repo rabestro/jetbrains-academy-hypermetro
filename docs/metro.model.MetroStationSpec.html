@@ -244,14 +244,14 @@ div.footer {
 </style>
 </head>
 <body>
-<h2>Report for metro.repository.MetroRepositoryImpSpec</h2>
+<h2>Report for metro.model.MetroStationSpec</h2>
 <hr></hr>
 <div class='back-link'>
 <a href='index.html'>&lt;&lt; Back</a>
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Wed Dec 29 20:15:57 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Wed Dec 29 20:15:55 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,12 +272,12 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.017 seconds</td>
+<td>0.022 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
-<pre class='title'>Repository of Metro Map</pre>
+<pre class='title'>Model of Metro Station</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -287,13 +287,13 @@ div.footer {
 <tbody>
 <ul id='toc'>
 <li>
-<a href='#1187995273' class='feature-toc-pass'>should find metro line by name</a>
+<a href='#1710360554' class='feature-toc-pass'>should create a metro station with id and time</a>
 </li>
 </ul>
 <tr>
 <td colspan='10'>
-<div class='feature-description' id='1187995273'>
-<span>should find metro line by name</span>
+<div class='feature-description' id='1710360554'>
+<span>should create a metro station with id and time</span>
 <span style='float: right; font-size: 60%;'>
 <a href='#toc'>Return</a>
 </span>
@@ -305,41 +305,13 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<div class='block-text'>metro map with two lines</div>
+<div class='block-text'>station id</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>repository.metroMap = [one: (lineOne), two: (lineTwo)]</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>When:</div>
-</td>
-<td>
-<div class='block-text'>we request the repository for existing line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>def metroLine = repository.getLine(lineName)</pre>
-</td>
-</tr>
-<tr>
-<td>
-<div class='block-kind'>Then:</div>
-</td>
-<td>
-<div class='block-text'>repository returns metro line</div>
-</td>
-</tr>
-<tr>
-<td></td>
-<td>
-<pre class='block-source'>metroLine.isPresent()</pre>
+<pre class='block-source'>def id = new StationId('Bakerloo', 'Waterloo')</pre>
 </td>
 </tr>
 <tr>
@@ -347,45 +319,45 @@ div.footer {
 <div class='block-kind'>And:</div>
 </td>
 <td>
-<div class='block-text'>the metro line is expected</div>
+<div class='block-text'>time to the next station</div>
 </td>
 </tr>
 <tr>
 <td></td>
 <td>
-<pre class='block-source'>metroLine.get() === expected</pre>
+<pre class='block-source'>def nextStationTime = 15</pre>
 </td>
 </tr>
 <tr>
 <td>
-<div class='block-kind'>Examples:</div>
+<div class='block-kind'>When:</div>
 </td>
 <td>
-<div class='spec-examples'>
-<table class='ex-table'>
-<thead>
+<div class='block-text'>we create a metro station</div>
+</td>
+</tr>
 <tr>
-<th class='ex-header'>lineName</th>
-<th class='ex-header'>expected</th>
+<td></td>
+<td>
+<pre class='block-source'>def station = new MetroStation(id, nextStationTime)</pre>
+</td>
 </tr>
-</thead>
-<tbody>
-<tr class='ex-pass'>
-<td class='ex-value'>one</td>
-<td class='ex-value'>Mock for type 'MetroLine' named '$spock_sharedField_lineOne'</td>
-<td class='ex-result'>OK</td>
-</tr>
-<tr class='ex-pass'>
-<td class='ex-value'>two</td>
-<td class='ex-value'>Mock for type 'MetroLine' named '$spock_sharedField_lineTwo'</td>
-<td class='ex-result'>OK</td>
-</tr>
-</tbody>
-</table>
-</div>
+<tr>
+<td>
+<div class='block-kind'>Then:</div>
 </td>
 <td>
-<div class='spec-status'>2/2 passed</div>
+<div class='block-text'>all connections are empty</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>with(station) {
+    it.next().isEmpty()
+    it.prev().isEmpty()
+    it.transfer().isEmpty()
+}</pre>
 </td>
 </tr>
 </tbody>

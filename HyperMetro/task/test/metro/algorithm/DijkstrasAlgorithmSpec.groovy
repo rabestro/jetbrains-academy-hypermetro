@@ -15,7 +15,6 @@ class DijkstrasAlgorithmSpec extends Specification {
     @Subject
     def algorithm = new DijkstrasAlgorithm<String>()
 
-    @See("images/small.gif")
     def 'should find the fastest route for a simple graph'() {
         given: 'a simple graph with three nodes'
         def graph = new Graph([
@@ -42,7 +41,6 @@ class DijkstrasAlgorithmSpec extends Specification {
         'A'    | 'B'    || 5    | ['A', 'C', 'B']
     }
 
-    @See("images/medium.gif")
     def 'should find the fastest route for a medium graph'() {
         given: "we use Dijkstra's algorithm to find the path"
         def graph = new Graph([
@@ -72,7 +70,6 @@ class DijkstrasAlgorithmSpec extends Specification {
         'C'    | 'A'    || 20   | ['C', 'D', 'E', 'B', 'A']
     }
 
-    @See("images/complex.gif")
     def 'should find the fastest route for a complex graph'() {
         given: "a complex graph with eight nodes"
         def graph = new Graph([
