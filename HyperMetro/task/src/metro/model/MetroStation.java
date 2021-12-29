@@ -1,7 +1,10 @@
 package metro.model;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.Set;
 
+@EqualsAndHashCode
 public class MetroStation {
     private static final int CONSTANT_TIME = 1;
 
