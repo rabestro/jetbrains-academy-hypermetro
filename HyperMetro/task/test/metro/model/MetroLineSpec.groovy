@@ -63,7 +63,7 @@ class MetroLineSpec extends Specification {
         actual.get() == expected
 
         where: 'expected station has correct station id'
-        expected = new MetroStation(new StationId(BAKERLOO, WATERLOO))
+        expected = new Station(new StationId(BAKERLOO, WATERLOO))
     }
 
     def "should get the name of the metro line"() {

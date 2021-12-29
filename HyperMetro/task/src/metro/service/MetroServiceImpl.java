@@ -3,7 +3,7 @@ package metro.service;
 import lombok.AllArgsConstructor;
 import metro.algorithm.Graph;
 import metro.model.MetroLine;
-import metro.model.MetroStation;
+import metro.model.Station;
 import metro.model.StationId;
 import metro.repository.MetroRepository;
 
@@ -33,7 +33,7 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public MetroStation getMetroStation(final StationId id) {
+    public Station getMetroStation(final StationId id) {
         LOG.log(DEBUG, "gets metro station for id = [{0}]", id);
         return repository.getStation(id).orElseThrow(NOT_FOUND_EXCEPTION);
     }
@@ -59,8 +59,8 @@ public class MetroServiceImpl implements MetroService {
     @Override
     public void connect(final StationId source, final StationId target) {
         LOG.log(DEBUG, "connect station [{0}] to [{1}]", source, target);
-        getMetroStation(source).setTransfer(Set.of(target));
-        getMetroStation(target).setTransfer(Set.of(source));
+        getMetroStation(source).transfer().add(target);
+        getMetroStation(target).transfer().add(source);
     }
 
     @Override
@@ -69,9 +69,9 @@ public class MetroServiceImpl implements MetroService {
         final Function<StationId, Map<StationId, Number>> getEdges = id -> {
             final var edges = new HashMap<StationId, Number>();
             final var source = getMetroStation(id);
-            source.getNext().forEach(target -> edges.put(target, source.getTime()));
-            source.getPrev().forEach(target -> edges.put(target, getMetroStation(target).getTime()));
-            source.getTransfer().forEach(target -> edges.put(target, transferTime));
+            source.next().forEach(target -> edges.put(target, source.time()));
+            source.prev().forEach(target -> edges.put(target, getMetroStation(target).time()));
+            source.transfer().forEach(target -> edges.put(target, transferTime));
             return edges;
         };
         final var schema = repository.stream().collect(toUnmodifiableMap(identity(), getEdges));

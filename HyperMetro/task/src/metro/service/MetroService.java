@@ -3,6 +3,7 @@ package metro.service;
 import metro.algorithm.Graph;
 import metro.model.MetroLine;
 import metro.model.MetroStation;
+import metro.model.Station;
 import metro.model.StationId;
 
 public interface MetroService {
@@ -20,7 +21,7 @@ public interface MetroService {
      * @param stationId is metro station id
      * @return object representing Metro Station
      */
-    MetroStation getMetroStation(StationId stationId);
+    Station getMetroStation(StationId stationId);
 
     /**
      * Adds a new station at the beginning of metro line.
