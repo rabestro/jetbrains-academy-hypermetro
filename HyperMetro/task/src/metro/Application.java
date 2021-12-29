@@ -1,17 +1,12 @@
 package metro;
 
 import lombok.AllArgsConstructor;
-import metro.controller.Broker;
 import metro.repository.MetroRepository;
-import metro.ui.CLI;
 import metro.ui.UserInterface;
 
 import java.io.IOException;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static java.lang.System.Logger.Level.INFO;
-import static java.util.function.Predicate.not;
 
 @AllArgsConstructor
 public class Application {

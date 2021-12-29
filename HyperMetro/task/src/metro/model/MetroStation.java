@@ -7,6 +7,7 @@ public record MetroStation(StationId id, int time, Set<StationId> next, Set<Stat
     public MetroStation(StationId id) {
         this(id, 1);
     }
+
     public MetroStation(StationId id, int time) {
         this(id, time, new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
