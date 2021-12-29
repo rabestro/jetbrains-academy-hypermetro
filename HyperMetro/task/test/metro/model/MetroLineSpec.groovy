@@ -53,7 +53,7 @@ class MetroLineSpec extends Specification {
         def actual = line.getStation(WATERLOO)
 
         then: 'there is only one station on the line'
-        line.stations.size() == 1
+        line.stations().size() == 1
 
         and: 'we got the metro station'
         actual.isPresent()
@@ -70,7 +70,7 @@ class MetroLineSpec extends Specification {
         def line = new MetroLine(name)
 
         expect: 'we get the correct metro line name'
-        line.getLineName() == name
+        line.name() == name
 
         where:
         name << ['Bakerloo', 'Circle', 'Central', 'Hammersmith & City']

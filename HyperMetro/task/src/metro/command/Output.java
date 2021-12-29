@@ -27,7 +27,7 @@ public class Output extends HyperMetroCommand {
     public String apply(final List<String> parameters) {
         validateParametersNumber(parameters, REQUIRED_ONE);
         return metroService.getMetroLine(parameters.get(SOURCE_LINE))
-                .getStations().stream()
+                .stations().stream()
                 .map(this::printStation)
                 .collect(joining(lineSeparator()));
     }
