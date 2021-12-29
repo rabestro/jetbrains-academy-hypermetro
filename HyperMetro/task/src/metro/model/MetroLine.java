@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class MetroLine implements Iterable<MetroStation> {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
-    private final String lineName;
+    private final String name;
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public Optional<MetroStation> getStation(final String name) {
@@ -27,7 +27,7 @@ public class MetroLine implements Iterable<MetroStation> {
     }
 
     public void addHead(final String name) {
-        final var sid = new StationId(lineName, name);
+        final var sid = new StationId(this.name, name);
         final var station = new MetroStation(sid);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
@@ -42,7 +42,7 @@ public class MetroLine implements Iterable<MetroStation> {
     }
 
     public void append(final String stationName) {
-        final var sid = new StationId(lineName, stationName);
+        final var sid = new StationId(name, stationName);
         append(new MetroStation(sid));
     }
 

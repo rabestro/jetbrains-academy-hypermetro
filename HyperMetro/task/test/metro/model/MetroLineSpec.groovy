@@ -70,7 +70,7 @@ class MetroLineSpec extends Specification {
         def line = new MetroLine(name)
 
         expect: 'we get the correct metro line name'
-        line.getLineName() == name
+        line.getName() == name
 
         where:
         name << ['Bakerloo', 'Circle', 'Central', 'Hammersmith & City']

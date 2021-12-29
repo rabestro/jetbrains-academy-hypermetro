@@ -48,7 +48,7 @@ class MapLoader {
         final var lines = json.getAsJsonObject()
                 .entrySet().stream()
                 .map(this::parseMetroLine)
-                .collect(toUnmodifiableMap(MetroLine::getLineName, identity()));
+                .collect(toUnmodifiableMap(MetroLine::getName, identity()));
         LOGGER.log(INFO, "Loaded metro lines: " + lines.keySet());
         return new MetroMap(lines);
     }
@@ -70,17 +70,12 @@ class MapLoader {
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
         LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
-
         final var time = getTime(jsonStation);
         final var id = new StationId(line, name);
         final var prevStations = parseStations(line, jsonStation.get("prev"));
         final var nextStations = parseStations(line, jsonStation.get("next"));
         final var tranStations = parseTransfer(jsonStation.get("transfer"));
         final var station = new MetroStation(id, time, nextStations, prevStations, tranStations);
-//        final var station = new MetroStation(id, time);
-//        station.setPrev(prevStations);
-//        station.setNext(nextStations);
-//        station.setTransfer(tranStations);
         LOGGER.log(TRACE, station);
         return station;
     }
