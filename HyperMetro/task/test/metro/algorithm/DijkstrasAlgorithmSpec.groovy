@@ -10,12 +10,12 @@ import spock.lang.Title
 @Title("Dijkstra's Algorithm")
 @See("https://hyperskill.org/learn/step/5772")
 @Issue("https://hyperskill.org/projects/120/stages/652/implement")
-@Narrative("Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a graph")
+@Narrative("Dijkstra's algorithm is an algorithm for finding the fastest paths between nodes in a graph")
 class DijkstrasAlgorithmSpec extends Specification {
     @Subject
     def algorithm = new DijkstrasAlgorithm<String>()
 
-    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/small.gif")
+    @See("images/small.gif")
     def 'should find the fastest route for a simple graph'() {
         given: 'a simple graph with three nodes'
         def graph = new Graph([
@@ -42,7 +42,7 @@ class DijkstrasAlgorithmSpec extends Specification {
         'A'    | 'B'    || 5    | ['A', 'C', 'B']
     }
 
-    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/medium.gif")
+    @See("images/medium.gif")
     def 'should find the fastest route for a medium graph'() {
         given: "we use Dijkstra's algorithm to find the path"
         def graph = new Graph([
@@ -72,7 +72,7 @@ class DijkstrasAlgorithmSpec extends Specification {
         'C'    | 'A'    || 20   | ['C', 'D', 'E', 'B', 'A']
     }
 
-    @See("https://rabestro.github.io/jetbrains-academy-hypermetro-java/images/complex.gif")
+    @See("images/complex.gif")
     def 'should find the fastest route for a complex graph'() {
         given: "a complex graph with eight nodes"
         def graph = new Graph([

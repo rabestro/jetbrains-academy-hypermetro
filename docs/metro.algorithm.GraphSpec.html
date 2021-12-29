@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Wed Dec 29 00:46:55 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Wed Dec 29 09:56:51 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,11 +272,13 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.124 seconds</td>
+<td>0.099 seconds</td>
 </tr>
 </tbody>
 </table>
 </div>
+<pre class='title'>Graph</pre>
+<pre class='narrative'>A simple implementation of Graph</pre>
 <h3>Features:</h3>
 <table class='features-table'>
 <colgroup>
@@ -322,7 +324,13 @@ div.footer {
 <div class='block-kind'>Expect:</div>
 </td>
 <td>
-<pre class='block-source'>graph.edges(node) == edges</pre>
+<div class='block-text'>The method returns expected edges for given node</div>
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+<pre class='block-source'>graph.edges(node) == expected</pre>
 </td>
 </tr>
 <tr>
@@ -335,7 +343,7 @@ div.footer {
 <thead>
 <tr>
 <th class='ex-header'>node</th>
-<th class='ex-header'>edges</th>
+<th class='ex-header'>expected</th>
 </tr>
 </thead>
 <tbody>

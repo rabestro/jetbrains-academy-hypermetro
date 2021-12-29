@@ -2,9 +2,13 @@ package metro.command
 
 import metro.model.StationId
 import metro.service.MetroService
+import spock.lang.Issue
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Title
 
+@Title("Command: /remove")
+@Issue("https://hyperskill.org/projects/120/stages/649/implement")
 class RemoveSpec extends Specification {
     static final TARGET_LINE = 'Central'
     static final TARGET_STATION = 'Hanger Lane'

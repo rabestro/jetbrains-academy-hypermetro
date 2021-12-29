@@ -2,12 +2,14 @@ package metro
 
 import metro.repository.MetroRepository
 import metro.ui.UserInterface
+import spock.lang.Issue
 import spock.lang.Rollup
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Title
 
 @Title("HyperMetro Application")
+@Issue("https://hyperskill.org/projects/120/stages/648/implement")
 class ApplicationSpec extends Specification {
     def ui = Mock UserInterface
     def repository = Mock MetroRepository

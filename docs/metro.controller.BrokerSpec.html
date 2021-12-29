@@ -251,7 +251,7 @@ div.footer {
 </div>
 <div class='summary-report'>
 <h3>Summary:</h3>
-<div class='date-test-ran'>Created on Wed Dec 29 00:47:00 EET 2021 by rabes</div>
+<div class='date-test-ran'>Created on Wed Dec 29 09:56:53 EET 2021 by rabes</div>
 <table class='summary-table'>
 <thead>
 <tr>
@@ -272,10 +272,20 @@ div.footer {
 <td>0</td>
 <td>0</td>
 <td>100.0%</td>
-<td>0.685 seconds</td>
+<td>0.082 seconds</td>
 </tr>
 </tbody>
 </table>
+</div>
+<pre class='title'>Commands Broker</pre>
+<pre class='narrative'>The broker parse the user input and execute appropriate commands</pre>
+<div class='issues'>
+<div>Issues:</div>
+<ul>
+<li>
+<a href='https://hyperskill.org/projects/120/stages/649/implement'>implement</a>
+</li>
+</ul>
 </div>
 <h3>Features:</h3>
 <table class='features-table'>
@@ -307,18 +317,10 @@ div.footer {
 </tr>
 <tr>
 <td>
-<div class='block-kind'>Given:</div>
-</td>
-<td>
-<pre class='block-source'>def request = 'command Bakerloo Waterloo'</pre>
-</td>
-</tr>
-<tr>
-<td>
 <div class='block-kind'>When:</div>
 </td>
 <td>
-<pre class='block-source'>broker.apply(request)</pre>
+<pre class='block-source'>broker.apply('one Bakerloo Waterloo')</pre>
 </td>
 </tr>
 <tr>
@@ -326,7 +328,7 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<pre class='block-source'>1 * command.apply(['Bakerloo', 'Waterloo'])</pre>
+<pre class='block-source'>1 * commandOne.apply(['Bakerloo', 'Waterloo'])</pre>
 </td>
 </tr>
 <tr>
@@ -360,7 +362,7 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<pre class='block-source'>0 * command.apply(_)</pre>
+<pre class='block-source'>0 * commandOne.apply(_)</pre>
 </td>
 </tr>
 <tr>
@@ -386,7 +388,7 @@ div.footer {
 <div class='block-kind'>Given:</div>
 </td>
 <td>
-<pre class='block-source'>def request = 'command Bakerloo Waterloo'</pre>
+<pre class='block-source'>def request = 'two Bakerloo Waterloo'</pre>
 </td>
 </tr>
 <tr>
@@ -402,7 +404,7 @@ div.footer {
 <div class='block-kind'>Then:</div>
 </td>
 <td>
-<pre class='block-source'>1 * command.apply(_) &gt;&gt; { throw exception }</pre>
+<pre class='block-source'>1 * commandTwo.apply(_) &gt;&gt; { throw exception }</pre>
 </td>
 </tr>
 <tr>

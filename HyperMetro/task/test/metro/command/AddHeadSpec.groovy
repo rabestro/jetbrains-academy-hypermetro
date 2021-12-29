@@ -1,10 +1,14 @@
 package metro.command
 
 import metro.service.MetroService
+import spock.lang.Issue
+import spock.lang.Narrative
 import spock.lang.Specification
 import spock.lang.Title
 
 @Title("Command: /add-head")
+@Narrative("add-head adds a new station at the beginning of the metro line")
+@Issue("https://hyperskill.org/projects/120/stages/649/implement")
 class AddHeadSpec extends Specification {
     def service = Mock MetroService
 
