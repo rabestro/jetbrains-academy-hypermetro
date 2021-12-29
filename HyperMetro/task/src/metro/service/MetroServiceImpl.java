@@ -10,7 +10,6 @@ import metro.repository.MetroRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -59,8 +58,8 @@ public class MetroServiceImpl implements MetroService {
     @Override
     public void connect(final StationId source, final StationId target) {
         LOG.log(DEBUG, "connect station [{0}] to [{1}]", source, target);
-        getMetroStation(source).setTransfer(Set.of(target));
-        getMetroStation(target).setTransfer(Set.of(source));
+        getMetroStation(source).transfer().add(target);
+        getMetroStation(target).transfer().add(source);
     }
 
     @Override
@@ -69,9 +68,9 @@ public class MetroServiceImpl implements MetroService {
         final Function<StationId, Map<StationId, Number>> getEdges = id -> {
             final var edges = new HashMap<StationId, Number>();
             final var source = getMetroStation(id);
-            source.getNext().forEach(target -> edges.put(target, source.getTime()));
-            source.getPrev().forEach(target -> edges.put(target, getMetroStation(target).getTime()));
-            source.getTransfer().forEach(target -> edges.put(target, transferTime));
+            source.next().forEach(target -> edges.put(target, source.time()));
+            source.prev().forEach(target -> edges.put(target, getMetroStation(target).time()));
+            source.transfer().forEach(target -> edges.put(target, transferTime));
             return edges;
         };
         final var schema = repository.stream().collect(toUnmodifiableMap(identity(), getEdges));

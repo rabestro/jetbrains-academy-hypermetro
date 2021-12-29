@@ -58,7 +58,7 @@ public class Route extends HyperMetroCommand {
                 stringJoiner.add("Transition to line " + line);
             }
             stringJoiner.add(node.name());
-            LOGGER.log(DEBUG, "Station: {0}", node.name());
+            LOGGER.log(DEBUG, "MetroStation: {0}", node.name());
         }
         return stringJoiner.toString();
     }

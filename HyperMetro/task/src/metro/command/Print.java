@@ -29,12 +29,12 @@ public class Print extends HyperMetroCommand {
     }
 
     private String printStation(final MetroStation metroStation) {
-        final var name = metroStation.getId().name();
+        final var name = metroStation.id().name();
         return name + lineSeparator()
-                + printNeighbors(PREFIX_PREV, metroStation.getPrev())
-                + printNeighbors(PREFIX_NEXT, metroStation.getNext())
-                + printNeighbors(PREFIX_TRAN, metroStation.getTransfer())
-                + "..... " + metroStation.getTime();
+                + printNeighbors(PREFIX_PREV, metroStation.prev())
+                + printNeighbors(PREFIX_NEXT, metroStation.next())
+                + printNeighbors(PREFIX_TRAN, metroStation.transfer())
+                + "..... " + metroStation.time();
     }
 
     private String printNeighbors(final String prefix, final Set<StationId> stations) {

@@ -25,7 +25,6 @@ class MetroLineSpec extends Specification {
         waterloo = new MetroStation(new StationId(BAKERLOO, 'Waterloo'))
         lambeth = new MetroStation(new StationId(BAKERLOO, 'Lambeth North'))
         elephant = new MetroStation(new StationId(BAKERLOO, 'Elephant & Castle'))
-        elephant.prev = [LAMBETH_ID] as Set
     }
 
     void cleanup() {

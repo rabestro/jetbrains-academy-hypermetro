@@ -6,7 +6,6 @@ import com.google.gson.JsonParser;
 import metro.model.MetroLine;
 import metro.model.MetroMap;
 import metro.model.MetroStation;
-import metro.model.Station;
 import metro.model.StationId;
 
 import java.io.IOException;
@@ -70,17 +69,18 @@ class MapLoader {
 
     private MetroStation parseMetroStation(final String line, final JsonObject jsonStation) {
         final var name = jsonStation.get("name").getAsString();
+        LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
+
         final var time = getTime(jsonStation);
         final var id = new StationId(line, name);
         final var prevStations = parseStations(line, jsonStation.get("prev"));
         final var nextStations = parseStations(line, jsonStation.get("next"));
         final var tranStations = parseTransfer(jsonStation.get("transfer"));
-//        final var st = new Station(id, time, nextStations, prevStations, tranStations);
-        LOGGER.log(TRACE, "Create station '" + name + "' (" + line + ")");
-        final var station = new MetroStation(id, time);
-        station.setPrev(prevStations);
-        station.setNext(nextStations);
-        station.setTransfer(tranStations);
+        final var station = new MetroStation(id, time, nextStations, prevStations, tranStations);
+//        final var station = new MetroStation(id, time);
+//        station.setPrev(prevStations);
+//        station.setNext(nextStations);
+//        station.setTransfer(tranStations);
         LOGGER.log(TRACE, station);
         return station;
     }

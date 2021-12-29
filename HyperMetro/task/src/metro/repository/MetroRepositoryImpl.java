@@ -25,7 +25,7 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public Stream<StationId> stream() {
-        return metroMap.lines().values().stream().flatMap(MetroLine::stream).map(MetroStation::getId);
+        return metroMap.lines().values().stream().flatMap(MetroLine::stream).map(MetroStation::id);
     }
 
     @Override

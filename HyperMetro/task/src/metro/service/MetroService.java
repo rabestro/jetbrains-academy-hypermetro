@@ -15,10 +15,10 @@ public interface MetroService {
     MetroLine getMetroLine(String name);
 
     /**
-     * Gets Metro Station by Station ID
+     * Gets Metro MetroStation by MetroStation ID
      *
      * @param stationId is metro station id
-     * @return object representing Metro Station
+     * @return object representing Metro MetroStation
      */
     MetroStation getMetroStation(StationId stationId);
 
@@ -26,7 +26,7 @@ public interface MetroService {
      * Adds a new station at the beginning of metro line.
      *
      * @param lineName    is the name of Metro Line
-     * @param stationName is the name of Metro Station
+     * @param stationName is the name of Metro MetroStation
      */
     void addHead(String lineName, String stationName);
 
@@ -34,7 +34,7 @@ public interface MetroService {
      * Appends a new station at the end of the line.
      *
      * @param lineName    is the name of Metro Line
-     * @param stationName is the name of Metro Station
+     * @param stationName is the name of Metro MetroStation
      */
     void append(String lineName, String stationName);
 

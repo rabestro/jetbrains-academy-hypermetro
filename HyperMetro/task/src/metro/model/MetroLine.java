@@ -7,7 +7,6 @@ import lombok.ToString;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 @Getter
@@ -20,7 +19,7 @@ public class MetroLine implements Iterable<MetroStation> {
     private final LinkedList<MetroStation> stations = new LinkedList<>();
 
     public Optional<MetroStation> getStation(final String name) {
-        return stations.stream().filter(s -> s.getId().name().equals(name)).findAny();
+        return stations.stream().filter(s -> s.id().name().equals(name)).findAny();
     }
 
     public void remove(final MetroStation station) {
@@ -32,8 +31,8 @@ public class MetroLine implements Iterable<MetroStation> {
         final var station = new MetroStation(sid);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
-            prevStation.setPrev(Set.of(sid));
-            station.setNext(Set.of(prevStation.getId()));
+            prevStation.prev().add(sid);
+            station.next().add(prevStation.id());
         }
         stations.addFirst(station);
     }
@@ -50,8 +49,8 @@ public class MetroLine implements Iterable<MetroStation> {
     private void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
-            lastStation.setNext(Set.of(metroStation.getId()));
-            metroStation.setPrev(Set.of(lastStation.getId()));
+            lastStation.next().add(metroStation.id());
+            metroStation.prev().add(lastStation.id());
         }
         stations.add(metroStation);
     }
