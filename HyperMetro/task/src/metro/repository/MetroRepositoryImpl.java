@@ -2,7 +2,7 @@ package metro.repository;
 
 import metro.model.MetroLine;
 import metro.model.MetroMap;
-import metro.model.Station;
+import metro.model.MetroStation;
 import metro.model.StationId;
 
 import java.io.IOException;
@@ -19,13 +19,13 @@ public class MetroRepositoryImpl implements MetroRepository {
     }
 
     @Override
-    public Optional<Station> getStation(final StationId id) {
+    public Optional<MetroStation> getStation(final StationId id) {
         return getLine(id.line()).flatMap(metroLine -> metroLine.getStation(id.name()));
     }
 
     @Override
     public Stream<StationId> stream() {
-        return metroMap.lines().values().stream().flatMap(MetroLine::stream).map(Station::id);
+        return metroMap.lines().values().stream().flatMap(MetroLine::stream).map(MetroStation::id);
     }
 
     @Override

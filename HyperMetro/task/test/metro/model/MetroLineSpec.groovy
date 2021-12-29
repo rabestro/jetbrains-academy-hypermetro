@@ -25,7 +25,6 @@ class MetroLineSpec extends Specification {
         waterloo = new MetroStation(new StationId(BAKERLOO, 'Waterloo'))
         lambeth = new MetroStation(new StationId(BAKERLOO, 'Lambeth North'))
         elephant = new MetroStation(new StationId(BAKERLOO, 'Elephant & Castle'))
-        elephant.prev = [LAMBETH_ID] as Set
     }
 
     void cleanup() {
@@ -63,7 +62,7 @@ class MetroLineSpec extends Specification {
         actual.get() == expected
 
         where: 'expected station has correct station id'
-        expected = new Station(new StationId(BAKERLOO, WATERLOO))
+        expected = new MetroStation(new StationId(BAKERLOO, WATERLOO))
     }
 
     def "should get the name of the metro line"() {

@@ -3,14 +3,13 @@ package metro.service;
 import lombok.AllArgsConstructor;
 import metro.algorithm.Graph;
 import metro.model.MetroLine;
-import metro.model.Station;
+import metro.model.MetroStation;
 import metro.model.StationId;
 import metro.repository.MetroRepository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -33,7 +32,7 @@ public class MetroServiceImpl implements MetroService {
     }
 
     @Override
-    public Station getMetroStation(final StationId id) {
+    public MetroStation getMetroStation(final StationId id) {
         LOG.log(DEBUG, "gets metro station for id = [{0}]", id);
         return repository.getStation(id).orElseThrow(NOT_FOUND_EXCEPTION);
     }

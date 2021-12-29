@@ -1,7 +1,7 @@
 package metro.service
 
 import metro.model.MetroLine
-import metro.model.Station
+import metro.model.MetroStation
 import metro.model.StationId
 import metro.repository.MetroRepository
 import spock.lang.Specification
@@ -21,7 +21,7 @@ class MetroServiceImplSpec extends Specification {
 
     def repository = Mock MetroRepository
     def mockLine = Mock MetroLine
-    def station = new Station(new StationId(SOURCE_LINE, SOURCE_STATION))
+    def station = new MetroStation(new StationId(SOURCE_LINE, SOURCE_STATION))
 
     @Subject
     def service = new MetroServiceImpl(repository)

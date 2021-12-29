@@ -1,7 +1,6 @@
 package metro.command;
 
 import metro.model.MetroStation;
-import metro.model.Station;
 import metro.model.StationId;
 import metro.service.MetroService;
 
@@ -33,7 +32,7 @@ public class Output extends HyperMetroCommand {
                 .collect(joining(lineSeparator()));
     }
 
-    private String printStation(final Station metroStation) {
+    private String printStation(final MetroStation metroStation) {
         final var name = metroStation.id().name();
         return name + lineSeparator()
                 + printNeighbors(PREFIX_PREV, metroStation.prev())

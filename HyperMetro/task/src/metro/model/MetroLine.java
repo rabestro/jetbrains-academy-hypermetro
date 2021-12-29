@@ -12,23 +12,23 @@ import java.util.stream.Stream;
 @Getter
 @ToString
 @AllArgsConstructor
-public class MetroLine implements Iterable<Station> {
+public class MetroLine implements Iterable<MetroStation> {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
     private final String lineName;
-    private final LinkedList<Station> stations = new LinkedList<>();
+    private final LinkedList<MetroStation> stations = new LinkedList<>();
 
-    public Optional<Station> getStation(final String name) {
+    public Optional<MetroStation> getStation(final String name) {
         return stations.stream().filter(s -> s.id().name().equals(name)).findAny();
     }
 
-    public void remove(final Station station) {
+    public void remove(final MetroStation station) {
         stations.remove(station);
     }
 
     public void addHead(final String name) {
         final var sid = new StationId(lineName, name);
-        final var station = new Station(sid);
+        final var station = new MetroStation(sid);
         if (!stations.isEmpty()) {
             final var prevStation = stations.getFirst();
             prevStation.prev().add(sid);
@@ -37,16 +37,16 @@ public class MetroLine implements Iterable<Station> {
         stations.addFirst(station);
     }
 
-    public void add(final Station metroStation) {
+    public void add(final MetroStation metroStation) {
         stations.add(metroStation);
     }
 
     public void append(final String stationName) {
         final var sid = new StationId(lineName, stationName);
-        append(new Station(sid));
+        append(new MetroStation(sid));
     }
 
-    private void append(final Station metroStation) {
+    private void append(final MetroStation metroStation) {
         if (!stations.isEmpty()) {
             final var lastStation = stations.getLast();
             lastStation.next().add(metroStation.id());
@@ -56,11 +56,11 @@ public class MetroLine implements Iterable<Station> {
     }
 
     @Override
-    public Iterator<Station> iterator() {
+    public Iterator<MetroStation> iterator() {
         return stations.iterator();
     }
 
-    public Stream<Station> stream() {
+    public Stream<MetroStation> stream() {
         return stations.stream();
     }
 }
