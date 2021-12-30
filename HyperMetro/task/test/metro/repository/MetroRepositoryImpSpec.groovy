@@ -14,7 +14,7 @@ class MetroRepositoryImpSpec extends Specification {
     def lineTwo = Mock MetroLine
 
     @Subject
-    def repository = new MetroRepositoryImpl()
+    def repository = new MetroRepositoryImpl(mapLoader)
 
     def "should find metro line by name"() {
         given: 'metro map with two lines'

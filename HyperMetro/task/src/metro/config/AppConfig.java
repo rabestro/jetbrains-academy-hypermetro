@@ -1,12 +1,12 @@
 package metro.config;
 
-import metro.Application;
 import metro.algorithm.BreadthFirstSearch;
 import metro.algorithm.DijkstrasAlgorithm;
 import metro.algorithm.SearchAlgorithm;
 import metro.command.*;
 import metro.controller.Broker;
 import metro.model.StationId;
+import metro.repository.MapLoader;
 import metro.repository.MetroRepository;
 import metro.repository.MetroRepositoryImpl;
 import metro.service.MetroService;
@@ -46,6 +46,16 @@ public class AppConfig {
 
     @Bean(name = "commands")
     public Map<String, Command> getCommands() {
+        final var route = new Route(getMetroService());
+        route.setAlgorithm(new BreadthFirstSearch<>());
+        route.setTransferTime(0);
+        route.setHideTime(true);
+
+        final var fastestRoute = new Route(getMetroService());
+        fastestRoute.setAlgorithm(dijkstrasAlgorithm());
+        fastestRoute.setTransferTime(5);
+        fastestRoute.setHideTime(false);
+
         return Map.of(
                 "output", new Output(getMetroService()),
                 "print", new Print(getMetroService()),
@@ -53,10 +63,8 @@ public class AppConfig {
                 "add-head", new AddHead(getMetroService()),
                 "connect", new Connect(getMetroService()),
                 "remove", new Remove(getMetroService()),
-                "route", new Route(getMetroService(), new BreadthFirstSearch<>(), 0, true),
-                "shortest-route", new Route(getMetroService(), new BreadthFirstSearch<>(), 5, false),
-                "fastest-route", new Route(getMetroService(), dijkstrasAlgorithm(), 5, false)
-        );
+                "route", route,
+                "fastest-route", fastestRoute);
     }
 
     @Bean(name = "cli")
@@ -66,7 +74,7 @@ public class AppConfig {
 
     @Bean(name = "repository")
     public MetroRepository getRepository() {
-        return new MetroRepositoryImpl();
+        return new MetroRepositoryImpl(new MapLoader());
     }
 
     @Bean(name = "broker")
@@ -74,8 +82,4 @@ public class AppConfig {
         return new Broker(getCommands());
     }
 
-    @Bean(name = "application")
-    public Application getApplication() {
-        return new Application(ui(), getRepository(), getCLI());
-    }
 }

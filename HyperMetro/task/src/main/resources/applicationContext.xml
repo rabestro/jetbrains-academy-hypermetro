@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+    <description>
+        This configuration file will have all beans which may be used for HyperMetro project.
+    </description>
+
+    <!-- loading java config files in package -->
+    <context:component-scan base-package="metro.config"/>
+
+    <!-- loading xml config for user commands -->
+    <import resource="classpath:commands.xml"/>
+
+    <bean id="application" class="metro.Application">
+        <constructor-arg type="metro.ui.UserInterface" ref="ui"/>
+        <constructor-arg type="metro.repository.MetroRepository" ref="repository"/>
+        <constructor-arg type="java.lang.Runnable" ref="cli"/>
+    </bean>
+
+    <bean id="broker" class="metro.controller.Broker">
+        <constructor-arg ref="commands"/>
+    </bean>
+
+    <bean id="ui" class="metro.ui.ConsoleInterface"/>
+
+    <bean id="cli" class="metro.ui.CLI">
+        <constructor-arg ref="ui"/>
+        <constructor-arg ref="exit"/>
+        <constructor-arg ref="broker"/>
+    </bean>
+
+    <bean id="metroLoader" class="metro.repository.MapLoader"/>
+
+    <bean id="repository" class="metro.repository.MetroRepositoryImpl">
+        <constructor-arg ref="metroLoader"/>
+    </bean>
+
+    <bean id="metroService" class="metro.service.MetroServiceImpl">
+        <constructor-arg ref="repository"/>
+    </bean>
+
+</beans>

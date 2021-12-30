@@ -10,8 +10,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class MetroRepositoryImpl implements MetroRepository {
+    private final MapLoader mapLoader;
 
     private MetroMap metroMap;
+
+    public MetroRepositoryImpl(MapLoader mapLoader) {
+        this.mapLoader = mapLoader;
+    }
 
     @Override
     public Optional<MetroLine> getLine(final String name) {
@@ -30,7 +35,7 @@ public class MetroRepositoryImpl implements MetroRepository {
 
     @Override
     public void load(final String fileName) throws IOException {
-        metroMap = new MapLoader().load(fileName);
+        metroMap = mapLoader.load(fileName);
     }
 
 }

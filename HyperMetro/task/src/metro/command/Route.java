@@ -19,19 +19,17 @@ import static java.lang.System.Logger.Level.DEBUG;
  * The command may print the estimate total travel time.
  */
 public class Route extends HyperMetroCommand {
-    private final SearchAlgorithm<StationId> algorithm;
-    private final int transferTime;
-    private final boolean hideTime;
+    private static final SearchAlgorithm<StationId> NO_ALGORITHM = (graph, source, target) -> List.of();
 
-    public Route(
-            final MetroService metroService,
-            final SearchAlgorithm<StationId> algorithm,
-            final int transferTime,
-            final boolean hideTime) {
+    private SearchAlgorithm<StationId> algorithm;
+    private int transferTime;
+    private boolean hideTime;
+
+    public Route(final MetroService metroService) {
         super(metroService);
-        this.algorithm = algorithm;
-        this.transferTime = transferTime;
-        this.hideTime = hideTime;
+        this.algorithm = NO_ALGORITHM;
+        this.transferTime = 0;
+        this.hideTime = true;
     }
 
     @Override
@@ -63,4 +61,27 @@ public class Route extends HyperMetroCommand {
         return stringJoiner.toString();
     }
 
+    public SearchAlgorithm<StationId> getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(SearchAlgorithm<StationId> algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    public int getTransferTime() {
+        return transferTime;
+    }
+
+    public void setTransferTime(int transferTime) {
+        this.transferTime = transferTime;
+    }
+
+    public boolean isHideTime() {
+        return hideTime;
+    }
+
+    public void setHideTime(boolean hideTime) {
+        this.hideTime = hideTime;
+    }
 }
