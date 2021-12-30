@@ -19,7 +19,7 @@ import static java.lang.System.Logger.Level.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
 
-class MapLoader {
+public class MapLoader {
     private static final System.Logger LOGGER = System.getLogger("HyperMetro");
 
     private static Set<StationId> parseStations(final String line, final JsonElement jsonElement) {

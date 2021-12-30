@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <description>
+        Beans definitions for user commands
+    </description>
+
+    <bean id="hyperMetroCommand" class="metro.command.HyperMetroCommand" abstract="true">
+        <constructor-arg type="metro.service.MetroService" ref="metroService"/>
+    </bean>
+
+    <bean id="dijkstrasAlgorithm" class="metro.algorithm.DijkstrasAlgorithm"/>
+
+    <bean id="bfsAlgorithm" class="metro.algorithm.BreadthFirstSearch"/>
+
+    <bean id="commandRoute" class="metro.command.Route" parent="hyperMetroCommand">
+        <property name="algorithm" ref="bfsAlgorithm"/>
+        <property name="transferTime" value="0"/>
+        <property name="hideTime" value="true"/>
+    </bean>
+
+    <bean id="commandFastestRoute" class="metro.command.Route" parent="hyperMetroCommand">
+        <property name="algorithm" ref="dijkstrasAlgorithm"/>
+        <property name="transferTime" value="5"/>
+        <property name="hideTime" value="false"/>
+    </bean>
+
+    <bean id="commandOutput" class="metro.command.Output" parent="hyperMetroCommand"/>
+    <bean id="commandAppend" class="metro.command.Append" parent="hyperMetroCommand"/>
+    <bean id="commandRemove" class="metro.command.Remove" parent="hyperMetroCommand"/>
+    <bean id="commandAddHead" class="metro.command.AddHead" parent="hyperMetroCommand"/>
+    <bean id="commandConnect" class="metro.command.Connect" parent="hyperMetroCommand"/>
+
+    <util:map id="commands" map-class="java.util.HashMap"
+              key-type="java.lang.String" value-type="metro.command.Command">
+        <entry key="route" value-ref="commandRoute"/>
+        <entry key="fastest-route" value-ref="commandFastestRoute"/>
+        <entry key="output" value-ref="commandOutput"/>
+        <entry key="append" value-ref="commandAppend"/>
+        <entry key="remove" value-ref="commandRemove"/>
+        <entry key="add-head" value-ref="commandAddHead"/>
+        <entry key="connect" value-ref="commandConnect"/>
+    </util:map>
+
+</beans>

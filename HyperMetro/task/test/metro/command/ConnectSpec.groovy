@@ -2,11 +2,17 @@ package metro.command
 
 import metro.model.StationId
 import metro.service.MetroService
+import spock.lang.Issue
+import spock.lang.Narrative
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Title
 
 @Title("Command: /connect")
+@Narrative('''
+Connect the stations using the command /connect "[line 1]" "[station 1]" "[line 2]" "[station 2]"
+''')
+@Issue("https://hyperskill.org/projects/120/stages/650/implement")
 class ConnectSpec extends Specification {
     static final SOURCE_LINE = 'Edgington'
     static final SOURCE_STATION = 'Kennington'
