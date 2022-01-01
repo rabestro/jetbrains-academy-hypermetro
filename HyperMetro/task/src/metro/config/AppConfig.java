@@ -1,5 +1,6 @@
 package metro.config;
 
+import metro.Application;
 import metro.algorithm.BreadthFirstSearch;
 import metro.algorithm.DijkstrasAlgorithm;
 import metro.algorithm.SearchAlgorithm;
@@ -25,7 +26,7 @@ import java.util.function.Predicate;
 public class AppConfig {
 
     @Bean(name = "ui")
-    public UserInterface ui() {
+    public UserInterface getUi() {
         return new ConsoleInterface();
     }
 
@@ -69,7 +70,7 @@ public class AppConfig {
 
     @Bean(name = "cli")
     public Runnable getCLI() {
-        return new CLI(ui(), exit(), getBroker());
+        return new CLI(getUi(), exit(), getBroker());
     }
 
     @Bean(name = "repository")
@@ -80,6 +81,11 @@ public class AppConfig {
     @Bean(name = "broker")
     public Broker getBroker() {
         return new Broker(getCommands());
+    }
+
+    @Bean(name = "application")
+    public Application getApplication() {
+        return new Application(getUi(), getRepository(), getCLI());
     }
 
 }
