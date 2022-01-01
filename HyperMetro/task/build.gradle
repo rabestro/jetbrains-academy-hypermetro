@@ -17,9 +17,7 @@ dependencies {
 
     testImplementation 'org.slf4j:slf4j-api:1.7.32'
     testRuntimeClasspath 'org.slf4j:slf4j-simple:1.7.32'
-
 }
-
 
 test {
     systemProperty 'spock.configuration', 'test/SpockConfig.groovy'
