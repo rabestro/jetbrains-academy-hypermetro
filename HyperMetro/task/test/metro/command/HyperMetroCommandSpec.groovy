@@ -1,9 +1,13 @@
 package metro.command
 
 import metro.service.MetroService
+import spock.lang.Narrative
 import spock.lang.Specification
+import spock.lang.Title
 import spock.lang.Unroll
 
+@Title("Abstract HyperMetro Command")
+@Narrative("Contains method to validate number of parameters")
 class HyperMetroCommandSpec extends Specification {
     def service = Mock MetroService
 

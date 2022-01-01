@@ -4,6 +4,9 @@ import metro.service.MetroService;
 
 import java.util.List;
 
+/**
+ * Adds a new station at the end of the line
+ */
 public class Append extends HyperMetroCommand {
 
     public Append(final MetroService metroService) {

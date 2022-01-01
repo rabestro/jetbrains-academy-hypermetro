@@ -5,6 +5,9 @@ import metro.service.MetroService;
 
 import java.util.List;
 
+/**
+ * Removes a metro station
+ */
 public class Remove extends HyperMetroCommand {
     public Remove(final MetroService metroService) {
         super(metroService);

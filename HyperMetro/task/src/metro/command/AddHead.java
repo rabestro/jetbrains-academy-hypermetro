@@ -4,6 +4,9 @@ import metro.service.MetroService;
 
 import java.util.List;
 
+/**
+ * Adds a new station at the beginning of the metro line
+ */
 public class AddHead extends HyperMetroCommand {
     public AddHead(final MetroService metroService) {
         super(metroService);

@@ -5,6 +5,9 @@ import metro.service.MetroService;
 
 import java.util.List;
 
+/**
+ * Connects two metro stations
+ */
 public class Connect extends HyperMetroCommand {
     public Connect(final MetroService metroService) {
         super(metroService);
