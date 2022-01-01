@@ -42,7 +42,8 @@ class DijkstrasAlgorithmSpec extends Specification {
     }
 
     def 'should find the fastest route for a medium graph'() {
-        given: "we use Dijkstra's algorithm to find the path"
+
+        given: "a medium graph with five nodes"
         def graph = new Graph([
                 A: [B: 5],
                 B: [A: 5, C: 10],
